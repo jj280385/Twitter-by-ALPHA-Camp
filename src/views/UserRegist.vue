@@ -1,85 +1,219 @@
-// ./src/views/SignIn.vue
-
 <template>
-  <div class="container py-5">
-    <form class="w-100" @submit.prevent.stop="handleSubmit">
-      <div class="text-center mb-4">
-        <h1 class="h3 mb-3 font-weight-normal">
-          User Regist
-        </h1>
-      </div>
+  <div class="container">
+    <form class="regist-container" @submit.prevent.stop="handleSubmit">
+      <img class="logo" src="../assets/image/logo.svg" />
 
-      <div class="form-label-group mb-2">
-        <label for="email">email</label>
+      <span class="page-title"> 建立你的帳號 </span>
+
+      <div class="input-container">
+        <label class="input-title"> 帳號 </label>
         <input
-          id="email"
+          v-model="accountName"
+          class="accountName"
+          type="accountName"
+          style="font-size: 25px"
+        />
+        <label class="error-text"> 帳號已重複註冊！ </label>
+      </div>
+      
+      <div class="input-container">
+        <label class="input-title"> 名稱 </label>
+        <input
+          v-model="name"
+          class="name"
+          type="name"
+          style="font-size: 25px"
+        />
+        <label class="error-text"> 名稱已重複註冊！ </label>
+      </div>
+      
+      <div class="input-container">
+        <label class="input-title"> Email </label>
+        <input
           v-model="email"
-          name="email"
+          class="email"
           type="email"
-          class="form-control"
-          placeholder="email"
-          autocomplete="username"
-          required
-          autofocus
-        >
+          style="font-size: 25px"
+        />
+        <label class="error-text"> Email 已重複註冊！ </label>
       </div>
 
-      <div class="form-label-group mb-3">
-        <label for="password">Password</label>
+      <div class="input-container">
+        <label class="input-title"> 密碼 </label>
         <input
-          id="password"
           v-model="password"
-          name="password"
+          class="password"
           type="password"
-          class="form-control"
-          placeholder="Password"
-          autocomplete="current-password"
-          required
-        >
+          style="font-size: 25px"
+        />
+        <label class="error-text"> 密碼錯誤！ </label>
       </div>
 
-      <button
-        class="btn btn-lg btn-primary btn-block mb-3"
-        type="submit"
-      >
-        Submit
-      </button>
-
-      <div class="text-center mb-3">
-        <p>
-          <router-link to="/signup">
-          Sign Up
-          </router-link>
-        </p>
+      <div class="input-container">
+        <label class="input-title"> 密碼確認 </label>
+        <input
+          v-model="passwordCheck"
+          class="passwordCheck"
+          type="passwordCheck"
+          style="font-size: 25px"
+        />
+        <label class="error-text"> 密碼確認錯誤！ </label>
       </div>
 
-      <p class="mt-5 mb-3 text-muted text-center">
-        &copy; 2017-2018
-      </p>
+      <button class="login-btn" type="submit"> 註冊 </button>
+
+      <div class="cancel-link">
+        <p><router-link to="/login"> 取消 </router-link></p>
+      </div>
     </form>
   </div>
 </template>
 
-/* eslint-disable */
 <script>
-
 export default {
-  data () {
+  data() {
     return {
-      email: '',
-      password: ''
-    }
+      accountName: "",
+      name: "",
+      email: "",
+      password: "",
+      passwordCheck: ""
+    };
   },
   methods: {
-    handleSubmit (){
+    handleSubmit() {
       const data = JSON.stringify({
+        accountName: this.accountName,
+        name: this.name,
         email: this.email,
-        password: this.password
-      })
+        password: this.password,
+        passwordCheck: this.passwordCheck
+      });
 
       // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log('data',data)
-    }
+      console.log("data", data);
+    },
+  },
+};
+</script>
+
+<style lang="scss">
+.container {
+  margin: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.regist-container {
+  position: relative;
+  width: 540px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+.page-title {
+  margin: 20px 0 40px 0;
+  font-family: "Noto Sans TC";
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 33.3px;
+  color: var(--page-title);
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.input-title {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  color: var(--input-title);
+  font-family: "Noto Sans TC";
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 15px;
+}
+
+input {
+  width: 100%;
+  height: 52px;
+  background-color: var(--input-background);
+  border: none;
+  border-bottom: 2px solid var(--input-border);
+  line-height: normal;
+  text-align: center;
+  // TODO:input的focus邊框沒有規定顏色，看要不要換其他顏色
+  &:hover,
+  &:focus {
+    border-color: inherit;
+    border: 1px solid var(--input-focus);
   }
 }
-</script>
+
+// TODO:待串接後端驗證後，錯誤提示要改變input的border樣式
+.error-text {
+  
+  color: var(--error-text);
+  margin-top: 5px;
+  position: absolute;
+  left: 0;
+  top: 50px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 15px;
+}
+
+.login-btn {
+  background-color: var(--registBtn-background);
+  width: 100%;
+  height: 46px;
+  border-radius: 50px;
+  color: var(--registBtn-color);
+  font-size: 18px;
+  line-height: 26px;
+  text-align: center;
+  //TODO:看看邊框顏色還要不要更換，若時間充裕再來優化點擊按鈕後的動畫
+  &:hover {
+    background-color: var(--registBtn-hover);
+  }
+  &:active,
+  &:focus {
+    background-color: var(--registBtn-focus);
+  }
+}
+
+.cancel-link {
+  position: relative;
+  top: 20px;
+}
+
+p {
+  text-decoration: underline;
+  font-family: "Noto Sans TC";
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26.06px;
+  color: var(--cancel-link);
+  &:hover {
+    color: var(--router-hover);
+  }
+  &:focus,
+  &:active {
+    color: var(--router-focus);
+  }
+}
+</style>
+
