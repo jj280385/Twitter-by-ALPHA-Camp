@@ -1,5 +1,5 @@
 :root {
-  /* user login page */
+  // user login page 
   --input-title: #657786;
   --input-placeholder: #1C1C1C;
   --input-background:  #F5F8FA;
@@ -13,5 +13,19 @@
   --router-link: #0099FF;
   --router-hover: #F24405;
   --router-focus: #F2884B;
-  $color-black: #000000;
+
+  // user regist page
+  --page-title: #1C1C1C;
+	--input-placeholder: #1C1C1C;
+	--input-background:  #F5F8FA;
+	--input-border: #657786;
+  --input-focus: #FF6600;
+  --error-text: #FC5A5A;
+	--registBtn-background: #FF6600;
+  --registBtn-color: #FFFFFF;
+  --registBtn-hover: #F24405;
+  --registBtn-focus: #F2884B;
+  --router-link: #0099FF;
+  --router-hover: #F24405;
+	--cancel-link: #0099FF;
 }
