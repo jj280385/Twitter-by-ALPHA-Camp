@@ -127,7 +127,7 @@ export default {
   font-size: 23px;
   font-weight: 700;
   line-height: 33.3px;
-  color: var(--page-title);
+  color: var(--main-text);
 }
 
 .input-container {
@@ -140,7 +140,7 @@ export default {
   position: absolute;
   top: 5px;
   left: 10px;
-  color: var(--input-title);
+  color: var(--input-label);
   font-family: "Noto Sans TC";
   font-size: 15px;
   font-weight: 500;
@@ -159,7 +159,7 @@ input {
   &:hover,
   &:focus {
     border-color: inherit;
-    border: 1px solid var(--input-focus);
+    border: 1px solid var(--theme-color);
   }
 }
 
@@ -177,21 +177,21 @@ input {
 }
 
 .login-btn {
-  background-color: var(--registBtn-background);
+  background-color: var(--theme-color);
   width: 100%;
   height: 46px;
   border-radius: 50px;
-  color: var(--registBtn-color);
+  color: var(--button-text-color);
   font-size: 18px;
   line-height: 26px;
   text-align: center;
   //TODO:看看邊框顏色還要不要更換，若時間充裕再來優化點擊按鈕後的動畫
   &:hover {
-    background-color: var(--registBtn-hover);
+    background-color: var(--hover-color);
   }
   &:active,
   &:focus {
-    background-color: var(--registBtn-focus);
+    background-color: var(--focus-color);
   }
 }
 
@@ -206,13 +206,13 @@ p {
   font-size: 18px;
   font-weight: 700;
   line-height: 26.06px;
-  color: var(--cancel-link);
+  color: var(--router-link);
   &:hover {
-    color: var(--router-hover);
+    color: var(--hover-color);
   }
   &:focus,
   &:active {
-    color: var(--router-focus);
+    color: var(--focus-color);
   }
 }
 </style>

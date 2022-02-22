@@ -29,9 +29,9 @@
 
       <button class="login-btn" type="submit">登入</button>
 
-      <div class="link-container text-center mb-3">
+      <div class="link-container">
         <p><router-link to="/regist"> 註冊Alphitter</router-link></p>
-        <span> ● </span>
+        <span>‧</span>
         <p><router-link to="/admin"> 後台登入</router-link></p>
       </div>
     </form>
@@ -62,12 +62,16 @@ export default {
 
 <style lang="scss">
 .container {
-  margin: 60px 450px;
+  margin: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .login-container {
   position: relative;
-  width: 100%;
+  width: 540px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -98,7 +102,7 @@ export default {
   position: absolute;
   top: 5px;
   left: 10px;
-  color: var(--input-title);
+  color: var(--input-label);
   font-family: "Noto Sans TC";
   font-size: 15px;
   font-weight: 500;
@@ -117,7 +121,7 @@ input {
   &:hover,
   &:focus {
     border-color: inherit;
-    border: 1px solid var(--input-focus);
+    border: 1px solid var(--theme-color);
   }
 }
 
@@ -135,21 +139,21 @@ input {
 }
 
 .login-btn {
-  background-color: var(--loginBtn-background);
+  background-color: var(--theme-color);
   width: 100%;
   height: 46px;
   border-radius: 50px;
-  color: var(--loginBtn-color);
+  color: var(--button-text-color);
   font-size: 18px;
   line-height: 26px;
   text-align: center;
   //TODO:看看邊框顏色還要不要更換，若時間充裕再來優化點擊按鈕後的動畫
   &:hover {
-    background-color: var(--loginBtn-hover);
+    background-color: var(--hover-color);
   }
   &:active,
   &:focus {
-    background-color: var(--loginBtn-focus);
+    background-color: var(--focus-color);
   }
 }
 
@@ -173,11 +177,11 @@ p {
   font-weight: 700;
   line-height: 26.06px;
   &:hover {
-    color: var(--router-hover);
+    color: var(--hover-color);
   }
   &:focus,
   &:active {
-    color: var(--router-focus);
+    color: var(--focus-color);
   }
 }
 </style>
