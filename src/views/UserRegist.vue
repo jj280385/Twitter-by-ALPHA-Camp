@@ -60,7 +60,7 @@
         <label class="error-text"> 密碼確認錯誤！ </label>
       </div>
 
-      <button class="login-btn" type="submit"> 註冊 </button>
+      <button class="regist-btn" type="submit"> 註冊 </button>
 
       <div class="cancel-link">
         <p><router-link to="/login"> 取消 </router-link></p>
@@ -176,7 +176,7 @@ input {
   line-height: 15px;
 }
 
-.login-btn {
+.regist-btn {
   background-color: var(--theme-color);
   width: 100%;
   height: 46px;
