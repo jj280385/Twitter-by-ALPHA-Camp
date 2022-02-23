@@ -54,6 +54,9 @@ button {
   background-color: transparent;
   border: 0px;
   cursor: pointer;
+  padding: 0%;
+  font-weight: unset;
+  font-family: unset;
 }
 
 button[disabled] {
@@ -67,4 +70,14 @@ input {
 input:required,
 input:invalid {
   box-shadow: none;
+}
+
+hr {
+  border: none;
+  margin: 0;
+}
+
+textarea {
+  font-family: unset;
+  font-weight: unset;
 }
