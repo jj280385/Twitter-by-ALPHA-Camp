@@ -97,7 +97,8 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+
 .container {
   margin: 60px;
   display: flex;
