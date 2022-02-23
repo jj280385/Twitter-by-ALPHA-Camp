@@ -1,14 +1,22 @@
 :root {
-	--theme-color: #FF6600;
-	--main-text: #1C1C1C;
-  // user login and regist page 
-	--input-background: #F5F8FA;
-	--button-text-color:#FFFFFF;	
-	--input-label: #657786;
+	// common
+  --theme-color: #ff6600;
+  --hover-color: #f24405;
+  --theme-white: #f9b49b;
+  --main-text: #1c1c1c;
+  // user login and regist page
+  --input-background: #f5f8fa;
+  --button-text-color: #ffffff;
+  --input-label: #657786;
   --input-border: #657786;
-  --error-text: #FC5A5A;
-	--hover-color: #F24405;
-	--focus-color: #F2884B;
-  --router-link: #0099FF;
-
+  --error-text: #fc5a5a;
+  --hover-color: #f24405;
+  --focus-color: #f2884b;
+  --router-link: #0099ff;
+  // for modal
+  --modal-background-center: rgba(128, 128, 128, 50%);
+  --modal-background-around: rgba(0, 0, 0, 60%);
+  --modal-dialog-background: #ffffff;
+  --modal-divider: #e6ecf0;
+  --modal-textarea: #9197a3;
 }
