@@ -4,54 +4,50 @@
       <img class="sidebar-logo" src="../assets/image/logo.svg" />
     </div>
     <div class="sidebar-items">
-      <div class="sidebar-item home">
-				<img
-				v-if="isActive"
-				@click="isActive= !isActive"
-				class="item-icon" 
-				src="../assets/image/home.svg" 
-				/>
-        <img 
-				v-else
-				class="item-icon" 
-				src="../assets/image/home-active.svg" 
-				/>
-        <p class="item-link">
-          <router-link to="/">首頁</router-link>
-        </p>
-      </div>
+      <!-- TODO:item中的icon和item-name的變色功能v-fi /v-else尚未設定 -->
+      <button class="sidebar-item home" type="submit" @click="toggleIcon">
+        <router-link to="/setting">
+          <img
+            v-if="isActive"
+            class="item-icon"
+            src="../assets/image/home.svg"
+          />
+          <img v-else class="item-icon" src="../assets/image/home-active.svg" />
+          <div class="item-name" :class="{ active: !isActive }">首頁</div>
+        </router-link>
+      </button>
 
-      <div class="sidebar-item userInfo active">
-				<img
-				class="item-icon" 
-				v-if="isActive"
-				@click="isActive=false"
-				src="../assets/image/user-info.svg" />
-        <img 
-				v-else
-				@click="isActive=true"
-				class="item-icon" 
-				src="../assets/image/user-info-active.svg" />
-        <p class="item-link">
-          <router-link to="/setting">個人資料</router-link>
-        </p>
-      </div>
+      <button class="sidebar-item userInfo" type="submit" @click="toggleIcon">
+        <router-link to="/setting">
+          <img
+            v-if="isActive"
+            class="item-icon"
+            src="../assets/image/user-info.svg"
+          />
+          <img
+            v-else
+            class="item-icon"
+            src="../assets/image/user-info-active.svg"
+          />
+          <div class="item-name" :class="{ active: !isActive }">個人資料</div>
+        </router-link>
+      </button>
 
-      <div class="sidebar-item setting">
-				<img 
-				v-if="isActive"
-				@click="isActive=false"
-				class="item-icon" 
-				src="../assets/image/setting.svg" />
-        <img 
-				v-else
-				@click="isActive=true"
-				class="item-icon" 
-				src="../assets/image/setting-active.svg" />
-        <p class="item-link">
-          <router-link to="/setting">設定</router-link>
-        </p>
-      </div>
+      <button class="sidebar-item setting" type="submit" @click="toggleIcon">
+        <router-link to="/setting">
+          <img
+            v-if="isActive"
+            class="item-icon"
+            src="../assets/image/setting.svg"
+          />
+          <img
+            v-else
+            class="item-icon"
+            src="../assets/image/setting-active.svg"
+          />
+          <div class="item-name" :class="{ active: !isActive }">設定</div>
+        </router-link>
+      </button>
 
       <button class="twitter-btn" type="submit">推文</button>
     </div>
@@ -60,11 +56,16 @@
 
 <script>
 export default {
-  data (){
-		return {
+  data() {
+    return {
       isActive: true,
-		}
-	},
+    };
+  },
+  methods: {
+    toggleIcon() {
+      this.isActive = !this.isActive;
+    },
+  },
 };
 </script>
 
@@ -73,7 +74,7 @@ export default {
   width: 235px;
   height: 100%;
   @include flex(column, flex-start, flex-start);
-  @include margin(4px, 40px, 0, 103px);
+  @include margin(4px, 0, 0, 103px);
 }
 
 .sidebar-header {
@@ -90,11 +91,16 @@ export default {
 
 .sidebar-item {
   color: var(--main-text);
-  display: flex;
-  flex-direction: row;
+  @include flex(row, flex-start, center);
   align-content: center;
-  align-items: center;
   margin-left: 10px;
+}
+
+.item-name {
+  color: var(--main-text);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26.06px;
 }
 
 .item-icon {
@@ -110,22 +116,12 @@ export default {
   margin-bottom: 31px;
 }
 
-.item-link {
-  color: var(--main-text);
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 26.06px;
-  &:hover,
-  &:focus,
-  &:active {
-    color: var(--theme-color);
-  }
+a {
+  @include flex(row, flex-start, center);
 }
 
 .twitter-btn {
-  width: 210px;
-  height: 38px;
+  @include size(210px, 38px);
   background-color: var(--theme-color);
   color: var(--button-text-color);
   border-radius: 100px;
@@ -136,6 +132,10 @@ export default {
   &:hover {
     background-color: var(--hover-color);
   }
+  &:active,
+  &:focus {
+    background-color: var(--focus-color);
+  }
 }
 
 .newClass {
@@ -145,4 +145,19 @@ export default {
   padding: 3px 5px;
 }
 
+.test-btn {
+  margin-top: 40px;
+  width: 100px;
+  height: 50px;
+  // background-color: green;
+  &:active,
+  &:focus {
+    // background-color: gray;
+    color: blue;
+  }
+}
+
+.active {
+  color: var(--theme-color);
+}
 </style>
