@@ -7,23 +7,23 @@
         <div
           v-show="modal"
           @click.stop.prevent="modal = true"
-          class="modal-dialog d-flex"
+          class="modal-dialog d-flex flex-column"
         >
           <div class="modal-header">
             <button
               @click.stop.prevent="modal = false"
               class="close d-flex justify-content-center align-items-center"
             >
-              <!-- icon shock SVG -->
+              <!-- SVG -->
               <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                viewBox="0 0 15 15"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M13.4139 11.9999L19.2069 6.20687C19.5969 5.81687 19.5969 5.18388 19.2069 4.79288C18.8169 4.40188 18.1839 4.40288 17.7929 4.79288L11.9999 10.5859L6.20687 4.79288C5.81687 4.40288 5.18388 4.40288 4.79288 4.79288C4.40188 5.18288 4.40288 5.81587 4.79288 6.20687L10.5859 11.9999L4.79288 17.7929C4.40288 18.1829 4.40288 18.8159 4.79288 19.2069C4.98788 19.4019 5.24287 19.4999 5.49987 19.4999C5.75687 19.4999 6.01187 19.4019 6.20687 19.2069L11.9999 13.4139L17.7929 19.2069C17.9879 19.4019 18.2429 19.4999 18.4999 19.4999C18.7569 19.4999 19.0119 19.4019 19.2069 19.2069C19.5969 18.8169 19.5969 18.1839 19.2069 17.7929L13.4139 11.9999Z"
+                  d="M9.41387 7.99988L15.2069 2.20687C15.5969 1.81687 15.5969 1.18388 15.2069 0.792875C14.8169 0.401875 14.1839 0.402875 13.7929 0.792875L7.99988 6.58588L2.20687 0.792875C1.81687 0.402875 1.18388 0.402875 0.792875 0.792875C0.401875 1.18288 0.402875 1.81587 0.792875 2.20687L6.58588 7.99988L0.792875 13.7929C0.402875 14.1829 0.402875 14.8159 0.792875 15.2069C0.987875 15.4019 1.24287 15.4999 1.49987 15.4999C1.75687 15.4999 2.01187 15.4019 2.20687 15.2069L7.99988 9.41387L13.7929 15.2069C13.9879 15.4019 14.2429 15.4999 14.4999 15.4999C14.7569 15.4999 15.0119 15.4019 15.2069 15.2069C15.5969 14.8169 15.5969 14.1839 15.2069 13.7929L9.41387 7.99988Z"
                   fill="#FF6600"
                 />
               </svg>
@@ -33,21 +33,27 @@
           <hr />
           <!-- modal-body -->
           <div class="modal-body d-flex">
-            <router-link to="/">
+            <div class="avatar">
+              <router-link to="/">
               <img
-                src="../assets/image/John Doe.svg"
-                class="avatar"
+                src="../assets/image/john-doe-50.svg"
+                
                 alt="預設的頭像"
               />
             </router-link>
+            </div>
+            
 
             <textarea
               class="modal-content"
               placeholder="有什麼新鮮事？"
-            ></textarea>
+            autofocus></textarea>
           </div>
 
-          <div class="modal-footer d-flex justify-content-end">
+          <div
+            class="modal-footer d-flex justify-content-end align-items-center"
+          >
+            <span class="hint">字數不可超過140字</span>
             <button type="button">推文</button>
           </div>
         </div>
@@ -60,97 +66,39 @@
 export default {
   data() {
     return {
-      modal: true
-    }
-  }
-}
+      modal: false,
+    };
+  },
+};
 </script>
-
 <style lang="scss" scoped>
+@import "../styles/modalCommon.scss";
+
 .modal {
-  // modal background
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-
-  overflow-x: hidden;
-  overflow-y: auto;
-
-  padding: 0 10%;
-  // for 不支援漸變屬性瀏覽器
-  background-color: rgba(229, 229, 229, 0.9);
-  background-color: var(--modal-background-around);
-
+  --modal-dialog-height: 450px;
   background: radial-gradient(
-    circle at 50% calc(#{$modal-height} + (300px / 2)),
+    circle at 50% calc(#{$modal-height} + (var(--modal-dialog-height) / 2)),
     var(--modal-background-center),
     var(--modal-background-around)
   );
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
 }
 
 .modal-dialog {
-  // 供過渡動畫定位
-  position: relative;
-
-  margin: $modal-height auto 0;
-  border-radius: 14px;
   min-width: 460px;
-  min-height: 450px;
-
-  flex-direction: column;
-  font-weight: 500;
-
-  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.285);
-
-  background-color: var(--modal-dialog-background);
-  // css scan #26
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-
-  backdrop-filter: blur(8px);
-
-  .modal-header {
-    padding: 15px;
-  }
-
-  /* The Close Button */
-  button.close {
-    cursor: pointer;
-    transition: transform 0.35s ease-out;
-    transform: scale(100%);
-
-    padding: 0;
-    svg {
-      width: 24px;
-    }
-
-    &:hover,
-    &:focus {
-      svg > path {
-        fill: var(--hover-color);
-      }
-    }
-  }
-
-  hr {
-    height: 1px;
-    background-color: var(--modal-divider);
-  }
+  min-height: var(--modal-dialog-height);
 }
 
 .modal-body {
   flex-grow: 1;
   padding: 15px;
 
-  img.avatar {
-    width: 50px;
+  .avatar {
+    img{
+      width: 50px;
     height: 50px;
     border-radius: 50%;
+    }
+    
   }
 
   textarea {
@@ -159,18 +107,21 @@ export default {
     border: none;
     resize: none;
 
-    color: var(--modal-textarea);
     font-size: 18px;
-    line-height: 26.06px;
-
-    &:focus {
-      color: var(--main-text);
-    }
+    line-height: 26px;
   }
 }
 
 .modal-footer {
   padding: 0 15px 15px 15px;
+
+  span.hint {
+    margin: 0 20px;
+
+    color: var(--modal-error);
+    font-size: 15px;
+    line-height: 15px;
+  }
 
   button {
     padding: 10px 15px;
@@ -189,46 +140,13 @@ export default {
   }
 }
 
-// for modal dialog
-.slide-enter,
-.slide-leave-to {
-  transform: translate(0, calc(-#{$modal-height} - 100%));
-}
-
-.slide-enter-to,
-.slide-leave {
-  transform: none;
-}
-
-.slide-enter-active,
-.slide-leave-active {
-  transition: transform 0.5s cubic-bezier(0.8, 0, 0.15, 1.4);
-}
-
-// for modal background
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.fade-enter-to,
-.fade-leave {
-  opacity: 100%;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 1.6s ease-in-out;
-}
-
-.fade-leave-active {
-  transition: opacity 0.35s ease-in-out;
-}
-
 @media screen and (min-width: $breakpoint) {
+  .modal {
+    --modal-dialog-height: 300px;
+  }
   .modal-dialog {
     max-width: 600px;
-    min-height: 300px;
+    min-height: var(--modal-dialog-height);
   }
 }
 </style>
