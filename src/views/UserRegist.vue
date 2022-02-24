@@ -97,7 +97,8 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+
 .container {
   margin: 60px;
   display: flex;
@@ -165,7 +166,7 @@ input {
 
 // TODO:待串接後端驗證後，錯誤提示要改變input的border樣式
 .error-text {
-  
+  visibility: hidden;
   color: var(--error-text);
   margin-top: 5px;
   position: absolute;
