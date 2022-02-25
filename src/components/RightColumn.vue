@@ -235,7 +235,7 @@ export default {
   position: absolute;
   right: 15px;
   @include size(90px, 35px);
-  color: var(--button-text-color);
+  color: var(--just-white);
   background-color: var(--theme-color);
   border-radius: 100px;
   font-size: 15px;
@@ -257,7 +257,7 @@ export default {
   font-weight: 700;
   line-height: 15px;
     &:hover {
-    color: var(--button-text-color);
+    color: var(--just-white);
     background-color: var(--hover-color);
   }
 }

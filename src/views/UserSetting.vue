@@ -179,7 +179,7 @@ input {
   @include position(absolute, 515px, 0 ,0, 536px);
   background-color: var(--theme-color);
   border-radius: 50px;
-  color: var(--button-text-color);
+  color: var(--just-white);
   font-size: 18px;
   font-weight: 700;
   line-height: 26.06px;

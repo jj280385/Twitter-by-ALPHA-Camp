@@ -127,7 +127,7 @@ a {
 .twitter-btn {
   @include size(210px, 38px);
   background-color: var(--theme-color);
-  color: var(--button-text-color);
+  color: var(--just-white);
   border-radius: 100px;
   margin-top: 24px;
   font-size: 18px;

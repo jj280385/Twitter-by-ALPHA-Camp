@@ -182,7 +182,7 @@ input {
   width: 100%;
   height: 46px;
   border-radius: 50px;
-  color: var(--button-text-color);
+  color: var(--just-white);
   font-size: 18px;
   line-height: 26px;
   text-align: center;
