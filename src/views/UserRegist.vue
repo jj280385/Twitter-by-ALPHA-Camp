@@ -15,7 +15,7 @@
         />
         <label class="error-text"> 帳號已重複註冊！ </label>
       </div>
-      
+
       <div class="input-container">
         <label class="input-title"> 名稱 </label>
         <input
@@ -26,7 +26,7 @@
         />
         <label class="error-text"> 名稱已重複註冊！ </label>
       </div>
-      
+
       <div class="input-container">
         <label class="input-title"> Email </label>
         <input
@@ -60,7 +60,7 @@
         <label class="error-text"> 密碼確認錯誤！ </label>
       </div>
 
-      <button class="regist-btn" type="submit"> 註冊 </button>
+      <button class="regist-btn" type="submit">註冊</button>
 
       <div class="cancel-link">
         <p><router-link to="/login"> 取消 </router-link></p>
@@ -77,7 +77,7 @@ export default {
       name: "",
       email: "",
       password: "",
-      passwordCheck: ""
+      passwordCheck: "",
     };
   },
   methods: {
@@ -87,7 +87,7 @@ export default {
         name: this.name,
         email: this.email,
         password: this.password,
-        passwordCheck: this.passwordCheck
+        passwordCheck: this.passwordCheck,
       });
 
       // TODO: 向後端驗證使用者登入資訊是否合法
@@ -98,7 +98,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .container {
   margin: 60px;
   display: flex;
@@ -153,7 +152,7 @@ input {
   height: 52px;
   background-color: var(--input-background);
   border: none;
-  border-bottom: 2px solid var(--input-border);
+  border-bottom: 2px solid var(--info);
   line-height: normal;
   text-align: center;
   // TODO:input的focus邊框沒有規定顏色，看要不要換其他顏色
@@ -182,7 +181,7 @@ input {
   width: 100%;
   height: 46px;
   border-radius: 50px;
-  color: var(--button-text-color);
+  color: var(--just-white);
   font-size: 18px;
   line-height: 26px;
   text-align: center;

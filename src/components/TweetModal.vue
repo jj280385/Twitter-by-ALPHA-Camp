@@ -60,10 +60,10 @@
 export default {
   data() {
     return {
-      modal: true
-    }
-  }
-}
+      modal: true,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -107,7 +107,7 @@ export default {
 
   transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.285);
 
-  background-color: var(--modal-dialog-background);
+  background-color: var(--just-white);
   // css scan #26
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
@@ -139,7 +139,7 @@ export default {
 
   hr {
     height: 1px;
-    background-color: var(--modal-divider);
+    background-color: var(--theme-line);
   }
 }
 

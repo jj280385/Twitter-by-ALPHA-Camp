@@ -61,13 +61,13 @@
         <label class="error-text"> 密碼確認錯誤！ </label>
       </div>
 
-      <button class="saveBtn"> 儲存 </button>
+      <button class="saveBtn">儲存</button>
     </form>
   </div>
 </template>
 
 <script>
-import Sidebar from '../components/Sidebar.vue'
+import Sidebar from "../components/Sidebar.vue";
 
 export default {
   data() {
@@ -76,7 +76,7 @@ export default {
       name: "",
       email: "",
       password: "",
-      passwordCheck: ""
+      passwordCheck: "",
     };
   },
   methods: {
@@ -86,16 +86,16 @@ export default {
         name: this.name,
         email: this.email,
         password: this.password,
-        passwordCheck: this.passwordCheck
+        passwordCheck: this.passwordCheck,
       });
       // TODO: 向後端驗證使用者登入資訊是否合法
       console.log("data", data);
-    }
+    },
   },
   components: {
     Sidebar,
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -105,14 +105,15 @@ export default {
 }
 
 .setting-form {
-  border-left: 1px solid var(--border-color);
+  border-left: 1px solid var(--theme-line);
   width: 100%;
   position: relative;
   margin-left: 40px;
 }
 
 .form-header {
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--theme-line);
+  backdrop-filter: blur(12px);
   position: relative;
   padding-left: 20px;
   width: 100%;
@@ -132,6 +133,13 @@ export default {
 .input-container {
   position: relative;
   width: 100%;
+
+  // 顯示錯誤提示
+  &.invalid {
+    .error-text {
+      visibility: visible;
+    }
+  }
 }
 
 .input-title {
@@ -150,7 +158,7 @@ input {
   @include margin(30px, 405px, 0, 16px);
   background-color: var(--input-background);
   border: none;
-  border-bottom: 2px solid var(--input-border);
+  border-bottom: 2px solid var(--info);
   line-height: normal;
   text-align: center;
   // TODO:input的focus邊框沒有規定顏色，看要不要換其他顏色
@@ -176,10 +184,10 @@ input {
 
 .saveBtn {
   @include size(116px, 46px);
-  @include position(absolute, 515px, 0 ,0, 536px);
+  @include position(absolute, 515px, 0, 0, 536px);
   background-color: var(--theme-color);
   border-radius: 50px;
-  color: var(--button-text-color);
+  color: var(--just-white);
   font-size: 18px;
   font-weight: 700;
   line-height: 26.06px;
@@ -191,5 +199,4 @@ input {
     background-color: var(--focus-color);
   }
 }
-
 </style>
