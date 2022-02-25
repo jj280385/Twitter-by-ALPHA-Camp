@@ -192,7 +192,7 @@ export default {
   padding: 10px 15px;
   display: flex;
   align-items: center;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--theme-line);
 }
 
 .user-info {
@@ -224,7 +224,7 @@ export default {
 }
 
 .user-accountName {
-  color: var(--user-accountName);
+  color: var(--info);
   margin-top: 3px;
   &:hover {
     text-decoration: underline;

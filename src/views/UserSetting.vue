@@ -105,14 +105,14 @@ export default {
 }
 
 .setting-form {
-  border-left: 1px solid var(--border-color);
+  border-left: 1px solid var(--theme-line);
   width: 100%;
   position: relative;
   margin-left: 40px;
 }
 
 .form-header {
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--theme-line);
   position: relative;
   padding-left: 20px;
   width: 100%;
@@ -138,7 +138,7 @@ export default {
   position: absolute;
   top: 35px;
   left: 26px;
-  color: var(--input-label);
+  color: var(--info);
   font-family: "Noto Sans TC";
   font-size: 15px;
   font-weight: 500;
@@ -150,7 +150,7 @@ input {
   @include margin(30px, 405px, 0, 16px);
   background-color: var(--input-background);
   border: none;
-  border-bottom: 2px solid var(--input-border);
+  border-bottom: 2px solid var(--info);
   line-height: normal;
   text-align: center;
   // TODO:input的focus邊框沒有規定顏色，看要不要換其他顏色
@@ -164,7 +164,7 @@ input {
 // TODO:待串接後端驗證後，錯誤提示要改變input的border樣式
 .error-text {
   visibility: hidden;
-  color: var(--error-text);
+  color: var( --invalid);
   margin-top: 5px;
   position: absolute;
   left: 16px;
