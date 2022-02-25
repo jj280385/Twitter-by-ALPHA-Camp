@@ -49,7 +49,10 @@
         </router-link>
       </button>
 
-      <button class="twitter-btn" type="submit">推文</button>
+      <button 
+      class="twitter-btn" 
+      type="submit" 
+      >推文</button>
     </div>
   </div>
 </template>
@@ -59,13 +62,14 @@ export default {
   data() {
     return {
       isActive: true,
+      modal: null,
     };
   },
   methods: {
     toggleIcon() {
       this.isActive = !this.isActive;
-    },
-  },
+    }
+  }
 };
 </script>
 
