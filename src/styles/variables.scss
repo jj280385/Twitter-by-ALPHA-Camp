@@ -1,3 +1,32 @@
 // 定義變數
 $breakpoint: 576px;
 $modal-height: 54px;
+
+// 變數@mixin搭配@include
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin position($position, $top, $right, $bottom, $left)
+{
+	position: $position;
+	top: $top;
+	right: $right;
+	bottom: $bottom;
+	left: $left;
+}
+
+@mixin flex ($direction, $justify, $align) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin margin($top, $right, $bottom, $left) {
+  margin-top: $top;
+  margin-right: $right;
+  margin-bottom: $bottom;
+  margin-left: $left;
+}
