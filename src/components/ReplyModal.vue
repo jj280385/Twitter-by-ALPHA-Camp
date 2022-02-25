@@ -43,8 +43,11 @@
 
               <div class="tweet-body">
                 <div class="d-flex">
-                  <h3 class="name">Apple</h3>
-                  <span class="info">@apple．3小時</span>
+                  <h3 class="name"><router-link to="/"> Apple</router-link></h3>
+                  <span class="info">
+                    <router-link to="/">@apple</router-link>．
+                    <router-link to="/">3小時</router-link>
+                  </span>
                 </div>
 
                 <div class="tweet-content">
@@ -176,7 +179,7 @@ export default {
   span.info {
     margin-left: 5px;
 
-    color: var(--modal-info);
+    color: var(--info);
     font-size: 15px;
     line-height: 22px;
   }
@@ -194,7 +197,7 @@ export default {
   }
 
   span.reply-to {
-    color: var(--modal-info);
+    color: var(--info);
 
     font-size: 13px;
     line-height: 13px;

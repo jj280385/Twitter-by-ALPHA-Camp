@@ -116,13 +116,15 @@
                 </button>
               </div>
             </div>
-            <!-- user-cover end -->
+            <!-- avatar -->
             <div class="avatar">
               <img
                 src="../assets/image/John Doe-120.svg"
                 alt="預設的使用者頭像"
               />
               <div
+                @mouseover="avatarHint = true"
+                @mouseleave="avatarHint = false"
                 class="mask d-flex justify-content-center align-items-center"
               >
                 <label for="upload-avatar" class="camera">
@@ -152,11 +154,16 @@
                   </svg>
                   <!-- SVG -->
                 </label>
+                <transition name="hint">
+                  <span class="avatar-hint" v-if="avatarHint"
+                    >頭像圖片建議解析度為 150 × 150 像素以上</span
+                  >
+                </transition>
               </div>
             </div>
             <!-- form area -->
             <div class="form-area">
-              <div class="form-row d-flex flex-column">
+              <div for="name" class="form-row d-flex flex-column">
                 <label for="name">名稱</label>
                 <input
                   type="text"
@@ -165,8 +172,10 @@
                   value="John Don"
                   maxlength="50"
                 />
+                <p class="error-hint">字數超出上限！</p>
+                <p>8/50</p>
               </div>
-              <p>8/50</p>
+
               <div class="form-row d-flex flex-column">
                 <label for="description">自我介紹</label>
                 <textarea
@@ -175,9 +184,11 @@
                   maxlength="160"
                   autofocus
                 />
+                <p class="error-hint">字數超出上限！</p>
+                <p>0/160</p>
               </div>
-              <p>0/160</p>
             </div>
+            <!-- form area end -->
           </div>
         </form>
       </transition>
@@ -190,6 +201,7 @@ export default {
   data() {
     return {
       modal: false,
+      avatarHint: false,
     };
   },
 };
@@ -324,20 +336,18 @@ export default {
   border-radius: 50%;
 
   .mask {
-    &:hover::after {
+    span:last-child {
       position: absolute;
       top: 60%;
       left: calc(var(--avatar-width) * 1);
-      color: var(--modal-info);
+      color: var(--info);
 
-      width: 290px; 
+      width: max-content;
       border-radius: 4px;
       background-color: var(--input-background);
-      content: "頭像圖片建議解析度為 150 × 150 像素以上";
       padding: 2.5px 10px;
       font-size: 15px;
     }
-
   }
 
   img {
@@ -351,51 +361,34 @@ export default {
     border: 4px solid #fff;
     border-radius: 50%;
   }
+
+  // Vue transition
+  .hint-enter-active,
+  .hint-leave-active,
+  .hint-move {
+    transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+  }
+
+  .hint-enter {
+    opacity: 20%;
+    transform: translateX(-5%);
+  }
+
+  .hint-leave-to {
+    opacity: 10%;
+    transform: translateX(-2%);
+  }
 }
 
 .form-area {
   margin: 80px 15px 50px;
-
-  .form-row {
-    position: relative;
-
-    padding: 5px 15px 6px;
-    background-color: var(--input-background);
-    border-radius: 4px;
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 0%;
-      left: 0%;
-      width: 100%;
-      height: 2px;
-      border-radius: 0px 0px 4px 4px;
-
-      transition: background-color 0.35s ease-in-out;
-      background-color: var(--input-border);
-    }
-
-    &.valid::after{
-      background-color: var(--input-valid);
-    }
-
-    &.invalid::after{
-      background-color: var(--input-invalid);
-    }
-
-    &:nth-child(3) {
-      margin-top: 20px;
-      height: 150px;
-    }
-  }
 
   label {
     display: block;
     margin-bottom: 4px;
     font-size: 15px;
     line-height: 15px;
-    color: var(--input-label);
+    color: var(--info);
   }
 
   input {
@@ -417,12 +410,67 @@ export default {
     font-size: 19px;
     line-height: 28px;
   }
+}
+
+.form-row {
+  position: relative;
+
+  padding: 5px 15px 6px;
+  background-color: var(--input-background);
+  border-radius: 4px;
+
+  // 下底線
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    width: 100%;
+    height: 2px;
+    border-radius: 0px 0px 4px 4px;
+
+    transition: background-color 0.35s ease-in-out;
+    background-color: var(--info);
+  }
+
+  &.valid,
+  &:hover,
+  &:focus-within {
+    &::after {
+      background-color: var(--valid);
+    }
+  }
+
+  // 錯誤提示
+  &.invalid {
+    &::after {
+      background-color: var(--invalid);
+    }
+  }
+
+  // 自我介紹欄
+  &:nth-child(2) {
+    margin-top: 42px;
+    height: 150px;
+  }
+
+  // 提示列
+  p {
+    --hint-height: 22px;
+    position: absolute;
+    bottom: calc(0% - var(--hint-height));
+  }
 
   p {
-    color: var(--input-label);
-    text-align: right;
+    right: 0%;
+    color: var(--info);
     font-size: 15px;
-    line-height: 22px;
+    line-height: var(--hint-height);
+  }
+
+  .error-hint {
+    left: 0%;
+    color: var(--invalid);
   }
 }
 
