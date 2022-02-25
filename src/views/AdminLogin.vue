@@ -100,7 +100,7 @@ export default {
   position: absolute;
   top: 5px;
   left: 10px;
-  color: var(--input-label);
+  color: var(--info);
   font-family: "Noto Sans TC";
   font-size: 15px;
   font-weight: 500;
@@ -112,7 +112,7 @@ input {
   height: 52px;
   background-color: var(--input-background);
   border: none;
-  border-bottom: 2px solid var(--input-border);
+  border-bottom: 2px solid var(--info);
   line-height: normal;
   text-align: center;
   // TODO:input的focus邊框沒有規定顏色，看要不要換其他顏色
@@ -141,7 +141,7 @@ input {
   width: 100%;
   height: 46px;
   border-radius: 50px;
-  color: var(--button-text-color);
+  color: var(--just-white);
   font-size: 18px;
   line-height: 26px;
   text-align: center;
