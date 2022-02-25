@@ -120,7 +120,7 @@ export default {
 
   hr {
     height: 1px;
-    background-color: var(--modal-divider);
+    background-color: var(--theme-line);
   }
   min-height: var(--modal-dialog-height);
 
