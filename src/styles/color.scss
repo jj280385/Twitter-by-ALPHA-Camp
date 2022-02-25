@@ -1,27 +1,26 @@
 :root {
-	// common
+  // common
   --theme-color: #ff6600;
   --hover-color: #f24405;
   --theme-white: #f9b49b;
   --main-text: #1c1c1c;
-  --border-color: #E6ECF0;
-  --button-text-color: #ffffff;
+  --theme-line: #E6ECF0;
+  --just-white: #ffffff;
+  --valid:#50B5FF;
+  --invalid:#FC5A5A;
+  --info: #657786;
+  --placeholder: #9197a3;
   // user login and regist page
   --input-background: #f5f8fa;
-  --input-label: #657786;
-  --input-border: #657786;
-  --error-text: #fc5a5a;
   --hover-color: #f24405;
   --focus-color: #f2884b;
   --router-link: #0099ff;
   // for modal
-  --modal-background-center: rgba(128, 128, 128, 50%);
+  --modal-background-center: rgba(128, 128, 128, 15%);
   --modal-background-around: rgba(0, 0, 0, 60%);
-  --modal-dialog-background: #ffffff;
-  --modal-divider: #e6ecf0;
-  --modal-textarea: #9197a3;
+  // for modal reply
+  --avatar-connect: #ccd6dd;
   // right column
   --column-background-color: #F5F8FA;
   --avatar-img-background: #C4C4C4;
-  --user-accountName: #657786;
 }
