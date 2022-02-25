@@ -32,22 +32,44 @@
           </div>
           <hr />
           <!-- modal-body -->
-          <div class="modal-body d-flex">
-            <div class="avatar">
-              <router-link to="/">
-              <img
-                src="../assets/image/john-doe-50.svg"
-                
-                alt="預設的頭像"
-              />
-            </router-link>
-            </div>
-            
+          <div class="modal-body d-flex flex-column">
+            <!-- tweet -->
+            <div class="tweet d-flex">
+              <div class="avatar">
+                <router-link to="/">
+                  <img src="https://via.placeholder.com/150" alt="預設的頭像" />
+                </router-link>
+              </div>
 
-            <textarea
-              class="modal-content"
-              placeholder="有什麼新鮮事？"
-            autofocus></textarea>
+              <div class="tweet-body">
+                <div class="d-flex">
+                  <h3 class="name">Apple</h3>
+                  <span class="info">@apple．3小時</span>
+                </div>
+
+                <div class="tweet-content">
+                  連好好的筆電都要挖瀏海是怎樣！？還有那個口罩Face
+                  ID只有新機才能用真的是騙肖耶，凸！！以下是假字剛剛好140字喔，啾咪～麻看不出沒有，大笑書原本的。的創都這樣箱許，很難位旅人自己一點就。過就好感便宜的，收到切國中印象花可不可，事件文章不要好像也喜是為什⋯那邊的麼一買然後那。
+                </div>
+                <span class="reply-to"
+                  >回覆給&thinsp;<router-link to="/">@apple</router-link></span
+                >
+              </div>
+            </div>
+            <!-- reply -->
+            <div class="reply d-flex">
+              <div class="avatar">
+                <router-link to="/">
+                  <img src="../assets/image/john-doe-50.svg" alt="預設的頭像" />
+                </router-link>
+              </div>
+
+              <textarea
+                class="reply-content"
+                placeholder="推你的回覆"
+                autofocus
+              ></textarea>
+            </div>
           </div>
 
           <div
@@ -71,11 +93,12 @@ export default {
   },
 };
 </script>
+
 <style lang="scss" scoped>
 @import "../styles/modalCommon.scss";
 
 .modal {
-  --modal-dialog-height: 450px;
+  --modal-dialog-height: 600px;
   background: radial-gradient(
     circle at 50% calc(#{$modal-height} + (var(--modal-dialog-height) / 2)),
     var(--modal-background-center),
@@ -85,57 +108,47 @@ export default {
 
 .modal-dialog {
   min-width: 460px;
-  min-height: 450px;
-  flex-direction: column;
-  font-weight: 500;
-  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.285);
-  background-color: var(--just-white);
-  // css scan #26
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-  backdrop-filter: blur(8px);
-
-  .modal-header {
-    padding: 15px;
-  }
-
-  /* The Close Button */
-  button.close {
-    cursor: pointer;
-    transition: transform 0.35s ease-out;
-    transform: scale(100%);
-
-    padding: 0;
-    svg {
-      width: 24px;
-    }
-
-    &:hover,
-    &:focus {
-      svg > path {
-        fill: var(--hover-color);
-      }
-    }
-  }
-
-  hr {
-    height: 1px;
-    background-color: var(--theme-line);
-  }
   min-height: var(--modal-dialog-height);
-
 }
 
 .modal-body {
   flex-grow: 1;
   padding: 15px;
-  .avatar {
-    img{
-      width: 50px;
-    height: 50px;
-    border-radius: 50%;
+  --avatar-width: 50px;
+
+  .tweet {
+    // 供連接線定位
+    position: relative;
+
+    .avatar {
+      margin-top: 3px;
     }
-    
+
+    overflow: hidden;
+    // 產生連接線
+    &::after {
+      position: absolute;
+      content: "";
+
+      left: 25px;
+      // 圖片的 margin + 圖片高度
+      top: calc(3px + var(--avatar-width) + 5px);
+      background-color: var(--avatar-connect);
+      height: 100%;
+      width: 2px;
+    }
+  }
+  .reply {
+    margin-top: 10px;
+    flex-grow: 1;
+  }
+
+  .avatar {
+    img {
+      width: var(--avatar-width);
+      height: var(--avatar-width);
+      border-radius: 50%;
+    }
   }
 
   textarea {
@@ -143,15 +156,61 @@ export default {
     margin: 12px 0px 0px 10px;
     border: none;
     resize: none;
+
     font-size: 18px;
     line-height: 26px;
   }
 }
 
+.tweet-body {
+  margin-left: 10px;
+
+  h3.name {
+    color: var(--main-text);
+    font-size: 15px;
+    line-height: 22px;
+
+    font-weight: 700;
+  }
+
+  span.info {
+    margin-left: 5px;
+
+    color: var(--modal-info);
+    font-size: 15px;
+    line-height: 22px;
+  }
+
+  .tweet-content {
+    margin: 5px 0 19px;
+
+    max-height: 90px;
+    overflow: scroll;
+
+    color: var(--main-text);
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 400;
+  }
+
+  span.reply-to {
+    color: var(--modal-info);
+
+    font-size: 13px;
+    line-height: 13px;
+
+    a {
+      color: var(--theme-color);
+    }
+  }
+}
+
 .modal-footer {
   padding: 0 15px 15px 15px;
+
   span.hint {
     margin: 0 20px;
+
     color: var(--modal-error);
     font-size: 15px;
     line-height: 15px;
@@ -160,10 +219,12 @@ export default {
   button {
     padding: 10px 15px;
     border-radius: 100px;
+
     background-color: var(--theme-color);
     color: #fff;
     font-size: 18px;
     line-height: 18px;
+
     &:hover,
     &:focus {
       background-color: var(--hover-color);
@@ -174,7 +235,7 @@ export default {
 
 @media screen and (min-width: $breakpoint) {
   .modal {
-    --modal-dialog-height: 300px;
+    --modal-dialog-height: 450px;
   }
   .modal-dialog {
     max-width: 600px;

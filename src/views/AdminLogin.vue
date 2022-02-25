@@ -100,7 +100,7 @@ export default {
   position: absolute;
   top: 5px;
   left: 10px;
-  color: var(--input-label);
+  color: var(--info);
   font-family: "Noto Sans TC";
   font-size: 15px;
   font-weight: 500;
@@ -126,7 +126,7 @@ input {
 // TODO:待串接後端驗證後，錯誤提示要改變input的border樣式
 .error-text {
   visibility: hidden;
-  color: var(--error-text);
+  color: var( --invalid);
   margin-top: 5px;
   position: absolute;
   left: 0;

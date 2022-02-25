@@ -122,7 +122,10 @@
         </router-link>
       </button>
 
-      <button class="twitter-btn" type="submit">推文</button>
+      <button 
+      class="twitter-btn" 
+      type="submit" 
+      >推文</button>
     </div>
   </div>
 </template>
@@ -134,9 +137,8 @@ export default {
       // 有home, userInfo, setting 三種
       // 這裡預設寫死 setting
       activeTab: "setting",
-    };
-  },
-  methods: {},
+    }
+  }
 };
 </script>
 
