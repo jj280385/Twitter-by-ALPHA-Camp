@@ -164,10 +164,14 @@ export default {
     color: #fff;
     font-size: 18px;
     line-height: 18px;
-    &:hover,
-    &:focus {
+    &:hover {
       background-color: var(--hover-color);
       color: var(--theme-white);
+    }
+
+    &:focus {
+      background-color: var(--focus-color);
+      color: var(--just-white);
     }
   }
 }
