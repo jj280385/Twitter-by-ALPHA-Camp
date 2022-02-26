@@ -248,10 +248,15 @@ export default {
     font-size: 18px;
     line-height: 18px;
 
-    &:hover,
-    &:focus {
+    &:hover {
       background-color: var(--hover-color);
       color: var(--theme-white);
+    }
+
+
+    &:focus {
+      background-color: var(--focus-color);
+      color: var(--just-white);
     }
   }
 }
@@ -288,7 +293,7 @@ export default {
     height: 100%;
 
     transition: background-color 0.5s ease-out;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.25);
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.45);

@@ -152,7 +152,7 @@ export default {
   padding: 0 15px 15px 15px;
   span.hint {
     margin: 0 20px;
-    color: var(--modal-error);
+    color: var(--invalid);
     font-size: 15px;
     line-height: 15px;
   }
@@ -164,10 +164,14 @@ export default {
     color: #fff;
     font-size: 18px;
     line-height: 18px;
-    &:hover,
-    &:focus {
+    &:hover {
       background-color: var(--hover-color);
       color: var(--theme-white);
+    }
+
+    &:focus {
+      background-color: var(--focus-color);
+      color: var(--just-white);
     }
   }
 }
