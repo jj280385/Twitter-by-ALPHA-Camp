@@ -152,7 +152,7 @@ export default {
   padding: 0 15px 15px 15px;
   span.hint {
     margin: 0 20px;
-    color: var(--modal-error);
+    color: var(--invalid);
     font-size: 15px;
     line-height: 15px;
   }
