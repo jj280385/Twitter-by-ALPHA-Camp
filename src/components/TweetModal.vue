@@ -85,13 +85,50 @@ export default {
 
 .modal-dialog {
   min-width: 460px;
+  min-height: 450px;
+  flex-direction: column;
+  font-weight: 500;
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.285);
+  background-color: var(--just-white);
+  // css scan #26
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  backdrop-filter: blur(8px);
+
+  .modal-header {
+    padding: 15px;
+  }
+
+  /* The Close Button */
+  button.close {
+    cursor: pointer;
+    transition: transform 0.35s ease-out;
+    transform: scale(100%);
+
+    padding: 0;
+    svg {
+      width: 24px;
+    }
+
+    &:hover,
+    &:focus {
+      svg > path {
+        fill: var(--hover-color);
+      }
+    }
+  }
+
+  hr {
+    height: 1px;
+    background-color: var(--theme-line);
+  }
   min-height: var(--modal-dialog-height);
+
 }
 
 .modal-body {
   flex-grow: 1;
   padding: 15px;
-
   .avatar {
     img{
       width: 50px;
@@ -106,7 +143,6 @@ export default {
     margin: 12px 0px 0px 10px;
     border: none;
     resize: none;
-
     font-size: 18px;
     line-height: 26px;
   }
@@ -114,10 +150,8 @@ export default {
 
 .modal-footer {
   padding: 0 15px 15px 15px;
-
   span.hint {
     margin: 0 20px;
-
     color: var(--modal-error);
     font-size: 15px;
     line-height: 15px;
@@ -126,12 +160,10 @@ export default {
   button {
     padding: 10px 15px;
     border-radius: 100px;
-
     background-color: var(--theme-color);
     color: #fff;
     font-size: 18px;
     line-height: 18px;
-
     &:hover,
     &:focus {
       background-color: var(--hover-color);

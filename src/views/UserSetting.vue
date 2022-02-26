@@ -113,6 +113,7 @@ export default {
 
 .form-header {
   border-bottom: 1px solid var(--theme-line);
+  backdrop-filter: blur(12px);
   position: relative;
   padding-left: 20px;
   width: 100%;
@@ -132,6 +133,13 @@ export default {
 .input-container {
   position: relative;
   width: 100%;
+
+  // 顯示錯誤提示
+  &.invalid {
+    .error-text {
+      visibility: visible;
+    }
+  }
 }
 
 .input-title {
@@ -164,7 +172,7 @@ input {
 // TODO:待串接後端驗證後，錯誤提示要改變input的border樣式
 .error-text {
   visibility: hidden;
-  color: var(--error-text);
+  color: var( --invalid);
   margin-top: 5px;
   position: absolute;
   left: 16px;

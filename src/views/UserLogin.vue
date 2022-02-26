@@ -128,7 +128,7 @@ input {
 // TODO:待串接後端驗證後，錯誤提示要改變input的border樣式
 .error-text {
   visibility: hidden;
-  color: var(--error-text);
+  color: var( --invalid);
   margin-top: 5px;
   position: absolute;
   left: 0;
