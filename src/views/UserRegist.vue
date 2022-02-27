@@ -92,7 +92,7 @@
 
 <script>
 import Toast from '../components/Toast.vue'
-import authorization from '../apis/authorization'
+import authorizationAPI from '../apis/authorization'
 
 export default {
   components: {
@@ -199,21 +199,19 @@ export default {
         this.isProcessing = true
 
         // 發送API
-        const { data } = await authorization.signUp({
+        const { data } = await authorizationAPI.signUp({
           account: this.account,
           name: this.name,
           email: this.email,
           password: this.password
         })
 
-        console.log(data)
-
         if (data.status === 'error') {
           this.$bus.$emit('toast', {
             icon: 'error',
             title: `${data.message}`
           })
-          throw new Error(response.data.message)
+          throw new Error(data.message)
         }
         // 發送成功訊息
         this.$bus.$emit('toast', {
@@ -227,7 +225,7 @@ export default {
       } catch (error) {
         this.isProcessing = false
         console.log(error)
-        this.$bus.$emit({ title: `error` })
+        this.$bus.$emit({ title: `${error}` })
       }
     }
   }

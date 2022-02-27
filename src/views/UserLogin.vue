@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <Toast />
     <form class="login-container" @submit.prevent.stop="handleSubmit">
       <img class="logo" src="../assets/image/logo.svg" />
 
@@ -8,9 +9,9 @@
       <div class="input-container">
         <label class="input-title"> 帳號 </label>
         <input
-          v-model="accountName"
+          v-model="account"
           class="accountName"
-          type="accountName"
+          type="text"
           style="font-size: 25px"
         />
         <label class="error-text"> 帳號不存在！ </label>
@@ -27,7 +28,14 @@
         <label class="error-text"> 密碼錯誤！ </label>
       </div>
 
-      <button class="login-btn" type="submit">登入</button>
+      <button
+        @click.stop.prevent="handleSubmit"
+        :disabled="isProcessing"
+        class="login-btn"
+        type="submit"
+      >
+        登入
+      </button>
 
       <div class="link-container">
         <p><router-link to="/regist"> 註冊Alphitter</router-link></p>
@@ -39,25 +47,70 @@
 </template>
 
 <script>
+import authorizationAPI from '../apis/authorization'
+import Toast from '../components/Toast.vue'
+
 export default {
+  components: {
+    Toast
+  },
   data() {
     return {
-      accountName: "",
-      password: "",
-    };
+      account: '',
+      password: '',
+      isProcessing: false
+    }
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        accountName: this.accountName,
-        password: this.password,
-      });
+    async handleSubmit() {
+      try {
+        if (!this.account) {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '請輸入帳號'
+          })
+          return
+        }
 
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log("data", data);
-    },
-  },
-};
+        if (!this.password) {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '請輸入密碼'
+          })
+          return
+        }
+
+        this.isProcessing = true
+
+        const { data } = await authorizationAPI.signIn({
+          account: this.account,
+          password: this.password
+        })
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+        // 將 token 存放在 localStorage
+        localStorage.setItem('token', data.data.token)
+        // 用commit改寫 vuex store state
+        this.$store.commit('setCurrentUser', data.data.user)
+
+           // 發送成功訊息
+        this.$bus.$emit('toast', {
+          icon: 'success',
+          title: '登入成功'
+        })
+        // TODO: 完成登入要轉址去首頁喔～～
+        // this.$router.push({name: ''})
+      } catch (error) {
+        this.$bus.$emit('toast', { icon: 'error', title: `${error}` })
+        this.isProcessing = false
+        console.log(error)
+      }
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -86,7 +139,7 @@ export default {
 
 .page-title {
   margin: 20px 0 40px 0;
-  font-family: "Noto Sans TC";
+  font-family: 'Noto Sans TC';
   font-size: 23px;
   font-weight: 700;
   line-height: 33.3px;
@@ -103,7 +156,7 @@ export default {
   top: 5px;
   left: 10px;
   color: var(--info);
-  font-family: "Noto Sans TC";
+  font-family: 'Noto Sans TC';
   font-size: 15px;
   font-weight: 500;
   line-height: 15px;
@@ -128,7 +181,7 @@ input {
 // TODO:待串接後端驗證後，錯誤提示要改變input的border樣式
 .error-text {
   visibility: hidden;
-  color: var( --invalid);
+  color: var(--invalid);
   margin-top: 5px;
   position: absolute;
   left: 0;
@@ -172,7 +225,7 @@ input {
 
 p {
   text-decoration: underline;
-  font-family: "Noto Sans TC";
+  font-family: 'Noto Sans TC';
   font-size: 18px;
   font-weight: 700;
   line-height: 26.06px;
@@ -185,4 +238,3 @@ p {
   }
 }
 </style>
-

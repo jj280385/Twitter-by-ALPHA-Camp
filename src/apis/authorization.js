@@ -7,7 +7,15 @@ export default {
       account,
       name,
       email,
-      password,
+      password
     })
   },
+
+  // 登入API
+  signIn({ account, password }) {
+    return apiHelper.post('/signin', {
+      account,
+      password
+    })
+  }
 }
