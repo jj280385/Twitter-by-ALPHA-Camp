@@ -101,12 +101,12 @@ export default {
 <style lang="scss" scoped>
 .setting-container {
   display: flex;
+  justify-content: center;
   height: 100%;
 }
 
 .setting-form {
   border-left: 1px solid var(--theme-line);
-  width: 100%;
   position: relative;
   margin-left: 40px;
 }
@@ -155,7 +155,7 @@ export default {
 
 input {
   @include size(642px, 52px);
-  @include margin(30px, 405px, 0, 16px);
+  margin: 30px 405px 0 16px;
   background-color: var(--input-background);
   border: none;
   border-bottom: 2px solid var(--info);
