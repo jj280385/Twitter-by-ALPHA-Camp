@@ -70,6 +70,12 @@
 </template>
 
 <script>
+<<<<<<< HEAD
+=======
+import Toast from '../components/Toast.vue'
+import authorizationAPI from '../apis/authorization'
+
+>>>>>>> 9e6dffce1a4b8c2a61282e7475539e86c66624f7
 export default {
   data() {
     return {
@@ -93,8 +99,117 @@ export default {
       // TODO: 向後端驗證使用者登入資訊是否合法
       console.log("data", data);
     },
+<<<<<<< HEAD
   },
 };
+=======
+    passwordLength() {
+      if (this.password && this.password.length < 4) {
+        this.$bus.$emit('toast', { icon: 'error', title: '密碼至少要有四個字' })
+
+        this.passwordHint = true
+      } else {
+        this.passwordHint = false
+      }
+    },
+    checkPassword() {
+      if (
+        this.password &&
+        this.passwordCheck &&
+        this.password !== this.passwordCheck
+      ) {
+        this.checkHint = true
+      } else {
+        this.checkHint = false
+      }
+    },
+
+    async handleSubmit() {
+      try {
+        // 前端驗證
+        if (!this.account) {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '請填入想註冊的帳號'
+          })
+
+          return
+        }
+
+        if (!this.name) {
+          this.$bus.$emit('toast', { icon: 'error', title: '請填入名稱' })
+
+          return
+        } else if (this.name.length > 50) {
+          this.$bus.$emit('toast', { icon: 'error', title: '字數超出上限！' })
+        }
+
+        if (!this.email) {
+          this.$bus.$emit('toast', { icon: 'error', title: '請填入 Email' })
+
+          return
+        }
+        if (!this.password) {
+          this.$bus.$emit('toast', { icon: 'error', title: '請填入請填入密碼' })
+
+          return
+        } else if (this.password.length < 4) {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '密碼至少要有四個字'
+          })
+
+          return
+        }
+        // 密碼確認欄位
+        if (!this.passwordCheck) {
+          this.$bus.$emit('toast', { icon: 'error', title: '請再次確認密碼' })
+
+          return
+        } else if (this.password !== this.passwordCheck) {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '密碼與密碼確認輸入不同'
+          })
+
+          return
+        }
+
+        this.isProcessing = true
+
+        // 發送API
+        const { data } = await authorizationAPI.signUp({
+          account: this.account,
+          name: this.name,
+          email: this.email,
+          password: this.password
+        })
+
+        if (data.status === 'error') {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: `${data.message}`
+          })
+          throw new Error(data.message)
+        }
+        // 發送成功訊息
+        this.$bus.$emit('toast', {
+          icon: 'success',
+          title: '註冊成功'
+        })
+        // 轉址
+        this.$router.push({ name: 'user-login' })
+        this.isProcessing = false
+
+      } catch (error) {
+        this.isProcessing = false
+        console.log(error)
+        this.$bus.$emit({ title: `${error}` })
+      }
+    }
+  }
+}
+>>>>>>> 9e6dffce1a4b8c2a61282e7475539e86c66624f7
 </script>
 
 <style lang="scss" scoped>
