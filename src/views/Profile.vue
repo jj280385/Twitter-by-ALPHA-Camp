@@ -4,51 +4,38 @@
 
     <div class="profile-container">
       <!-- 個人資料 -->
-      <div class="user-area">
-        <span class="page-title"> John Doe </span>
-        個人資料卡片+封面圖區域
-      </div>
+        <ProfileArea />
+
+      <!-- 充當margin -->
+      <div class="hidden-gap"></div>
 
       <!-- Navtabs -->
       <div class="nav-tabs">
         <button
           class="nav-item tweet"
           type="button"
-          :class="{active: isActive}"
+          :class="{ active: isActive }"
         >
           <router-link
             to="/profile/tweet"
             class="nav-link"
-            :class="{active: isActive}"
+            :class="{ active: isActive }"
           >
             推文
           </router-link>
         </button>
 
-        <button
-          class="nav-item reply"
-          type="button"
-        >
-          <router-link
-            to="/profile/reply"
-            class="nav-link"
-          >
+        <button class="nav-item reply" type="button">
+          <router-link to="/profile/reply" class="nav-link">
             推文與回覆
           </router-link>
         </button>
 
-        <button
-          class="nav-item like"
-          type="button"
-        >
-          <router-link
-            to="/profile/like"
-            class="nav-link"
-          >
+        <button class="nav-item like" type="button">
+          <router-link to="/profile/like" class="nav-link">
             喜歡的內容
           </router-link>
         </button>
-
       </div>
 
       <!-- 下方推文列表 -->
@@ -61,29 +48,31 @@
 </template>
 
 <script>
-import Sidebar from "../components/Sidebar.vue";
-import RightColumn from "../components/RightColumn.vue";
-import ProfileNavTabs from "../components/ProfileNavTabs.vue";
-import ProfileTweetList from "../components/ProfileTweetList.vue";
+import Sidebar from '../components/Sidebar.vue'
+import RightColumn from '../components/RightColumn.vue'
+import ProfileNavTabs from '../components/ProfileNavTabs.vue'
+import ProfileTweetList from '../components/ProfileTweetList.vue'
+import ProfileArea from '../components/ProfileArea.vue'
 
 export default {
   components: {
     Sidebar,
     RightColumn,
+    ProfileArea,
     ProfileNavTabs,
-    ProfileTweetList,
+    ProfileTweetList
   },
   data() {
     return {
-      isActive: true,
-    };
-  },
-};
+      isActive: true
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .container {
-  @include flex (row, center, normal);
+  @include flex(row, center, normal);
 }
 
 .profile-container {
@@ -95,10 +84,12 @@ export default {
 }
 
 // 個人資料頁面尚未完成
-.user-area {
-  outline: 1px solid tomato;
-  @include size(100%, 450px);
+.hidden-gap{
+  @include size(100%, 35px);
+  visibility: hidden
 }
+
+
 
 .nav-tabs {
   @include size(100%, 52px);
@@ -108,7 +99,7 @@ export default {
 
 .nav-item {
   @include size(130px, 52px);
-  @include flex (row, center, center);
+  @include flex(row, center, center);
   font-size: 15px;
   font-weight: 700;
   line-height: 21.72px;
@@ -120,8 +111,8 @@ export default {
   }
 }
 
-.nav-link{
+.nav-link {
   @include size(100%, 100%);
-  @include flex (row, center, center);
+  @include flex(row, center, center);
 }
 </style>
