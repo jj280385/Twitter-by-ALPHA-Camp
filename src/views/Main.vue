@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <Sidebar /> 
-    <div class="main">
-      <MainTweetList />
+    <div class="main-container">
+      <span class="page-title"> 首頁 </span>
     </div>
     <RightColumn />
   </div>
@@ -11,13 +11,11 @@
 <script>
 import Sidebar from "../components/Sidebar.vue"
 import RightColumn from "../components/RightColumn.vue"
-import MainTweetList from "../components/MainTweetList.vue"
 
 export default {
   components: {
     Sidebar,
     RightColumn,
-    MainTweetList,
   }
 }
 </script>
@@ -29,7 +27,7 @@ export default {
   justify-content: center;
 }
 
-.main {
+.main-container {
   @include size(100%, 100%);
   max-width: 600px;
   min-width: 576px;

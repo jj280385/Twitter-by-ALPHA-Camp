@@ -9,39 +9,162 @@
         <div class="list-item">
           <div class="user-info">
             <div class="user-avatar">
-              <router-link to="/">
+              <a href="/">
                 <img class="avatar-img" />
-              </router-link>
+              </a>
             </div>
-            <router-link to="/">
+            <a href="/">
               <div class="user-name">Pizza Hut</div>
               <div class="user-accountName">@pizzahut</div>
-            </router-link>
+            </a>
           </div>
-          <button class="following-btn">正在追隨</button>
+          <button class="following-btn"> 正在追隨</button>
         </div>
 
         <div class="list-item">
           <div class="user-info">
             <div class="user-avatar">
-              <router-link to="/">
+              <a href="/">
                 <img class="avatar-img" />
-              </router-link>
+              </a>
             </div>
-            <router-link to="/">
+            <a href="/">
               <div class="user-name">McDonald's</div>
               <div class="user-accountName">@McDonalds</div>
-            </router-link>
+            </a>
           </div>
-          <button class="unfollowed-btn">追隨</button>
+          <button class="unfollowed-btn"> 追隨</button>
         </div>
+
+        <div class="list-item">
+          <div class="user-info">
+            <div class="user-avatar">
+              <a href="/">
+                <img class="avatar-img" />
+              </a>
+            </div>
+            <a href="/">
+              <div class="user-name">McDonald's</div>
+              <div class="user-accountName">@McDonalds</div>
+            </a>
+          </div>
+          <button class="unfollowed-btn"> 追隨</button>
+        </div>
+
+        <div class="list-item">
+          <div class="user-info">
+            <div class="user-avatar">
+              <a href="/">
+                <img class="avatar-img" />
+              </a>
+            </div>
+            <a href="/">
+              <div class="user-name">McDonald's</div>
+              <div class="user-accountName">@McDonalds</div>
+            </a>
+          </div>
+          <button class="unfollowed-btn"> 追隨</button>
+        </div>
+
+        <div class="list-item">
+          <div class="user-info">
+            <div class="user-avatar">
+              <a href="/">
+                <img class="avatar-img" />
+              </a>
+            </div>
+            <a href="/">
+              <div class="user-name">McDonald's</div>
+              <div class="user-accountName">@McDonalds</div>
+            </a>
+          </div>
+          <button class="unfollowed-btn"> 追隨</button>
+        </div>
+
+        <div class="list-item">
+          <div class="user-info">
+            <div class="user-avatar">
+              <a href="/">
+                <img class="avatar-img" />
+              </a>
+            </div>
+            <a href="/">
+              <div class="user-name">McDonald's</div>
+              <div class="user-accountName">@McDonalds</div>
+            </a>
+          </div>
+          <button class="unfollowed-btn"> 追隨</button>
+        </div>
+
+        <div class="list-item">
+          <div class="user-info">
+            <div class="user-avatar">
+              <a href="/">
+                <img class="avatar-img" />
+              </a>
+            </div>
+            <a href="/">
+              <div class="user-name">McDonald's</div>
+              <div class="user-accountName">@McDonalds</div>
+            </a>
+          </div>
+          <button class="unfollowed-btn"> 追隨</button>
+        </div>
+
+        <div class="list-item">
+          <div class="user-info">
+            <div class="user-avatar">
+              <a href="/">
+                <img class="avatar-img" />
+              </a>
+            </div>
+            <a href="/">
+              <div class="user-name">McDonald's</div>
+              <div class="user-accountName">@McDonalds</div>
+            </a>
+          </div>
+          <button class="unfollowed-btn"> 追隨</button>
+        </div>
+
+        <div class="list-item">
+          <div class="user-info">
+            <div class="user-avatar">
+              <a href="/">
+                <img class="avatar-img" />
+              </a>
+            </div>
+            <a href="/">
+              <div class="user-name">McDonald's</div>
+              <div class="user-accountName">@McDonalds</div>
+            </a>
+          </div>
+          <button class="unfollowed-btn"> 追隨</button>
+        </div>
+
+        <div class="list-item">
+          <div class="user-info">
+            <div class="user-avatar">
+              <a href="/">
+                <img class="avatar-img" />
+              </a>
+            </div>
+            <a href="/">
+              <div class="user-name">McDonald's</div>
+              <div class="user-accountName">@McDonalds</div>
+            </a>
+          </div>
+          <button class="unfollowed-btn"> 追隨</button>
+        </div>
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+
+};
 </script>
 
 <style lang="scss" scoped>
@@ -112,7 +235,7 @@ export default {};
   position: absolute;
   right: 15px;
   @include size(90px, 35px);
-  color: var(--just-white);
+  color: var(--button-text-color);
   background-color: var(--theme-color);
   border-radius: 100px;
   font-size: 15px;
@@ -133,8 +256,8 @@ export default {};
   font-size: 15px;
   font-weight: 700;
   line-height: 15px;
-  &:hover {
-    color: var(--just-white);
+    &:hover {
+    color: var(--button-text-color);
     background-color: var(--hover-color);
   }
 }
