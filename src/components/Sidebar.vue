@@ -46,7 +46,7 @@
         class="sidebar-item home"
         type="button"
       >
-        <router-link to="/setting">
+        <router-link to="/main">
           <!-- Home SVG -->
           <svg
             class="item-icon"
@@ -72,7 +72,7 @@
         class="sidebar-item userInfo"
         type="button"
       >
-        <router-link to="/setting">
+        <router-link to="/profile">
           <!-- User SVG -->
           <svg
             class="item-icon"
@@ -122,11 +122,14 @@
         </router-link>
       </button>
 
-      <button 
-      class="twitter-btn" 
-      type="submit" 
-      >推文</button>
+      <button class="twitter-btn" type="submit" >推文</button>
     </div>
+    <button class="logout-item">
+        <router-link to="/login">
+          <img src="../assets/image/logout.svg" class="logout-icon" />
+          <span class="logout">登出</span>
+        </router-link>
+    </button>
   </div>
 </template>
 
@@ -253,6 +256,7 @@ a {
   }
 }
 
+// TODO: 下面這個要刪除嗎?
 .newClass {
   box-shadow: 0px 0px 5px #000;
   background-color: green;
@@ -260,15 +264,22 @@ a {
   padding: 3px 5px;
 }
 
-.test-btn {
-  margin-top: 40px;
-  width: 100px;
-  height: 50px;
-  // background-color: green;
-  &:active,
-  &:focus {
-    // background-color: gray;
-    color: blue;
-  }
+.logout-item {
+  position: absolute;
+  bottom: 17px;
+  @include size(80px, 26px);
+  margin-left: 8px;
+  display: flex;
+}
+
+.logout-icon {
+  @include size(24px, 24px);
+}
+
+.logout {
+  margin-left: 20px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26.06px;
 }
 </style>
