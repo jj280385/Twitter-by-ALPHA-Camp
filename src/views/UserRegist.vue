@@ -70,12 +70,10 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-=======
+
 import Toast from '../components/Toast.vue'
 import authorizationAPI from '../apis/authorization'
 
->>>>>>> 9e6dffce1a4b8c2a61282e7475539e86c66624f7
 export default {
   data() {
     return {
@@ -99,10 +97,7 @@ export default {
       // TODO: 向後端驗證使用者登入資訊是否合法
       console.log("data", data);
     },
-<<<<<<< HEAD
-  },
-};
-=======
+
     passwordLength() {
       if (this.password && this.password.length < 4) {
         this.$bus.$emit('toast', { icon: 'error', title: '密碼至少要有四個字' })
@@ -209,7 +204,6 @@ export default {
     }
   }
 }
->>>>>>> 9e6dffce1a4b8c2a61282e7475539e86c66624f7
 </script>
 
 <style lang="scss" scoped>
