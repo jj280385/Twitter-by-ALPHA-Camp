@@ -150,7 +150,7 @@ export default {
           return
         }
         if (!this.password) {
-          this.$bus.$emit('toast', { icon: 'error', title: '請填入請填入密碼' })
+          this.$bus.$emit('toast', { icon: 'error', title: '請填入密碼' })
 
           return
         } else if (this.password.length < 4) {
@@ -169,7 +169,7 @@ export default {
         } else if (this.password !== this.passwordCheck) {
           this.$bus.$emit('toast', {
             icon: 'error',
-            title: '密碼與密碼確認輸入不同'
+            title: '密碼與密碼確認輸入內容不同'
           })
 
           return

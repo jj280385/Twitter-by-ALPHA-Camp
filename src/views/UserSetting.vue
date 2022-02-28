@@ -1,7 +1,7 @@
 <template>
   <div class="setting-container">
     <Sidebar />
-    <form class="setting-form" @submit.prevent.stop="handleSubmit">
+    <form class="setting-form" @submit.prevent="handleSubmit">
       <div class="form-header">
         <span class="form-title">帳戶設定</span>
       </div>
@@ -9,7 +9,7 @@
       <div class="input-container">
         <label class="input-title"> 帳號 </label>
         <input
-          v-model="accountName"
+          v-model="account"
           class="accountName"
           type="accountName"
           style="font-size: 25px"
@@ -55,47 +55,146 @@
         <input
           v-model="passwordCheck"
           class="passwordCheck"
-          type="passwordCheck"
+          type="password"
           style="font-size: 25px"
         />
         <label class="error-text"> 密碼確認錯誤！ </label>
       </div>
 
-      <button class="saveBtn">儲存</button>
+      <button class="saveBtn" :disabled="isProcessing">儲存</button>
     </form>
+    <Toast />
   </div>
 </template>
 
 <script>
-import Sidebar from "../components/Sidebar.vue";
+import Sidebar from '../components/Sidebar.vue'
+import Toast from '../components/Toast.vue'
+import userAPI from '../apis/user'
 
 export default {
   data() {
     return {
-      accountName: "",
-      name: "",
-      email: "",
-      password: "",
-      passwordCheck: "",
-    };
+      account: '',
+      name: '',
+      email: '',
+      password: '',
+      passwordCheck: '',
+      isProcessing: false
+    }
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        accountName: this.accountName,
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        passwordCheck: this.passwordCheck,
-      });
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log("data", data);
+    async handleSubmit() {
+      try {
+        // 前端驗證
+        if (!this.account) {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '請填入想更改的帳號'
+          })
+
+          return
+        }
+
+        if (!this.name) {
+          this.$bus.$emit('toast', { icon: 'error', title: '請填入名稱' })
+
+          return
+        } else if (this.name.length > 50) {
+          this.$bus.$emit('toast', { icon: 'error', title: '字數超出上限！' })
+        }
+
+        if (!this.email) {
+          this.$bus.$emit('toast', { icon: 'error', title: '請填入 Email' })
+
+          return
+        } else if (!/[^@\s]+@[^@\s]+\.[^@\s]+/.test(this.email)) {
+          this.$bus.$emit('toast', { icon: 'error', title: 'Email 格式錯誤' })
+          return
+        }
+
+        if (!this.password) {
+          this.$bus.$emit('toast', { icon: 'error', title: '請填入密碼' })
+
+          return
+        } else if (this.password.length < 4) {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '密碼至少要有四個字'
+          })
+
+          return
+        }
+        // 密碼確認欄位
+        if (!this.passwordCheck) {
+          this.$bus.$emit('toast', { icon: 'error', title: '請再次確認密碼' })
+
+          return
+        } else if (this.password !== this.passwordCheck) {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '密碼與密碼確認輸入內容不同'
+          })
+
+          return
+        }
+
+        this.isProcessing = true
+
+        const { data } = await userAPI.editAccount({
+          account: this.account,
+          name: this.name,
+          email: this.email,
+          password: this.password
+        })
+
+        console.log(data)
+
+        if (data.status === 'success') {
+          this.$bus.$emit('toast', {
+            icon: 'success',
+            title: '資料修改成功'
+          })
+
+          this.isProcessing =false
+        }else{
+          throw new Error(response.data.message)
+        }
+      } catch (error) {
+        this.isProcessing = false
+        console.log(error)
+        this.$bus.$emit({ title: `${error}` })
+      }
     },
+    async fetchAccount() {
+      try {
+        const { data } = await userAPI.getAccount()
+
+        if (data.status !== 'success') {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '無法取得資料'
+          })
+        }
+
+        const { account, name, email } = data.data
+        this.account = account
+        this.name = name
+        this.email = email
+      } catch (error) {
+        console.log(error)
+        this.$bus.$emit({ title: `${error}` })
+      }
+    }
+  },
+  created() {
+    this.fetchAccount()
   },
   components: {
     Sidebar,
-  },
-};
+    Toast
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -147,7 +246,7 @@ export default {
   top: 35px;
   left: 26px;
   color: var(--info);
-  font-family: "Noto Sans TC";
+  font-family: 'Noto Sans TC';
   font-size: 15px;
   font-weight: 500;
   line-height: 15px;
@@ -172,7 +271,7 @@ input {
 // TODO:待串接後端驗證後，錯誤提示要改變input的border樣式
 .error-text {
   visibility: hidden;
-  color: var( --invalid);
+  color: var(--invalid);
   margin-top: 5px;
   position: absolute;
   left: 16px;
