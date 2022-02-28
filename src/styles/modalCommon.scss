@@ -67,15 +67,10 @@
     width: 24px;
     height: 24px;
 
-    &:hover {
-      svg > path {
-        fill: var(--hover-color);
-      }
-    }
-
+    &:hover,
     &:focus {
       svg > path {
-        fill: var(--focus-color);
+        fill: var(--hover-color);
       }
     }
   }

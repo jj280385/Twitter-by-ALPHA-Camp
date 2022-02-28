@@ -214,7 +214,7 @@ export default {
   span.hint {
     margin: 0 20px;
 
-    color: var(--invalid);
+    color: var(--modal-error);
     font-size: 15px;
     line-height: 15px;
   }
@@ -228,14 +228,10 @@ export default {
     font-size: 18px;
     line-height: 18px;
 
-    &:hover{
+    &:hover,
+    &:focus {
       background-color: var(--hover-color);
       color: var(--theme-white);
-    }
-
-    &:focus {
-      background-color: var(--focus-color);
-      color: var(--just-white);
     }
   }
 }
