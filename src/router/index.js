@@ -13,6 +13,9 @@ import ProfileLike from '../views/ProfileLike.vue'
 import ProfileFollower from '../views/ProfileFollower.vue'
 import ProfileFollowing from '../views/ProfileFollowing.vue'
 
+// 載入 Ｖuex方法
+import store from "../store";
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -82,6 +85,12 @@ const routes = [
     component: ProfileFollowing
   },
   {
+    // 其他使用者
+    path: '/user/:id',
+    name: 'user',
+    component: Profile
+  },
+  {
     path: '*',
     name: 'not-found',
     component: NotFound
@@ -90,6 +99,13 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+//  加在所有路由前
+router.beforeEach((to, from, next) => {
+  // 使用 dispatch 呼叫 Vuex 內的 actions
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 
 export default router
