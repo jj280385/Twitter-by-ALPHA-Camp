@@ -25,13 +25,9 @@
     </div>
     <!-- user-photo -->
     <div class="user-photo">
-      <img
-        class="cover"
-        src="../assets/image/cover-photo.svg"
-        alt="預設的使用者封面"
-      />
+      <img class="cover" :src="cover | nullCover" alt="預設的使用者封面" />
       <div class="avatar">
-        <img src="../assets/image/John Doe-140.png" alt="預設的使用者頭像" />
+        <img :src="avatar | nullAvatar" alt="預設的使用者頭像" />
         <div class="mask"></div>
       </div>
     </div>
@@ -99,18 +95,86 @@
           <!-- notify SVG --></button
         ><button class="edit">編輯個人資料</button>
       </div>
-      <h3 class="name">John Doe</h3>
-      <p class="account">@heyjohn</p>
+      <h3 class="name">{{ name }}</h3>
+      <p class="account">@{{ account }}</p>
       <p class="description">
-        照家使血來、持體讀品小……驚內根外演畫，死就叫氣，買其詩理！
+        {{ introduction | nullDescribe }}
       </p>
       <div class="follow d-flex">
-        <p>34個&thinsp;<span>跟隨中</span></p>
-        <p>59位&thinsp;<span>跟隨者</span></p>
+        <p>{{ followingCount }}個&thinsp;<span>跟隨中</span></p>
+        <p>{{ followerCount }}位&thinsp;<span>跟隨者</span></p>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import userAPI from '../apis/user'
+import { nullAvatarFilter, nullCoverFilter } from '../utils/mixins'
+
+export default {
+  data() {
+    return {
+      id: -1,
+      name: '',
+      account: '',
+      introduction: '',
+      followingCount: '',
+      followerCount: '',
+      cover: '',
+      avatar: ''
+    }
+  },
+
+  computed: {
+    // 解壓縮 Vuex currentUser 資料
+    // ...mapState(['currentUser'])
+  },
+
+  methods: {
+    async fetchAccount() {
+      try {
+        const { data } = await userAPI.getAccount()
+        const {
+          id,
+          name,
+          account,
+          introduction,
+          followingCount,
+          followerCount,
+          cover,
+          avatar
+        } = data.data
+        // 賦值
+        this.id = id
+        this.name = name
+        this.account = account
+        this.introduction = introduction
+        this.followingCount = followingCount
+        this.followerCount = followerCount
+        this.cover = cover
+        this.avatar = avatar
+
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  },
+
+  mixins: [nullAvatarFilter, nullCoverFilter],
+
+  filters: {
+    nullDescribe(text) {
+      return text || '趕快寫點什麼讓大家認識你吧！！'
+    }
+  },
+
+  created() {
+    this.fetchAccount()
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .profile-area {
@@ -154,14 +218,19 @@
 .user-photo {
   background-color: WhiteSmoke;
   position: relative;
-  background-color: WhiteSmoke;
   padding: 0 1px;
   height: 200px;
+
+  img {
+    object-fit: cover;
+  }
 }
 
 .avatar {
   --avatar-width: 140px;
   position: relative;
+  border-radius: 50%;
+  background-color: WhiteSmoke;
   top: calc(0px - var(--avatar-width) / 2);
   left: 15px;
   @include size(var(--avatar-width), var(--avatar-width));
@@ -295,10 +364,10 @@
     font-size: 14px;
     line-height: 20px;
 
-    span{
+    span {
       color: var(--info);
     }
-    p:first-child{
+    p:first-child {
       margin-right: 20px;
     }
   }
