@@ -5,6 +5,7 @@ import UserRegist from '../views/UserRegist.vue'
 import UserSetting from '../views/UserSetting.vue'
 import UserLogin from '../views/UserLogin.vue'
 import AdminLogin from '../views/AdminLogin.vue'
+import AdminMain from '../views/AdminMain.vue'
 import Main from '../views/Main.vue'
 import MainReply from '../views/MainReply.vue'
 import Profile from '../views/Profile.vue'
@@ -18,8 +19,7 @@ import store from "../store";
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     name: 'root',
     component: UserLogin
@@ -53,6 +53,11 @@ const routes = [
     path: '/admin',
     name: 'admin-login',
     component: AdminLogin
+  },
+  {
+    path: '/admin/main',
+    name: 'admin-main',
+    component: AdminMain
   },
   {
     path: '/profile',

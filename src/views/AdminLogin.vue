@@ -8,9 +8,9 @@
       <div class="input-container">
         <label class="input-title"> 帳號 </label>
         <input
-          v-model="adminAccountName"
-          class="adminAccountName"
-          type="adminAccountName"
+          v-model="account"
+          class="account"
+          type="account"
           style="font-size: 25px"
         />
         <label class="error-text"> 帳號不存在！ </label>
@@ -19,9 +19,9 @@
       <div class="input-container">
         <label class="input-title"> 密碼 </label>
         <input
-          v-model="adminPassword"
-          class="adminPassword"
-          type="adminPassword"
+          v-model="password"
+          class="password"
+          type="password"
           style="font-size: 25px"
         />
         <label class="error-text"> 密碼錯誤！ </label>
@@ -37,26 +37,73 @@
 </template>
 
 <script>
+import adminAPI from '../apis/admin'
+import Toast from '../components/Toast.vue'
+
 export default {
+  components: {
+    Toast
+  },
   data() {
     return {
-      adminAccountName: "",
-      adminPassword: "",
-    };
+      account: '',
+      password: '',
+      isProcessing: false
+    }
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        adminAccountName: this.adminAccountName,
-        adminPassword: this.adminPassword,
-      });
+    async handleSubmit() {
+      try {
+        if (!this.account) {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '請輸入帳號'
+          })
+          return
+        }
 
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log("data", data);
-    },
-  },
-};
+        if (!this.password) {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '請輸入密碼'
+          })
+          return
+        }
+
+        this.isProcessing = true
+
+        const { data } = await adminAPI.adminSignIn({
+          account: this.account,
+          password: this.password
+        })
+        console.log(data);
+        if (data.status !== 'success') {
+          this.$bus.$emit('toast', { icon: 'error', title: `${data.message}` })
+          throw new Error(data.message)
+        }
+
+        // 將 token 存放在 localStorage
+        localStorage.setItem('token', data.data.token)
+        // 用commit改寫 vuex store state
+        this.$store.commit('setCurrentUser', data.data.user)
+
+           // 發送成功訊息
+        this.$bus.$emit('toast', {
+          icon: 'success',
+          title: '登入成功'
+        })
+        // TODO: 完成登入要轉址去首頁喔～～
+        this.$router.push({name: 'admin-main'})
+      } catch (error) {
+        this.$bus.$emit('toast', { icon: 'error', title: `${error}` })
+        this.isProcessing = false
+        console.log(error)
+      }
+    }
+  }
+}
 </script>
+
 
 <style lang="scss" scoped>
 .container {
