@@ -51,8 +51,8 @@ export default {
 
   watch: {
     toastList() {
-      if (this.toastList.length > 10) {
-        this.toastList = this.toastList.splice(-1, 9)
+      if (this.toastList.length >= 8) {
+        this.toastList.splice(-1, 4)
       } else if (this.toastList.length) {
         setTimeout(() => {
           this.toastList.splice(-1, 1)
@@ -78,9 +78,9 @@ export default {
   z-index: 1;
   position: fixed;
   top: 0%;
-  right: 0%;
+  left: 0%;
   padding-top: 0;
-  padding-right: 2rem;
+  padding-left: 3rem;
 
   width: max-content;
   max-width: 100%;

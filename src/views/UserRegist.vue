@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <!-- 吐司錯誤提示 -->
+    <Toast />
+
     <form class="regist-container" @submit.prevent.stop="handleSubmit">
       <img class="logo" src="../assets/image/logo.svg" />
 
@@ -8,12 +11,15 @@
       <div class="input-container">
         <label class="input-title"> 帳號 </label>
         <input
-          v-model="accountName"
-          class="accountName"
-          type="accountName"
+          v-model="account"
+          class="account"
+          type="text"
           style="font-size: 25px"
+          autocomplete="username"
         />
-        <label class="error-text"> 帳號已重複註冊！ </label>
+        <label class="error-text" :class="{ visible: accountHint }">
+          請輸入帳號！
+        </label>
       </div>
 
       <div class="input-container">
@@ -23,81 +29,99 @@
           class="name"
           type="name"
           style="font-size: 25px"
+          autocomplete="nickname"
         />
-        <label class="error-text"> 名稱已重複註冊！ </label>
+        <label class="error-text"> 請輸入名稱！ </label>
       </div>
 
       <div class="input-container">
         <label class="input-title"> Email </label>
         <input
+          @blur="emailFormat"
           v-model="email"
           class="email"
           type="email"
           style="font-size: 25px"
+          autocomplete="email"
         />
-        <label class="error-text"> Email 已重複註冊！ </label>
+        <label class="error-text" :class="[{ visible: emailHint }]">
+          {{ emailHint ? 'Email格式錯誤' : 'Email 已重複註冊！' }}
+        </label>
       </div>
 
       <div class="input-container">
         <label class="input-title"> 密碼 </label>
         <input
           v-model="password"
+          @blur="passwordLength"
           class="password"
           type="password"
           style="font-size: 25px"
+          autocomplete="new-password"
         />
-        <label class="error-text"> 密碼錯誤！ </label>
+        <label class="error-text" :class="{ visible: passwordHint }">
+          密碼至少要有四個字
+        </label>
       </div>
 
       <div class="input-container">
         <label class="input-title"> 密碼確認 </label>
         <input
+          @blur="checkPassword"
           v-model="passwordCheck"
           class="passwordCheck"
-          type="passwordCheck"
+          type="password"
           style="font-size: 25px"
+          autocomplete="new-password"
         />
-        <label class="error-text"> 密碼確認錯誤！ </label>
+        <label class="error-text" :class="{ visible: checkHint }">
+          密碼確認錯誤！
+        </label>
       </div>
 
-      <button class="regist-btn" type="submit">註冊</button>
+      <button class="regist-btn" type="submit" :disabled="isProcessing">
+        註冊
+      </button>
 
       <div class="cancel-link">
-        <p><router-link to="/login"> 取消 </router-link></p>
+        <p class="cancel"><router-link to="/login"> 取消 </router-link></p>
       </div>
     </form>
   </div>
 </template>
 
 <script>
-
 import Toast from '../components/Toast.vue'
 import authorizationAPI from '../apis/authorization'
 
 export default {
+  components: {
+    Toast
+  },
   data() {
     return {
-      accountName: "",
-      name: "",
-      email: "",
-      password: "",
-      passwordCheck: "",
-    };
+      account: '',
+      accountHint: false,
+      name: '',
+      email: '',
+      emailHint: false,
+      password: '',
+      passwordHint: false,
+      passwordCheck: '',
+      checkHint: false,
+      isProcessing: false
+    }
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        accountName: this.accountName,
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        passwordCheck: this.passwordCheck,
-      });
-
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log("data", data);
+    emailFormat() {
+      const emailRule = /[^@\s]+@[^@\s]+\.[^@\s]+/
+      if (this.email && !emailRule.test(this.email)) {
+        this.$bus.$emit('toast', { icon: 'error', title: 'Email 格式錯誤' })
+        this.emailHint = true
+      } else {
+        this.emailHint = false
+      }
     },
-
     passwordLength() {
       if (this.password && this.password.length < 4) {
         this.$bus.$emit('toast', { icon: 'error', title: '密碼至少要有四個字' })
@@ -195,7 +219,6 @@ export default {
         // 轉址
         this.$router.push({ name: 'user-login' })
         this.isProcessing = false
-
       } catch (error) {
         this.isProcessing = false
         console.log(error)
@@ -232,7 +255,7 @@ export default {
 
 .page-title {
   margin: 20px 0 40px 0;
-  font-family: "Noto Sans TC";
+  font-family: 'Noto Sans TC';
   font-size: 23px;
   font-weight: 700;
   line-height: 33.3px;
@@ -250,7 +273,7 @@ export default {
   top: 5px;
   left: 10px;
   color: var(--info);
-  font-family: "Noto Sans TC";
+  font-family: 'Noto Sans TC';
   font-size: 15px;
   font-weight: 500;
   line-height: 15px;
@@ -275,7 +298,7 @@ input {
 // TODO:待串接後端驗證後，錯誤提示要改變input的border樣式
 .error-text {
   visibility: hidden;
-  color: var( --invalid);
+  color: var(--invalid);
   margin-top: 5px;
   position: absolute;
   left: 0;
@@ -283,6 +306,9 @@ input {
   font-size: 15px;
   font-weight: 500;
   line-height: 15px;
+  &.visible {
+    visibility: visible;
+  }
 }
 
 .regist-btn {
@@ -311,7 +337,7 @@ input {
 
 p {
   text-decoration: underline;
-  font-family: "Noto Sans TC";
+  font-family: 'Noto Sans TC';
   font-size: 18px;
   font-weight: 700;
   line-height: 26.06px;
@@ -325,4 +351,3 @@ p {
   }
 }
 </style>
-
