@@ -44,6 +44,9 @@
       </div>
     </div>
     <RightColumn />
+    <!-- 覆蓋當前畫面之上 -->
+    <ProfileEditModal />
+    <Toast />
   </div>
 </template>
 
@@ -52,7 +55,10 @@ import Sidebar from '../components/Sidebar.vue'
 import RightColumn from '../components/RightColumn.vue'
 import ProfileNavTabs from '../components/ProfileNavTabs.vue'
 import ProfileTweetList from '../components/ProfileTweetList.vue'
+// 覆蓋當前畫面之上
 import ProfileArea from '../components/ProfileArea.vue'
+import ProfileEditModal from '../components/ProfileEditModal.vue'
+import Toast from '../components/Toast.vue'
 
 export default {
   components: {
@@ -60,7 +66,9 @@ export default {
     RightColumn,
     ProfileArea,
     ProfileNavTabs,
-    ProfileTweetList
+    ProfileTweetList,
+    ProfileEditModal,
+    Toast
   },
   data() {
     return {
