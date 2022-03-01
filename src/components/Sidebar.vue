@@ -39,7 +39,6 @@
       </router-link>
     </div>
     <div class="sidebar-items">
-      <!-- TODO:item中的icon和item-name的變色功能v-fi /v-else尚未設定 -->
       <button
         @click="activeTab = 'home'"
         :class="{ active: activeTab === 'home' }"
@@ -125,24 +124,40 @@
       <button class="twitter-btn" type="submit" >推文</button>
     </div>
     <button class="logout-item">
-        <router-link to="/login">
-          <img src="../assets/image/logout.svg" class="logout-icon" />
-          <span class="logout">登出</span>
-        </router-link>
+      <router-link to="/login">
+        <img src="../assets/image/logout.svg" class="logout-icon" />
+        <span class="logout">登出</span>
+      </router-link>
     </button>
+    <TweetModal />
   </div>
 </template>
 
 <script>
+import TweetModal from '../components/TweetModal.vue'
+import { mapState } from 'vuex'
+
 export default {
-  data() {
-    return {
-      // 有home, userInfo, setting 三種
-      // 這裡預設寫死 setting
-      activeTab: "setting",
+  components: { TweetModal },
+
+  data(){
+    return{
+      activeTab:false
+    }
+  },
+
+  computed: {
+    ...mapState(['currentUser'])
+  },
+
+  watch:{
+    // 有home, userInfo, setting 三種
+    // 到其他人的跟隨中列表、跟髓者列表取消
+    'this.$route.params.id'(){
+      this.currentUser.id === this.$route.params.id?(this.activeTab ='userInfo'):(this.activeTab =false)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -201,7 +216,8 @@ export default {
     fill: var(--main-text);
   }
 
-  &.active {
+  //
+  & > a.active {
     color: var(--theme-color);
     svg > path {
       fill: var(--theme-color);
