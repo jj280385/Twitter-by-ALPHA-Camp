@@ -158,7 +158,7 @@ export default {
 
           this.isProcessing = false
         } else {
-          throw new Error(response.data.message)
+          throw new Error(data.message)
         }
       } catch (error) {
         this.isProcessing = false
