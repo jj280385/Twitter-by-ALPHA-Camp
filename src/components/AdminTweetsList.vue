@@ -1,5 +1,6 @@
 <template>
   <div class="list-contents">
+    <Toast />
     <div 
     class="list-content"
     v-for="tweet in Tweets"

@@ -1,5 +1,7 @@
 <template>
+
   <div id="AdminMain">
+    <Toast />
     <!-- AdminSidebar -->
     <AdminSidebar />
     <!-- AdminTweetsList -->
