@@ -4,7 +4,8 @@
     <div v-show="modal" @click.stop.prevent="modal = false" class="modal">
       <!-- Modal dialog -->
       <transition name="slide">
-        <div
+        <form
+          @submit.prevent="submitTweet"
           v-show="modal"
           @click.stop.prevent="modal = true"
           class="modal-dialog d-flex flex-column"
@@ -34,45 +35,118 @@
           <!-- modal-body -->
           <div class="modal-body d-flex">
             <div class="avatar">
-              <router-link to="/">
-              <img
-                src="../assets/image/john-doe-50.svg"
-                
-                alt="預設的頭像"
-              />
-            </router-link>
+              <router-link to="/main">
+                <img :src="currentUser.avatar" alt="預設的頭像" />
+              </router-link>
             </div>
-            
 
             <textarea
+              v-model="tweet"
               class="modal-content"
               placeholder="有什麼新鮮事？"
-            autofocus></textarea>
+              maxlength="140"
+              autofocus
+            ></textarea>
           </div>
 
           <div
             class="modal-footer d-flex justify-content-end align-items-center"
           >
-            <span class="hint">字數不可超過140字</span>
-            <button type="button">推文</button>
+            <transition name="hint">
+              <span v-if="tweetHint" class="hint">{{
+                tweetHint === 'empty' ? '內容不可空白' : '字數不可超過 140 字'
+              }}</span>
+            </transition>
+            <button type="submit" :disabled="isProcessing">推文</button>
           </div>
-        </div>
+        </form>
       </transition>
     </div>
   </transition>
 </template>
 
 <script>
+import tweetAPI from '../apis/tweet'
+import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
       modal: false,
-    };
+      tweet: '',
+      tweetHint: false,
+      isProcessing: false
+    }
   },
-};
+
+  computed: {
+    ...mapState(['currentUser'])
+  },
+
+  watch: {
+    tweet() {
+      if (this.tweet.length > 140) {
+        this.tweetHint = true
+      } else this.tweetHint = false
+    }
+  },
+  methods: {
+    async submitTweet() {
+      try {
+        if (!this.tweet) {
+          this.tweetHint = 'empty'
+          this.$bus.$emit('toast', { icon: 'error', title: '內容不可空白' })
+          return
+        }
+
+        if (this.tweet.length > 140) {
+          this.tweetHint = 'empty'
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '字數不可超過 140 字'
+          })
+          return
+        }
+
+        this.isProcessing = true
+
+        const { data } = await tweetAPI.submitTweet({ description: this.tweet })
+        console.log(data)
+
+        if (data.status === 'success') {
+          this.$bus.$emit('toast', {
+            icon: 'success',
+            title: '推文發送成功'
+          })
+        } else {
+          throw new Error(data.message)
+        }
+        this.modal = false
+        this.isProcessing = false
+        this.tweet = ''
+      } catch (error) {
+        console.log(error)
+        this.isProcessing = false
+        this.$bus.$emit('toast', {
+          icon: 'error',
+          title: `${error}`
+        })
+      }
+    }
+  },
+  created() {
+    this.$bus.$on('tweetModal', (modal) => {
+      this.modal = modal
+    })
+  },
+
+  beforeDestroy() {
+    // this.$bus.$off('tweetModal')
+  }
+}
 </script>
 <style lang="scss" scoped>
-@import "../styles/modalCommon.scss";
+@import '../styles/modalCommon.scss';
 
 .modal {
   --modal-dialog-height: 450px;
@@ -123,19 +197,17 @@ export default {
     background-color: var(--theme-line);
   }
   min-height: var(--modal-dialog-height);
-
 }
 
 .modal-body {
   flex-grow: 1;
   padding: 15px;
   .avatar {
-    img{
+    img {
       width: 50px;
-    height: 50px;
-    border-radius: 50%;
+      height: 50px;
+      border-radius: 50%;
     }
-    
   }
 
   textarea {
@@ -150,9 +222,14 @@ export default {
 
 .modal-footer {
   padding: 0 15px 15px 15px;
+
+  span:first-child {
+    float: left;
+  }
+
   span.hint {
     margin: 0 20px;
-    color: var(--modal-error);
+    color: var(--invalid);
     font-size: 15px;
     line-height: 15px;
   }
@@ -169,6 +246,23 @@ export default {
       background-color: var(--hover-color);
       color: var(--theme-white);
     }
+  }
+
+  // Vue transition
+  .hint-enter-active,
+  .hint-leave-active,
+  .hint-move {
+    transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+  }
+
+  .hint-enter {
+    opacity: 10%;
+    transform: translateY(-50%);
+  }
+
+  .hint-leave-to {
+    opacity: 10%;
+    transform: translateY(50%);
   }
 }
 
