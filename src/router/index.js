@@ -1,44 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import NotFound from '../views/NotFound.vue'
-import UserRegist from '../views/UserRegist.vue'
-import UserSetting from '../views/UserSetting.vue'
 import UserLogin from '../views/UserLogin.vue'
 import AdminLogin from '../views/AdminLogin.vue'
-import AdminMain from '../views/AdminMain.vue'
-import AdminUsers from '../views/AdminUsers.vue'
-import Main from '../views/Main.vue'
-import MainReply from '../views/MainReply.vue'
-import Profile from '../views/Profile.vue'
-import ProfileReply from '../views/ProfileReply.vue'
-import ProfileLike from '../views/ProfileLike.vue'
-import ProfileFollower from '../views/ProfileFollower.vue'
-import ProfileFollowing from '../views/ProfileFollowing.vue'
 
 // 載入 Ｖuex方法
-import store from "../store";
+import store from '../store'
 
 Vue.use(VueRouter)
 
-const routes = [{
+const routes = [
+  {
     path: '/',
     name: 'root',
     component: UserLogin
-  },
-  {
-    path: '/main',
-    name: 'main',
-    component: Main
-  },
-  {
-    path: '/main/reply',
-    name: 'main-reply',
-    component: MainReply
-  },
-  {
-    path: '/regist',
-    name: 'user-regist',
-    component: UserRegist
   },
   {
     path: '/login',
@@ -46,9 +21,24 @@ const routes = [{
     component: UserLogin
   },
   {
+    path: '/main',
+    name: 'main',
+    component: () => import('../views/Main.vue')
+  },
+  {
+    path: '/main/reply',
+    name: 'main-reply',
+    component: () => import('../views/MainReply.vue')
+  },
+  {
+    path: '/regist',
+    name: 'user-regist',
+    component: () => import('../views/UserRegist.vue')
+  },
+  {
     path: '/setting',
     name: 'user-setting',
-    component: UserSetting
+    component: () => import('../views/UserSetting.vue')
   },
   {
     path: '/admin',
@@ -58,48 +48,51 @@ const routes = [{
   {
     path: '/admin/main',
     name: 'admin-main',
-    component: AdminMain
+    component: () => import('../views/AdminMain.vue')
   },
   {
     path: '/admin/users',
     name: 'admin-users',
-    component: AdminUsers
+    component: () => import('../views/AdminUsers.vue')
   },
   {
     path: '/profile',
     name: 'profile',
-    component: Profile
-  },
-  {
-    path: '/profile/tweet',
-    name: 'profile-tweet',
-    component: Profile
-  },
-  {
-    path: '/profile/reply',
-    name: 'profile-reply',
-    component: ProfileReply
-  },
-  {
-    path: '/profile/like',
-    name: 'profile-like',
-    component: ProfileLike
+    component: () => import('../views/Profile.vue'),
+    children: [
+      {
+        path: 'tweet',
+        component: () => import('../components/ProfileTweetList.vue')
+      },
+      {
+        path: 'reply',
+        component: () => import('../components/ProfileReplyList.vue')
+      },
+      {
+        path: 'like',
+        component: () => import('../components/ProfileLikeList.vue')
+      },
+      {
+        path: '/',
+        redirect: '/profile/tweet'
+      }
+    ]
   },
   {
     path: '/profile/follower',
     name: 'profile-follower',
-    component: ProfileFollower
+    component: () => import('../views/ProfileFollower.vue')
   },
   {
     path: '/profile/following',
     name: 'profile-following',
-    component: ProfileFollowing
+    component: () => import('../views/ProfileFollowing.vue')
   },
   {
     // 其他使用者
     path: '/user/:id',
     name: 'user',
-    component: Profile
+    component: () => import('../views/Profile.vue')
   },
   {
     path: '*',
@@ -109,6 +102,10 @@ const routes = [{
 ]
 
 const router = new VueRouter({
+  // 網址與router-link目的地完全相同
+  linkExactActiveClass: 'active',
+  // 網址與router-link目的地完全相同
+  linkActiveClass: 'active',
   routes
 })
 

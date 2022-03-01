@@ -4,43 +4,17 @@
 
     <div class="profile-container">
       <!-- 個人資料 -->
-        <ProfileArea />
+      <ProfileArea />
 
       <!-- 充當margin -->
       <div class="hidden-gap"></div>
 
       <!-- Navtabs -->
-      <div class="nav-tabs">
-        <button
-          class="nav-item tweet"
-          type="button"
-          :class="{ active: isActive }"
-        >
-          <router-link
-            to="/profile/tweet"
-            class="nav-link"
-            :class="{ active: isActive }"
-          >
-            推文
-          </router-link>
-        </button>
-
-        <button class="nav-item reply" type="button">
-          <router-link to="/profile/reply" class="nav-link">
-            推文與回覆
-          </router-link>
-        </button>
-
-        <button class="nav-item like" type="button">
-          <router-link to="/profile/like" class="nav-link">
-            喜歡的內容
-          </router-link>
-        </button>
-      </div>
+      <ProfileNavTabs/>
 
       <!-- 下方推文列表 -->
       <div class="tweet-list">
-        <ProfileTweetList />
+        <router-view></router-view>
       </div>
     </div>
     <RightColumn />
@@ -92,12 +66,10 @@ export default {
 }
 
 // 個人資料頁面尚未完成
-.hidden-gap{
+.hidden-gap {
   @include size(100%, 35px);
-  visibility: hidden
+  visibility: hidden;
 }
-
-
 
 .nav-tabs {
   @include size(100%, 52px);
