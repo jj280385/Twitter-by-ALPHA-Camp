@@ -49,6 +49,7 @@ export default {
   methods: {
     handleDeleteButtonClick(id) {
       this.$emit('after-delete-tweet', id)
+      // TODO 這邊想改成ALERT 確定刪除後才回傳
       this.$bus.$emit('toast', { icon: 'success', title:  '刪除成功！' })
     }
   },

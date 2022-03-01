@@ -92,7 +92,6 @@ export default {
           icon: 'success',
           title: '登入成功'
         })
-        // TODO: 完成登入要轉址去首頁喔～～
         this.$router.push({name: 'admin-main'})
       } catch (error) {
         this.$bus.$emit('toast', { icon: 'error', title: `${error}` })

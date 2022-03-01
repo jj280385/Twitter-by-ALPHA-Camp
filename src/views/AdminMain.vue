@@ -58,12 +58,14 @@ export default {
     },
     async afterDeleteTweet(id) {
       try {
-        const { data } = await adminAPI.adminDeleteTweet({ id })
+        console.log(id);
+        const { data } = await adminAPI.adminDeleteTweet(id)
         console.log(data)
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        this.Tweets = this.Tweets.filter(tweet => tweet.id !== tweetId)
+        this.Tweets = this.Tweets.filter(tweet => tweet.id !== id)
+        this.$bus.$emit('toast', { icon: 'success', title:  '推文刪除成功' })
       } catch (error) {
         this.$bus.$emit('toast', { icon: 'error', title:  '無法將推文刪除' })
         console.log(error)
