@@ -24,7 +24,8 @@ export default {
   name: 'AdminMain',
   components: {
     AdminSidebar,
-    AdminTweetsList
+    AdminTweetsList,
+    Toast
   },
   data() {
     return {
@@ -49,11 +50,8 @@ export default {
         const { data } = await adminAPI.adminGetTweets()
         this.Tweets = data.data
       } catch (error) {
+        this.$bus.$emit('toast', { icon: 'error', title:  '無法取得推文資料' })
         console.log(error)
-        Toast.fire({
-          icon: 'error',
-          title: '無法取得推文資料'
-        })
       }
     },
     async afterDeleteTweet(tweetId) {
@@ -65,10 +63,7 @@ export default {
         }
         this.Tweets = this.Tweets.filter(tweet => tweet.id !== tweetId)
       } catch (error) {
-        Toast.fire({
-          icon: 'error',
-          title: '無法將推文刪除，請稍後再試'
-        })
+        this.$bus.$emit('toast', { icon: 'error', title:  '無法將推文刪除' })
         console.log(error)
       }
     }

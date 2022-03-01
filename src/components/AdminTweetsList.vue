@@ -1,5 +1,5 @@
 <template>
-<div class="list-contents">
+  <div class="list-contents">
     <div 
     class="list-content"
     v-for="tweet in Tweets"
@@ -18,7 +18,7 @@
         <div class="description">{{ tweet.description | slice }}</div>
       </div>
     </div>
- </div>
+  </div>
   
 
 </template>
@@ -27,6 +27,9 @@
 import { Toast } from '../utils/helper'
 export default {
   name: 'AdminTweetsList',
+  components: {
+    Toast
+  },
   props: {
     Tweets: {
       type: Array,
@@ -45,10 +48,7 @@ export default {
   methods: {
     handleDeleteButtonClick(tweetId) {
       this.$emit('after-delete-tweet', tweetId)
-      Toast.fire({
-        icon: 'success',
-        title: '刪除成功！'
-      })
+      this.$bus.$emit('toast', { icon: 'success', title:  '刪除成功！' })
     }
   },
   filters: {
