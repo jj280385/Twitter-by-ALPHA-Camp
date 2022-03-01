@@ -86,6 +86,7 @@ export default {
 }
 .title {
   height: 55px;
+  border-left: 1px solid #e6ecf0;
   border-bottom: 1px solid #e6ecf0;
   left: 337px;
   width: 100%;

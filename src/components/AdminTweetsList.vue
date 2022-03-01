@@ -62,6 +62,9 @@ export default {
 </script>
 
 <style scoped>
+.list-contents {
+  border-left: 1px solid #e6ecf0;
+}
 .list-contents .list-content {
   width: 100%;
   height: 75px;
