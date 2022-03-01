@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { Toast } from '../utils/helper'
+import Toast from '../components/Toast.vue'
 export default {
   name: 'AdminTweetsList',
   components: {
@@ -47,8 +47,8 @@ export default {
     }
   },
   methods: {
-    handleDeleteButtonClick(tweetId) {
-      this.$emit('after-delete-tweet', tweetId)
+    handleDeleteButtonClick(id) {
+      this.$emit('after-delete-tweet', id)
       this.$bus.$emit('toast', { icon: 'success', title:  '刪除成功！' })
     }
   },
@@ -64,6 +64,8 @@ export default {
 <style scoped>
 .list-contents {
   border-left: 1px solid #e6ecf0;
+  max-height: calc(100vh - 55px);
+  overflow: auto;
 }
 .list-contents .list-content {
   width: 100%;

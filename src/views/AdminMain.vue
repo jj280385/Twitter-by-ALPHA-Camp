@@ -21,7 +21,7 @@
 import AdminSidebar from '../components/AdminSidebar.vue'
 import AdminTweetsList from '../components/AdminTweetsList.vue'
 import adminAPI from '../apis/admin'
-import { Toast } from '../utils/helper'
+import Toast from '../components/Toast.vue'
 export default {
   name: 'AdminMain',
   components: {
@@ -56,9 +56,9 @@ export default {
         console.log(error)
       }
     },
-    async afterDeleteTweet(tweetId) {
+    async afterDeleteTweet(id) {
       try {
-        const { data } = await adminAPI.adminDeleteTweet({ tweetId })
+        const { data } = await adminAPI.adminDeleteTweet({ id })
         console.log(data)
         if (data.status !== 'success') {
           throw new Error(data.message)

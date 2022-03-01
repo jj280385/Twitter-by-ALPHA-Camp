@@ -10,8 +10,8 @@ export default {
   adminGetTweets() {
     return apiHelper.get('/admin/tweets')
   },
-  adminDeleteTweet(tweetId) {
-    return apiHelper.delete(`/admin/tweets/${tweetId}`)
+  adminDeleteTweet(id) {
+    return apiHelper.delete(`/admin/tweets/${id}`)
   }
 
 }
