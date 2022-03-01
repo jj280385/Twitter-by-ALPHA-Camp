@@ -12,6 +12,9 @@ export default {
   },
   adminDeleteTweet(id) {
     return apiHelper.delete(`/admin/tweets/${id}`)
-  }
+  },
+  adminGetUsers() {
+    return apiHelper.get('/admin/users')
+  },
 
 }

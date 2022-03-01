@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar-container">
     <div class="sidebar-header">
-      <router-link to="/" class="sidebar-logo">
+      <router-link to="/admin/main" class="sidebar-logo">
         <!-- Logo SVG -->
         <svg
           width="50"
@@ -41,8 +41,7 @@
     <div class="sidebar-items">
       <!-- TODO:item中的icon和item-name的變色功能v-fi /v-else尚未設定 -->
       <button
-        @click="activeTab = 'home'"
-        :class="{ active: activeTab === 'home' }"
+        :class="{ active: Tweets }"
         class="sidebar-item home"
         type="button"
       >
@@ -67,12 +66,11 @@
       </button>
 
       <button
-        @click="activeTab = 'userInfo'"
-        :class="{ active: activeTab === 'userInfo' }"
+        :class="{ active: Users }"
         class="sidebar-item userInfo"
         type="button"
       >
-        <router-link to="/profile">
+        <router-link to="/admin/users">
           <!-- User SVG -->
           <svg
             class="item-icon"
@@ -92,22 +90,42 @@
         </router-link>
       </button>
     </div>
-    <button class="logout-item">
-        <router-link to="/login">
-          <img src="../assets/image/logout.svg" class="logout-icon" />
-          <span class="logout">登出</span>
-        </router-link>
+    <button class="logout-item"
+      @click.stop.prevent="logout">
+      <img src="../assets/image/logout.svg" class="logout-icon" />
+      <span class="logout">登出</span>
     </button>
   </div>
 </template>
 
 <script>
 export default {
+  name:'AdminSidebar',
   data() {
     return {
-      // 有home, userInfo, setting 三種
-      // 這裡預設寫死 setting
-      activeTab: "setting",
+      Tweets: false,
+      Users: false
+    }
+  },
+  created() {
+    const location = this.$route.path.split('/')[2]
+    this.setCurrentLocation(location)
+  },
+  methods: {
+    logout() {
+      // delete token => log out
+      this.$store.commit('revokeAuthentication')
+      this.$router.push('/admin')
+    },
+    setCurrentLocation(location) {
+      console.log('location: ' + location)
+      if (location === 'main') {
+        this.Tweets = true
+        this.Users = false
+      } else {
+        this.Tweets = false
+        this.Users = true
+      }
     }
   }
 };

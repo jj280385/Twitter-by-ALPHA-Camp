@@ -6,6 +6,7 @@ import UserSetting from '../views/UserSetting.vue'
 import UserLogin from '../views/UserLogin.vue'
 import AdminLogin from '../views/AdminLogin.vue'
 import AdminMain from '../views/AdminMain.vue'
+import AdminUsers from '../views/AdminUsers.vue'
 import Main from '../views/Main.vue'
 import MainReply from '../views/MainReply.vue'
 import Profile from '../views/Profile.vue'
@@ -58,6 +59,11 @@ const routes = [{
     path: '/admin/main',
     name: 'admin-main',
     component: AdminMain
+  },
+  {
+    path: '/admin/users',
+    name: 'admin-users',
+    component: AdminUsers
   },
   {
     path: '/profile',
