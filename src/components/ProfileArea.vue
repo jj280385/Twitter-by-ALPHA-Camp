@@ -105,7 +105,13 @@
           </button>
         </template>
 
-        <button v-if="isSelf" class="edit">編輯個人資料</button>
+        <button
+          @click="$bus.$emit('profileEditModal', true)"
+          v-if="isSelf"
+          class="edit"
+        >
+          編輯個人資料
+        </button>
       </div>
       <h3 class="name">{{ name }}</h3>
       <p class="account">@{{ account }}</p>
@@ -117,15 +123,21 @@
         <p>{{ followerCount }}位&thinsp;<span>跟隨者</span></p>
       </div>
     </div>
+    <ProfileEditModal />
   </div>
 </template>
 
 <script>
 import userAPI from '../apis/user'
 import followAPI from '../apis/follow'
+import ProfileEditModal from '../components/ProfileEditModal.vue'
 import { nullAvatarFilter, nullCoverFilter } from '../utils/mixins'
 
 export default {
+  components: {
+    ProfileEditModal
+  },
+
   data() {
     return {
       id: -1,
@@ -147,11 +159,18 @@ export default {
     async fetchAccount() {
       try {
         // 預設當前使用者
-        const currentInfo = await userAPI.getCurrent()
-        let id = currentInfo.data.data.id
+        let id = -1
+        if (!this.$route.params.id) {
+          const { data } = await userAPI.getCurrent()
+          if (data.status!=='success'){
+            throw new Error(data.message)
+          }
+          id = data.data.id
+        } else {
+          // 從路由讀取params.id覆蓋
+          id = this.$route.params.id
+        }
 
-        // 從路由讀取params.id覆蓋
-        this.$route.params.id && (id = this.$route.params.id)
 
         const { data } = await userAPI.getProfile({ userId: id })
         // console.log('data', data)
@@ -221,7 +240,7 @@ export default {
     $route() {
       this.fetchAccount()
     }
-  },
+  }
 }
 </script>
 

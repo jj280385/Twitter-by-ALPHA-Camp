@@ -6,17 +6,12 @@
       <transition name="slide">
         <form
           v-show="modal"
-          @submit.prevent
+          @submit.prevent="submitProfile"
           @click.stop="modal = true"
           class="modal-dialog"
         >
           <div
-            class="
-              modal-header
-              d-flex
-              align-items-center
-              justify-content-between
-            "
+            class="modal-header d-flex align-items-center justify-content-between"
           >
             <div class="d-flex align-items-center">
               <button
@@ -41,29 +36,30 @@
               <h3 class="title">編輯個人資料</h3>
             </div>
 
-            <button type="submit" class="save">儲存</button>
+            <button
+              @mouseenter="saveHint"
+              type="submit"
+              :disabled="isProcessing"
+              class="save"
+            >
+              儲存
+            </button>
           </div>
           <hr />
           <!-- modal-body -->
           <div class="modal-body">
             <div class="user-cover">
-              <img
-                src="../assets/image/cover-photo.svg"
-                alt="預設的使用者封面"
-              />
+              <p v-if="!coverImg" class="uploadHint">尚未上傳任何封面圖片</p>
+              <img v-if="coverImg" :src="coverImg" alt="預設的使用者封面" />
               <div
                 class="mask d-flex justify-content-center align-items-center"
               >
                 <label
                   for="upload-cover"
-                  class="
-                    camera
-                    d-flex
-                    justify-content-center
-                    align-items-center
-                  "
+                  class="camera d-flex justify-content-center align-items-center"
                 >
                   <input
+                    @change="coverChange"
                     type="file"
                     id="upload-cover"
                     name="cover"
@@ -90,13 +86,9 @@
                   <!-- SVG -->
                 </label>
                 <button
+                  @click="coverImg = ''"
                   type="button"
-                  class="
-                    delete
-                    d-flex
-                    justify-content-center
-                    align-items-center
-                  "
+                  class="delete d-flex justify-content-center align-items-center"
                 >
                   <!-- SVG -->
                   <svg
@@ -118,17 +110,20 @@
             </div>
             <!-- avatar -->
             <div class="avatar">
-              <img
-                src="../assets/image/John Doe-120.svg"
-                alt="預設的使用者頭像"
-              />
+              <img v-if="avatarImg" :src="avatarImg" alt="預設的使用者頭像" />
+              <p v-if="!avatarImg" class="uploadHint">尚未上傳頭像</p>
               <div
                 @mouseover="avatarHint = true"
                 @mouseleave="avatarHint = false"
                 class="mask d-flex justify-content-center align-items-center"
               >
-                <label for="upload-avatar" class="camera">
+                <label
+                  v-if="!avatarImg"
+                  for="upload-avatar"
+                  class="camera d-flex justify-content-center align-items-center"
+                >
                   <input
+                    @change="avatarChange"
                     type="file"
                     id="upload-avatar"
                     name="avatar"
@@ -154,6 +149,28 @@
                   </svg>
                   <!-- SVG -->
                 </label>
+                <button
+                  v-if="avatarImg"
+                  @click="avatarImg = ''"
+                  type="button"
+                  class="delete d-flex justify-content-center align-items-center"
+                >
+                  <!-- SVG -->
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9.41412 7.99988L15.2071 2.20687C15.5971 1.81687 15.5971 1.18388 15.2071 0.792875C14.8171 0.401875 14.1841 0.402875 13.7931 0.792875L8.00012 6.58588L2.20712 0.792875C1.81712 0.402875 1.18412 0.402875 0.793119 0.792875C0.402119 1.18288 0.403119 1.81587 0.793119 2.20687L6.58612 7.99988L0.793119 13.7929C0.403119 14.1829 0.403119 14.8159 0.793119 15.2069C0.988119 15.4019 1.24312 15.4999 1.50012 15.4999C1.75712 15.4999 2.01212 15.4019 2.20712 15.2069L8.00012 9.41387L13.7931 15.2069C13.9881 15.4019 14.2431 15.4999 14.5001 15.4999C14.7571 15.4999 15.0121 15.4019 15.2071 15.2069C15.5971 14.8169 15.5971 14.1839 15.2071 13.7929L9.41412 7.99988Z"
+                      fill="white"
+                    />
+                  </svg>
+
+                  <!-- SVG -->
+                </button>
                 <transition name="hint">
                   <span class="avatar-hint" v-if="avatarHint"
                     >頭像圖片建議解析度為 150 × 150 像素以上</span
@@ -163,52 +180,225 @@
             </div>
             <!-- form area -->
             <div class="form-area">
-              <div for="name" class="form-row d-flex flex-column">
+              <div
+                for="name"
+                class="form-row d-flex flex-column"
+                :class="{ invalid: nameHint }"
+              >
                 <label for="name">名稱</label>
                 <input
+                  v-model="name"
                   type="text"
                   id="name"
                   name="name"
-                  value="John Don"
                   maxlength="50"
                 />
-                <p class="error-hint">字數超出上限！</p>
-                <p>8/50</p>
+                <p v-if="nameHint" class="error-hint">字數超出上限！</p>
+                <p>{{ nameCount }}/50</p>
               </div>
 
-              <div class="form-row d-flex flex-column">
+              <div
+                class="form-row d-flex flex-column"
+                :class="{ invalid: descriptionHint }"
+              >
                 <label for="description">自我介紹</label>
                 <textarea
+                  v-model="description"
                   id="description"
                   name="description"
                   maxlength="160"
                   autofocus
                 />
-                <p class="error-hint">字數超出上限！</p>
-                <p>0/160</p>
+                <p v-if="descriptionHint" class="error-hint">字數超出上限！</p>
+                <p>{{ descriptionCount }}/160</p>
               </div>
             </div>
             <!-- form area end -->
           </div>
         </form>
       </transition>
+      <Toast />
     </div>
   </transition>
 </template>
 
 <script>
+import Toast from '../components/Toast.vue'
+import userAPI from '../apis/user'
+
 export default {
+  components: {
+    Toast
+  },
+
   data() {
     return {
       modal: false,
+      id: -1,
+      coverImg: '',
+      avatarImg: '',
+      name: '',
+      nameHint: false,
+      description: '',
+      descriptionHint: false,
       avatarHint: false,
-    };
+      isProcessing: false
+    }
   },
-};
+
+  methods: {
+    coverChange(event) {
+      const filesList = event.target.files
+      if (filesList) {
+        // 用瀏覽器的 api 產生連結
+        const imageURL = window.URL.createObjectURL(filesList[0])
+        this.coverImg = imageURL
+      }
+    },
+    avatarChange(event) {
+      const filesList = event.target.files
+      if (filesList) {
+        const imageURL = window.URL.createObjectURL(filesList[0])
+        this.avatarImg = imageURL
+      }
+    },
+
+    saveHint() {
+      if (!this.coverImg) {
+        this.$bus.$emit('toast', {
+          icon: 'success',
+          title: '取消編輯，可回復原本封面圖片'
+        })
+      }
+
+      if (!this.avatarImg) {
+        this.$bus.$emit('toast', {
+          icon: 'success',
+          title: '取消編輯，可回復原本頭像'
+        })
+      }
+
+      if (!this.name || !this.description) {
+        this.$bus.$emit('toast', {
+          icon: 'success',
+          title: '取消編輯，可以回覆原本資料'
+        })
+      }
+    },
+
+    async fetchProfile() {
+      try {
+        const { data } = await userAPI.getCurrent()
+
+        if (data.status !== 'success') {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '無法取得個人資料'
+          })
+          throw new Error(data.message)
+        }
+
+        const { id, cover, avatar, name, introduction } = data.data
+        this.id = id
+        this.coverImg = cover
+        this.avatarImg = avatar
+        this.name = name
+        this.description = introduction
+      } catch (error) {
+        console.log(error)
+        this.$bus.$emit('toast', {
+          icon: 'error',
+          title: `${error}`
+        })
+      }
+    },
+
+    async submitProfile(event) {
+      try {
+        !this.coverImg &&
+          this.$bus.$emit('toast', {
+            title: '如果沒有封面圖片，我們會隨機產生酷酷的幾何封面喔！'
+          })
+        !this.avatarImg &&
+          this.$bus.$emit('toast', {
+            title: '如果沒有設定頭像圖片，我們會隨機產生文青的插畫頭像呦～'
+          })
+
+        if (this.name.length > 50) {
+          this.nameHint = true
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '名稱字數超出上限'
+          })
+          return
+        }
+
+        if (this.description.length > 160) {
+          this.descriptionHint = true
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '自我介紹字數超出上限'
+          })
+          return
+        }
+
+        this.isProcessing = true
+        const formData = new FormData(event.target)
+        const { data } = await userAPI.editProfile({
+          userId: this.id,
+          formData
+        })
+
+        if (data.status === 'success') {
+          this.$bus.$emit('toast', {
+            icon: 'success',
+            title: '已儲存成功！！'
+
+          })
+        this.isProcessing = false
+        }else{
+          throw new Error(data.message)
+        }
+      } catch (error) {
+        this.isProcessing = false
+        console.log(error)
+        this.$bus.$emit('toast', {
+          icon: 'error',
+          title: `${error}`
+        })
+      }
+    }
+  },
+
+  computed: {
+    nameCount() {
+      this.name.length > 50 && (this.nameHint = true)
+      this.name.length < 50 && (this.nameHint = false)
+      return this.name.length
+    },
+
+    descriptionCount() {
+      this.description.length > 160 && (this.descriptionHint = true)
+      this.description.length < 160 && (this.descriptionHint = false)
+      return this.description.length
+    }
+  },
+
+  created() {
+    this.fetchProfile()
+    this.$bus.$on('profileEditModal', (modal) => {
+      this.modal = modal
+    })
+  },
+
+  beforeDestroy() {
+    this.$bus.$off('profileEditModal')
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/modalCommon.scss";
+@import '../styles/modalCommon.scss';
 
 .modal {
   --modal-dialog-height: 680px;
@@ -253,8 +443,8 @@ export default {
       color: var(--theme-white);
     }
 
-
-    &:focus {
+    &:focus,
+    &:disabled {
       background-color: var(--focus-color);
       color: var(--just-white);
     }
@@ -299,18 +489,27 @@ export default {
       background-color: rgba(0, 0, 0, 0.45);
     }
   }
+
+  // 無圖片提示
+  .uploadHint {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    color: var(--info);
+  }
 }
 
 .user-cover {
   // 供 mask 定位
   position: relative;
-  background-color: WhiteSmoke;
+  background-color: lightgrey;
   margin: 0 1px;
   height: 200px;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // 無封面提示
+  & > p {
+    bottom: 20%;
+    left: 50%;
+  }
 
   & > img {
     object-fit: cover;
@@ -321,7 +520,7 @@ export default {
       position: absolute;
       top: 25%;
       color: lightgray;
-      content: "封面圖片建議解析度為 600 × 200 像素";
+      content: '封面圖片建議解析度為 600 × 200 像素';
     }
   }
 
@@ -338,7 +537,19 @@ export default {
   top: calc(200px - (var(--avatar-width) / 2));
   left: 15px;
 
+  width: var(--avatar-width);
+  height: var(--avatar-width);
   border-radius: 50%;
+  background-color: lightgray;
+
+  // 無頭像提示
+  & > p {
+    bottom: 15%;
+    left: 50%;
+
+    font-size: 0.75rem;
+    width: max-content;
+  }
 
   .mask {
     span:last-child {
@@ -426,7 +637,7 @@ export default {
 
   // 下底線
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     bottom: 0%;
     left: 0%;

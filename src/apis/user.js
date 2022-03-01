@@ -18,5 +18,10 @@ export default {
       password,
       email
     })
+  },
+
+  // 修改個人資料（封面、頭像）
+  editProfile({ userId, formData }) {
+    return apiHelper.put(`/users/${userId}`,  formData )
   }
 }
