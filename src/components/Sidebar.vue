@@ -121,7 +121,13 @@
         </router-link>
       </button>
 
-      <button class="twitter-btn" type="submit" >推文</button>
+      <button
+        @click="$bus.$emit('tweetModal', true)"
+        class="twitter-btn"
+        type="submit"
+      >
+        推文
+      </button>
     </div>
     <button class="logout-item">
       <router-link to="/login">
