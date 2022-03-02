@@ -1,9 +1,21 @@
+// 其他使用者的推文回覆主頁
 <template>
   <div class="reply-container">
     <!-- title -->
     <div class="main-header">
-      <button type="button" class="back-to">
-        <img class="back-icon" src="../assets/image/back-icon.svg" />
+      <button type="button" class="back-icon" @click="$router.go(-1)">
+        <svg
+          width="17"
+          height="14"
+          viewBox="0 0 17 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M16 5.99988H3.41399L7.70699 1.70687C8.09699 1.31687 8.09699 0.683875 7.70699 0.292875C7.31699 -0.0981249 6.68399 -0.0971249 6.29299 0.292875L0.292988 6.29288C-0.0970117 6.68288 -0.0970117 7.31588 0.292988 7.70687L6.29299 13.7069C6.48799 13.9019 6.74299 13.9999 6.99999 13.9999C7.25699 13.9999 7.51199 13.9019 7.70699 13.7069C8.09699 13.3169 8.09699 12.6839 7.70699 12.2929L3.41399 7.99988H16C16.553 7.99988 17 7.55288 17 6.99988C17 6.44688 16.553 5.99988 16 5.99988Z"
+            fill="black"
+          />
+        </svg>
       </button>
       <span class="title">推文</span>
     </div>
@@ -11,40 +23,38 @@
     <div class="post">
       <div class="poster-info">
         <div class="poster-avatar">
-          <router-link to="/profile">
-            <img class="avatar-img" />
+          <router-link to="/main">
+            <img class="avatar-img" :src="tweets.User.avatar"/>
           </router-link>
         </div>
-        <router-link to="/profile">
+        <router-link to="/user/:id">
           <div class="user-info">
-            <div class="user-name">Apple</div>
-            <div class="user-accountName">@apple</div>
+
+            <div class="user-name">{{ tweets.User.name }}</div>
+            <div class="user-accountName">@{{ tweets.User.account }}</div>
           </div>
         </router-link>
       </div>
       <div class="post-content">
-        <span class="post-text">
-          Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
-          cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-          reprehenderit elit laborum.
-        </span>
+
+        <span class="post-text"> {{ tweets.description }} </span>
       </div>
-      <span class="post-time">上午 10:05・2020年6月10日</span>
+      <span class="post-time">{{ tweets.createdAt | fromNow }}</span>
       <div class="count">
         <span class="reply-count"
-          ><p class="number">34</p>
+          ><p class="number">{{ tweets.replyCount }}</p>
           回覆</span
         >
-        <span class="like-count"
-          ><p class="number">808</p>
+        <span class="like-count">
+          <p class="number">{{ tweets.likeCount }}</p>
+
           喜歡次數</span
         >
       </div>
       <div class="icon">
+        <!-- TODO:回覆icon要綁回覆的modal -->
         <button class="reply-btn">
-          <router-link class="reply" to="/main/reply">
-            <img class="reply-icon" src="../assets/image/reply-icon.svg" />
-          </router-link>
+          <img class="reply-icon" src="../assets/image/reply-icon.svg" />
         </button>
 
         <button
@@ -52,60 +62,51 @@
           @click="isActive = !isActive"
           :class="{ active: isActive }"
         >
-          <router-link class="like" to="/main/reply">
-            <img
-              class="like-icon"
-              src="../assets/image/liked-icon.svg"
-              v-if="isActive"
-            />
-            <img class="like-icon" src="../assets/image/like-icon.svg" v-else />
-          </router-link>
+          <img
+            class="like-icon"
+            src="../assets/image/liked-icon.svg"
+            v-if="isActive"
+          />
+          <img class="like-icon" src="../assets/image/like-icon.svg" v-else />
         </button>
       </div>
     </div>
     <!-- 下方回覆列表 -->
-    <div class="reply-list">
-      <div class="reply-item">
-        <div class="user-avatar">
-          <router-link to="/profile">
-            <img class="avatar-img" src="../assets/image/mary-jane.svg" />
-          </router-link>
-        </div>
-        <div class="reply-content">
-          <router-link to="/profile">
-            <div class="replier-info">
-              <div class="user-name">Mary Jane</div>
-              <div class="user-accountName">@mjjane</div>
-              <div class="reply-time">‧3小時</div>
-            </div>
-          </router-link>
-          <div class="reply">
-            <span class="text">回覆</span>
-            <router-link to="/" class="reply-to">@Daniel</router-link>
-          </div>
-          <span class="reply-text"> Great~ </span>
-        </div>
-      </div>
 
+    <!-- v-for="reply in replies" :key="reply.id" -->
+    <div v-if="noReply">
+      <span class="noReply"> 目前沒有回覆 </span>
+    </div>
+    <div class="reply-list" 
+    v-else
+    v-for="reply in replies" 
+    :key="reply.id">
       <div class="reply-item">
         <div class="user-avatar">
           <router-link to="/profile">
-            <img class="avatar-img" src="../assets/image/mary-jane.svg" />
+            <img class="avatar-img" />
+
           </router-link>
         </div>
         <div class="reply-content">
           <router-link to="/profile">
             <div class="replier-info">
-              <div class="user-name">Mary Jane</div>
-              <div class="user-accountName">@mjjane</div>
-              <div class="reply-time">‧3小時</div>
+              <div class="user-name">{{ reply.User.name }}</div>
+              <div class="user-accountName">@{{ reply.User.account }}</div>
+
+              <div class="reply-time">‧{{ reply.createdAt | fromNow }}</div>
+
             </div>
           </router-link>
           <div class="reply">
             <span class="text">回覆</span>
-            <router-link to="/" class="reply-to">@Daniel</router-link>
+
+            <router-link to="/" class="reply-to">
+            @{{ tweets.User.name }}</router-link
+
+            >
           </div>
-          <span class="reply-text"> Great~ </span>
+          <span class="reply-text"> {{ reply.comment }} </span>
         </div>
       </div>
     </div>
@@ -113,21 +114,64 @@
 </template>
 
 <script>
+import postAPI from "./../apis/mainTweet";
+import { fromNowFilter } from "./../utils/mixins";
+
 export default {
+  mixins: [fromNowFilter],
   data() {
     return {
       isActive: false,
+
+      tweets: {
+        id: 1,
+        User:{},
+        description:'',
+        likeCount: 0,
+        replyCount: 0,
+        isLiked: false,
+      },
+      replies: [],
+      noReply: false,
     };
   },
+  created (){
+    const id = this.$route.params;
+    const tweetId = id.tweetId;
+    this.fetchTweet(tweetId);
+    this.fetchReplies(tweetId);
+  },
   methods: {
-    toggle() {
-  if (!this.isActive) {
-    this.isActive = true;
-  } else {
-    this.isActive = false;
-  }
-},
-  }
+    // 上方其他使用者推文
+    async fetchTweet(tweetId) {
+      try {
+        const { data } = await postAPI.getOtherPost(tweetId);
+        const tweets = data;
+        this.tweets = tweets;
+        // console.log('tweets',tweets);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    // 下方推文回覆列表
+    async fetchReplies(tweetId) { 
+      try {
+        const { data } = await postAPI.getTweetReplies(tweetId);
+        // console.log('tweetid',tweetId);
+        // console.log('路由變化') 
+        const replies = data;
+        this.replies = replies;
+        console.log("data", data);
+        if (data.status=== 'error') {
+          this.noReply=true
+        }
+
+      } catch (error) {
+        console.log("error");
+      }
+    },
+  },
 };
 </script>
 
@@ -144,6 +188,19 @@ export default {
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--theme-line);
+}
+
+button {
+  &:hover {
+    svg > path {
+      fill: var(--hover-color);
+    }
+  }
+  &:focus {
+    svg > path {
+      fill: var(--focus-color);
+    }
+  }
 }
 
 .back-icon {
@@ -165,7 +222,6 @@ export default {
 }
 
 .post-content {
-  height: 136px;
   width: 510px;
   margin-top: 18px;
   margin-bottom: 15px;
@@ -190,7 +246,9 @@ export default {
 }
 
 .post {
-  height: 399px;
+
+  height: 100%;
+
   // width: 570px;
   padding: 15px;
   display: flex;
@@ -237,11 +295,15 @@ export default {
 }
 
 .icon {
+  display: flex;
+  align-content: center;
+  align-items: center;
   height: 61px;
-  margin: 18px 0 13px 0;
+  padding-top: 18px;
 }
 
-.reply-icon, .like-icon {
+.reply-icon,
+.like-icon {
   width: 30px;
   height: 30px;
 }
@@ -309,7 +371,6 @@ export default {
 .replier-info {
   display: flex;
   align-items: center;
-  // margin-bottom: 5px;
 }
 
 .reply-time {
@@ -317,6 +378,13 @@ export default {
   font-weight: 500;
   color: var(--info);
 }
+
+.noReply {
+  font-size: 25px;
+  margin-left: 10px;
+  color: var(--info);
+}
+
 // 個人資料共用樣式
 .user-accountName {
   color: var(--info);

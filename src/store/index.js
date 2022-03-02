@@ -75,5 +75,41 @@ export default new Vuex.Store({
       }
     }
   },
+
+  actions: {
+    async fetchCurrentUser() {
+      try {
+        const { data } = await userAPI.getCurrent({})
+        const {
+          id,
+          account,
+          name,
+          avatar,
+          introduction,
+          cover,
+          createdAt,
+          updatedAt,
+          role // isAdmin的意思
+        } = data.data
+
+        // 呼叫 mutations
+        this.commit('setCurrentUser', {
+          id,
+          account,
+          name,
+          avatar,
+          introduction,
+          cover,
+          createdAt,
+          updatedAt,
+          role
+        })
+      } catch (error) {
+        console.error('can not fetch user information')
+        console.log('error', error)
+      }
+    }
+  },
+
   modules: {}
 })

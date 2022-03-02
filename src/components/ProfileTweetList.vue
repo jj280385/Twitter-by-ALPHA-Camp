@@ -1,17 +1,17 @@
 <template>
-  <div class="tweet-container">
+  <div class="tweet-container" >
     <!-- Profile頁面下方的推文列表 -->
     <div class="tweet-list">
       <div class="tweet-item">
         <div class="user-avatar">
           <router-link to="/profile">
-            <img class="avatar-img" />
+            <img class="avatar-img"/>
           </router-link>
         </div>
         <div class="post-content">
           <router-link to="/profile">
             <div class="user-info">
-              <div class="user-name">Jhon Deo</div>
+              <div class="user-name">123</div>
               <div class="user-accountName">@hryjohn</div>
               <div class="post-time">‧3小時</div>
             </div>
@@ -72,6 +72,7 @@
 </template>
 
 <style lang="scss" scoped>
+
 .tweet-container {
   @include size(100%, 100%);
   margin-top: 10px;
@@ -82,7 +83,6 @@
   @include size(100%, 100%);
   display: flex;
   flex-direction: column;
-
 }
 
 .tweet-item {
@@ -177,3 +177,74 @@
   line-height: 13px;
 }
 </style>
+
+// <script>
+// import userAPI from './../apis/user'
+
+// export default {
+//   data() {
+//     return {
+//       tweets:{
+//       id: -1,
+//       description:'',
+//       likeCount:0,
+//       replyCount:0,
+//       isLike: true,
+//       createdAt:'',
+//       User: {},
+//       }
+//     }
+//   },
+//   created() {
+//     const { userId } = this.$route.params;
+//     this.fetchTweets(userId);
+//   },
+//   beforeRouteUpdate(to, from, next) {
+//     const { userId } = to.params;
+//     this.fetchTweets(userId);
+//     next();
+//   },
+//   methods: {
+//       // async fetchTweets(userId) {   
+//       // try {
+//       //   const response = await userAPI.getUserTweetList({
+//       //     userId: this.$route.params.id,
+//       //   });
+
+//       //   const tweets = response.data;
+//       //   this.tweets = tweets;
+//       //   console.log('data',response.data);
+//       //   } catch (error) {
+//       //   console.log("error");
+//       //   }
+//       // }
+//     async fetchTweets(userId) {
+//       try {
+//         const response = await userAPI.getUserTweetList(userId)
+//         const tweets = response.data;
+//         this.tweets = tweets;
+//         // const {id,
+//         // description,
+//         // likeCount,
+//         // replyCount,
+//         // isLike,
+//         // createdAt,
+//         // User}
+//         // = data
+        
+//         // this.id = id;
+//         // this.description = description;
+//         // this.likeCount = likeCount;
+//         // this.replyCount = replyCount;
+//         // this.isLike = isLike;
+//         // this.createdAt = createdAt;
+//         // this.User = User;
+
+//         console.log('data',response)
+//       } catch (error) {
+//         console.log(error);
+//       }
+//     },
+//   }
+// };
+// </script>

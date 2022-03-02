@@ -1,8 +1,9 @@
+// 其他使用者的推文回覆主頁
 <template>
   <div class="container">
     <Sidebar /> 
     <div class="main-reply">
-      <MainReplyList />
+      <OtherUserPostList />
     </div>
     <RightColumn />
   </div>
@@ -11,13 +12,13 @@
 <script>
 import Sidebar from "../components/Sidebar.vue"
 import RightColumn from "../components/RightColumn.vue"
-import MainReplyList from "../components/MainReplyList.vue"
+import OtherUserPostList from "../components/OtherUserPostList.vue"
 
 export default {
   components: {
     Sidebar,
     RightColumn,
-    MainReplyList,
+    OtherUserPostList,
   }
 }
 </script>
@@ -30,7 +31,6 @@ export default {
 }
 
 .main-reply {
-  outline: 1px solid red;
   @include size(100%, 100%);
   max-width: 600px;
   min-width: 576px;

@@ -19,8 +19,6 @@ export default {
     RightColumn,
     MainTweetList,
   },
-
-  
 }
 </script>
 

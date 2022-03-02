@@ -8,78 +8,55 @@
     <div class="tweet-area">
       <div class="avatar">
         <router-link to="/">
-          <img src="../assets/image/john-doe-50.svg" alt="預設的頭像"/>
+          <img src="../assets/image/john-doe-50.svg" alt="預設的頭像" />
         </router-link>
       </div>
 
       <!-- 推文輸入框 -->
-      <input 
-      type="text" 
-      class="text-area" 
-      placeholder="有什麼新鮮事？"
-      >
+      <input type="text" class="text-area" placeholder="有什麼新鮮事？" />
       <button class="tweet-btn" type="submit">推文</button>
     </div>
 
     <!-- 下方推文列表 -->
-    <div class="tweet-list">
+    <div class="tweet-list" v-for="tweet in tweets" :key="tweet.id">
       <div class="tweet-item">
         <div class="user-avatar">
-          <router-link to="/main">
-            <img class="avatar-img" />
+          <router-link to="/user/:id">
+            <img class="avatar-img" :src="tweet.User.avatar" alt="/" />
           </router-link>
         </div>
         <div class="post-content">
-          <router-link to="/main">
+          <router-link to="/user/:id">
             <div class="user-info">
-              <div class="user-name">Apple</div>
-              <div class="user-accountName">@apple</div>
-              <div class="post-time">‧10小時</div>
+              <div class="user-name">{{ tweet.User.name }}</div>
+              <div class="user-accountName">{{ tweet.User.account }}</div>
+              <div class="post-time">‧{{ tweet.createdAt | fromNow }}</div>
             </div>
           </router-link>
-          <span class="tweet-content">
-            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. 
-          </span>
+          <router-link 
+          :to="{
+              path: `/tweets/${tweet.id}`,
+              params: { id: tweet.id}
+            }">
+          class="tweet-content">
+            <span class="tweet-content">
+              {{ tweet.description }}
+            </span>
+          </router-link>
           <div class="icon-item">
-            <router-link class="reply" to="/main">
+            <router-link class="reply" 
+            :to="{
+              path: 'post',
+              name: 'user-post',
+              params: { id: tweet.id}
+            }">
               <img class="reply-icon" src="../assets/image/reply-icon.svg" />
-              <span class="replay-count">13</span>
+              <span class="replay-count">{{ tweet.replyCount }}</span>
             </router-link>
 
             <router-link class="like" to="/main">
               <img class="like-icon" src="../assets/image/like-icon.svg" />
-              <span class="like-count">76</span>
-            </router-link>
-          </div>
-        </div>
-      </div>
-
-      <div class="tweet-item">
-        <div class="user-avatar">
-          <router-link to="/profile">
-            <img class="avatar-img" />
-          </router-link>
-        </div>
-        <div class="post-content">
-          <router-link to="/profile">
-            <div class="user-info">
-              <div class="user-name">Mary Jane</div>
-              <div class="user-accountName">@mjjane</div>
-              <div class="post-time">‧10小時</div>
-            </div>
-          </router-link>
-          <span class="tweet-content">
-            Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. 
-          </span>
-          <div class="icon-item">
-            <router-link class="reply" to="/main">
-              <img class="reply-icon" src="../assets/image/reply-icon.svg" />
-              <span class="replay-count">13</span>
-            </router-link>
-
-            <router-link class="like" to="/main">
-              <img class="like-icon" src="../assets/image/like-icon.svg" />
-              <span class="like-count">76</span>
+              <span class="like-count">{{ tweet.likeCount }}</span>
             </router-link>
           </div>
         </div>
@@ -87,6 +64,45 @@
     </div>
   </div>
 </template>
+
+<script>
+import tweetAPI from "./../apis/mainTweet";
+
+import { fromNowFilter } from "./../utils/mixins";
+
+export default {
+  mixins: [fromNowFilter],
+  data (){
+    return {
+      tweets: []
+    }
+  },
+  created() {
+    const { queryId } = this.$route.params
+    this.fetchTweets(
+      {queryId}
+    )
+  },
+  methods: {
+    async fetchTweets (queryId){
+      try {
+        const response = await tweetAPI.getTweets({
+          id: queryId
+        })
+        
+        const tweets = response.data
+        this.tweets = tweets
+
+        // console.log('response',response.data)
+        // console.log('id',tweets[0].id)
+
+      } catch (e) {
+        console.log('error')
+      }
+    }
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 .main-container {

@@ -211,6 +211,9 @@ export default {
       }
     },
 
+
+    // console.log(data)
+
     async toggleFollow() {
       try {
         if (!this.isFollowed) {
@@ -225,6 +228,7 @@ export default {
             this.isFollowed = false
           }
         }
+
       } catch (error) {
         console.log(error)
       }
