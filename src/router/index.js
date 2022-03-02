@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import NotFound from '../views/NotFound.vue'
-import UserRegist from '../views/UserRegist.vue'
-import UserSetting from '../views/UserSetting.vue'
 import UserLogin from '../views/UserLogin.vue'
 import AdminLogin from '../views/AdminLogin.vue'
 import Main from '../views/Main.vue'
+
+
+// 載入 Ｖuex方法
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -16,29 +18,40 @@ const routes = [
     component: UserLogin
   },
   {
-    path: '/main',
-    name: 'main',
-    component: Main
-  },
-  {
-    path: '/regist',
-    name: 'user-regist',
-    component: UserRegist
-  },
-  {
     path: '/login',
     name: 'user-login',
     component: UserLogin
   },
   {
+    path: '/main',
+    name: 'main',
+    component: () => import('../views/Main.vue')
+  },
+  {
+    path: '/regist',
+    name: 'user-regist',
+    component: () => import('../views/UserRegist.vue')
+  },
+  {
     path: '/setting',
     name: 'user-setting',
-    component: UserSetting
+    component: () => import('../views/UserSetting.vue')
   },
   {
     path: '/admin',
     name: 'admin-login',
     component: AdminLogin
+  },
+  {
+
+    path: '/admin/main',
+    name: 'admin-main',
+    component: () => import('../views/AdminMain.vue')
+  },
+  {
+    path: '/admin/users',
+    name: 'admin-users',
+    component: () => import('../views/AdminUsers.vue')
   },
   {
     path: '/profile',
@@ -91,6 +104,22 @@ const routes = [
     ]
   },
   {
+    path: '/profile/follower',
+    name: 'profile-follower',
+    component: () => import('../views/ProfileFollower.vue')
+  },
+  {
+    path: '/profile/following',
+    name: 'profile-following',
+    component: () => import('../views/ProfileFollowing.vue')
+  },
+  {
+    // 其他使用者
+    path: '/user/:id',
+    name: 'user',
+    component: () => import('../views/Profile.vue')
+  },
+  {
     path: '*',
     name: 'not-found',
     component: NotFound
@@ -98,7 +127,18 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  // 網址與router-link目的地完全相同
+  linkExactActiveClass: 'active',
+  // 網址與router-link目的地完全相同
+  linkActiveClass: 'active',
   routes
+})
+
+//  加在所有路由前
+router.beforeEach((to, from, next) => {
+  // 使用 dispatch 呼叫 Vuex 內的 actions
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 
 export default router
