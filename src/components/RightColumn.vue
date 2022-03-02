@@ -6,16 +6,16 @@
     <div class="column-list">
       <div class="items-container">
         <!-- TODO: 待和後端串接data後使用v-for將list-item迭代 -->
-        <div class="list-item">
+        <div class="list-item" v-for="user in users" :key="user.id">
           <div class="user-info">
             <div class="user-avatar">
               <router-link to="/">
-                <img class="avatar-img" />
+                <img class="avatar-img" :src="user.avatar"/>
               </router-link>
             </div>
             <router-link to="/">
-              <div class="user-name">Pizza Hut</div>
-              <div class="user-accountName">@pizzahut</div>
+              <div class="user-name">{{ user.name }}</div>
+              <div class="user-accountName">@{{ user.account }}</div>
             </router-link>
           </div>
           <button class="following-btn">正在追隨</button>
@@ -41,7 +41,32 @@
 </template>
 
 <script>
-export default {};
+import userAPI from "../apis/user"
+
+export default {
+  data() {
+    return {
+      users: []
+    }
+  },
+  created() {
+    this.fetchUser()
+  },
+  methods: {
+    async fetchUser() {
+      try {
+        const { data } = await userAPI.getUsersTop()
+        const users = data
+        this.users = data
+
+        // console.log('data', data)
+        // console.log('user', users)
+      } catch (error) {
+        console.log('error')
+      }
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

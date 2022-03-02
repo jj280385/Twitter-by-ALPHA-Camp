@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+// 載入user API
+import userAPI from '../apis/user'
 
 Vue.use(Vuex)
 
@@ -16,7 +18,9 @@ export default new Vuex.Store({
       updatedAt: '',
       role: '' // isAdmin的意思
     },
-    isAuthenticated: false
+    isAuthenticated: false,
+    // 儲存token
+    token: ''
   },
   mutations: {
     // 同步 only
@@ -26,9 +30,43 @@ export default new Vuex.Store({
         // API 取得的 currentUser 覆蓋掉 Vuex state 中的 currentUser
         ...currentUser
       }
+      state.token = localStorage.getItem('token')
       state.isAuthenticated = true
     }
   },
-  actions: {},
+  actions: {
+    async fetchCurrentUser() {
+      try {
+        const { data } = await userAPI.getCurrent({})
+        const {
+          id,
+          account,
+          name,
+          avatar,
+          introduction,
+          cover,
+          createdAt,
+          updatedAt,
+          role // isAdmin的意思
+        } = data.data
+
+        // 呼叫 mutations
+        this.commit('setCurrentUser', {
+          id,
+          account,
+          name,
+          avatar,
+          introduction,
+          cover,
+          createdAt,
+          updatedAt,
+          role
+        })
+      } catch (error) {
+        console.error('can not fetch user information')
+        console.log('error', error)
+      }
+    }
+  },
   modules: {}
 })

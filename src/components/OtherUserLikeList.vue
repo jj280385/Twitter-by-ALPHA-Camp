@@ -1,31 +1,30 @@
+// 其他使用者Profile下方喜歡列表
 <template>
   <div class="like-container">
     <!-- Profile頁面下方的喜歡的列表 -->
     <div class="like-list">
-      <div class="like-item">
+      <div class="like-item" v-for="like in likes" :key="like.id">
         <div class="user-avatar">
           <router-link to="/users/:id">
             <img class="avatar-img" />
           </router-link>
         </div>
         <div class="post-content">
-          <router-link to="/profile">
+          <router-link to="/users/:id">
             <div class="user-info">
-              <div class="user-name">Devon Lane</div>
-              <div class="user-accountName">@DL</div>
-              <div class="post-time">‧3小時</div>
+              <div class="user-name">{{ like.tweet.User.name }}</div>
+              <div class="user-accountName">@{{ like.tweet.User.account }}</div>
+              <div class="post-time">‧{{ like.tweet.createdAt | fromNow }}</div>
             </div>
           </router-link>
           <span class="tweet-content">
-            Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-            sint. Velit officia consequat duis enim velit mollit. Exercitation
-            veniam consequat sunt nostrud amet.
+            {{ like.tweet.description }}
           </span>
           <div class="icon-item">
             <button class="reply-btn">
-              <router-link class="reply" to="/profile/like">
+              <router-link class="reply" to="/users/:id/like">
                 <img class="reply-icon" src="../assets/image/reply-icon.svg" />
-                <span class="replay-count">13</span>
+                <span class="replay-count">{{ like.tweet.likeCount }}</span>
               </router-link>
             </button>
             
@@ -41,76 +40,59 @@
             >
               <img class="like-icon" src="../assets/image/liked-icon.svg" v-if="isActive"/>
               <img class="like-icon" src="../assets/image/like-icon.svg" v-else />
-              <span class="like-count" :class="{ active: isActive }">76</span>
+              <span class="like-count" :class="{ active: isActive }">
+                {{ like.tweet.replyCount }}</span>
             </router-link>
             </button>
           </div>
         </div>
       </div>
 
-      <div class="like-item">
-        <div class="user-avatar">
-          <router-link to="/profile">
-            <img class="avatar-img" />
-          </router-link>
-        </div>
-        <div class="post-content">
-          <router-link to="/profile">
-            <div class="user-info">
-              <div class="user-name">Devon Lane</div>
-              <div class="user-accountName">@DL</div>
-              <div class="post-time">‧3小時</div>
-            </div>
-          </router-link>
-          <span class="tweet-content">
-            Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-            sint. Velit officia consequat duis enim velit mollit. Exercitation
-            veniam consequat sunt nostrud amet.
-          </span>
-          <div class="icon-item">
-            <button class="reply-btn">
-              <router-link class="reply" to="/profile/like">
-                <img class="reply-icon" src="../assets/image/reply-icon.svg" />
-                <span class="replay-count">13</span>
-              </router-link>
-            </button>
-            
-            <button 
-            class="like-btn"
-            @click="isActive = !isActive"
-            :class="{active:isActive}"
-            >
-            <router-link
-              class="like"
-              to="/profile/like"
-            >
-              <img class="like-icon" src="../assets/image/liked-icon.svg" v-if="isActive"/>
-              <img class="like-icon" src="../assets/image/like-icon.svg" v-else />
-              <span class="like-count" :class="{ active: isActive }">76</span>
-            </router-link>
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
+import userAPI from './../apis/user'
+import { fromNowFilter } from "./../utils/mixins";
+
 export default {
+  mixins: [fromNowFilter],  
   data() {
     return {
       isActive: false,
+      likes:[]
     };
+  },
+  created() {
+    const { id } = this.$route.params;
+    this.fetchLikes(id);
+    // console.log('id',id);
+  },
+    beforeRouteUpdate(to, from, next) {
+    const { id } = to.params;
+    this.fetchLikes(id);
+    next();
   },
   methods: {
     toggle() {
-  if (!this.isActive) {
-    this.isActive = true;
-  } else {
-    this.isActive = false;
-  }
-},
+    if (!this.isActive) {
+      this.isActive = true;
+    } else {
+      this.isActive = false;
+    }
+  },
+  async fetchLikes(id) {
+      try {
+        const { data } = await userAPI.getUserLikeList(id)
+        // console.log('id',id);
+        const likes = data;
+        this.likes = likes
+        // console.log('data',data)
+      } catch (error) {
+        console.log(error);
+      }
+    },
   }
 };
 </script>

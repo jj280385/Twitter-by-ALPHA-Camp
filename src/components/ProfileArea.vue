@@ -155,7 +155,7 @@ export default {
         this.cover = cover
         this.avatar = avatar
 
-        console.log(data)
+        // console.log(data)
       } catch (error) {
         console.log(error)
       }

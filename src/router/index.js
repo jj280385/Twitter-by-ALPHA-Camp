@@ -6,12 +6,6 @@ import UserSetting from '../views/UserSetting.vue'
 import UserLogin from '../views/UserLogin.vue'
 import AdminLogin from '../views/AdminLogin.vue'
 import Main from '../views/Main.vue'
-import MainReply from '../views/MainReply.vue'
-import Profile from '../views/Profile.vue'
-import ProfileReply from '../views/ProfileReply.vue'
-import ProfileLike from '../views/ProfileLike.vue'
-import ProfileFollower from '../views/ProfileFollower.vue'
-import ProfileFollowing from '../views/ProfileFollowing.vue'
 
 Vue.use(VueRouter)
 
@@ -25,11 +19,6 @@ const routes = [
     path: '/main',
     name: 'main',
     component: Main
-  },
-  {
-    path: '/main/reply',
-    name: 'main-reply',
-    component: MainReply
   },
   {
     path: '/regist',
@@ -54,32 +43,52 @@ const routes = [
   {
     path: '/profile',
     name: 'profile',
-    component: Profile
+    component: () => import('../views/Profile.vue'),
+    children: [
+      {
+        path: 'tweet',
+        component: () => import('../components/ProfileTweetList.vue')
+      },
+      {
+        path: 'reply',
+        component: () => import('../components/ProfileReplyList.vue')
+      },
+      {
+        path: 'like',
+        component: () => import('../components/ProfileLikeList.vue')
+      },
+      {
+        path: '/',
+        redirect: '/profile/tweet'
+      }
+    ]
   },
   {
-    path: '/profile/tweet',
-    name: 'profile-tweet',
-    component: Profile
-  },
-  {
-    path: '/profile/reply',
-    name: 'profile-reply',
-    component: ProfileReply
-  },
-  {
-    path: '/profile/like',
-    name: 'profile-like',
-    component: ProfileLike
-  },
-  {
-    path: '/profile/follower',
-    name: 'profile-follower',
-    component: ProfileFollower
-  },
-  {
-    path: '/profile/following',
-    name: 'profile-following',
-    component: ProfileFollowing
+    path: '/users/:id',
+    name: 'other-user',
+    component: () => import('../views/OtherUserProfile.vue'),
+    children: [
+      {
+        path: 'tweet',
+        component: () => import('../views/OtherUserProfile.vue')
+      },
+      {
+        path: 'reply',
+        component: () => import('../views/OtherUserReply.vue')
+      },
+      {
+        path: 'like',
+        component: () => import('../views/OtherUserLike.vue')
+      },
+      {
+        path: 'post',
+        component: () => import('../views/OtherUserPost.vue')
+      },
+      {
+        path: '/',
+        redirect: '/users/:id/tweet'
+      }
+    ]
   },
   {
     path: '*',
