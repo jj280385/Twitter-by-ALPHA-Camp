@@ -6,7 +6,7 @@
         type="button"
       >
         <router-link 
-        to="/profile" 
+        to="/profile/tweet" 
         class="nav-link"
         > 推文 </router-link>
       </button>
@@ -15,7 +15,7 @@
         class="nav-item reply"
       >
         <router-link 
-        to="/profile" 
+        to="/profile/reply" 
         class="nav-link"
         > 推文與回覆 </router-link>
       </button>
@@ -24,7 +24,7 @@
         class="nav-item like"
       >
         <router-link 
-        to="/profile" 
+        to="/profile/like" 
         class="nav-link"
         > 喜歡的內容 </router-link>
       </button>
@@ -54,7 +54,6 @@ export default {
 
 <style lang="scss" scoped>
 .profile-list {
-  outline: 1px solid blue;
   @include size(100%, 100%);
 }
 
@@ -64,7 +63,7 @@ export default {
   border-bottom: 1px solid var(--theme-line);
 }
 
-.nav-item {
+.nav-link {
   @include size(130px, 52px);
   font-size: 15px;
   font-weight: 700;

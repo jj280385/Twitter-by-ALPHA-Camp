@@ -1,7 +1,10 @@
 <template>
   <div class="profile-area">
     <div class="header d-flex align-items-center">
-      <button class="previous d-flex justify-content-center align-items-center">
+      <button
+        @click="$router.go(-1)"
+        class="previous d-flex justify-content-center align-items-center"
+      >
         <!-- previous SVG -->
         <svg
           width="17"
@@ -119,25 +122,24 @@
         {{ introduction | nullDescribe }}
       </p>
       <div class="follow d-flex">
-        <p>{{ followingCount }}個&thinsp;<span>跟隨中</span></p>
-        <p>{{ followerCount }}位&thinsp;<span>跟隨者</span></p>
+        <router-link :to="`user/${this.id}/following`">
+          <p>{{ followingCount }}個&thinsp;<span>跟隨中</span></p>
+        </router-link>
+        <router-link :to="`user/${this.id}/follower`">
+          <p>{{ followerCount }}位&thinsp;<span>跟隨者</span></p>
+        </router-link>
       </div>
     </div>
-    <ProfileEditModal />
   </div>
 </template>
 
 <script>
 import userAPI from '../apis/user'
 import followAPI from '../apis/follow'
-import ProfileEditModal from '../components/ProfileEditModal.vue'
 import { nullAvatarFilter, nullCoverFilter } from '../utils/mixins'
+import { mapState } from 'vuex'
 
 export default {
-  components: {
-    ProfileEditModal
-  },
-
   data() {
     return {
       id: -1,
@@ -155,22 +157,26 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState(['currentUser'])
+  },
+
   methods: {
     async fetchAccount() {
       try {
         // 預設當前使用者
         let id = -1
         if (!this.$route.params.id) {
-          const { data } = await userAPI.getCurrent()
-          if (data.status!=='success'){
-            throw new Error(data.message)
-          }
-          id = data.data.id
+          // const { data } = await userAPI.getCurrent()
+          // if (data.status !== 'success') {
+          //   throw new Error(data.message)
+          // }
+          // id = data.data.id
+          id = this.currentUser.id
         } else {
           // 從路由讀取params.id覆蓋
           id = this.$route.params.id
         }
-
 
         const { data } = await userAPI.getProfile({ userId: id })
         // console.log('data', data)
@@ -234,10 +240,13 @@ export default {
   },
 
   created() {
-    this.fetchAccount()
+    // this.fetchAccount()
   },
   watch: {
-    $route() {
+    '$route.path'() {
+      this.fetchAccount()
+    },
+    currentUser() {
       this.fetchAccount()
     }
   }

@@ -217,19 +217,15 @@
           </div>
         </form>
       </transition>
-      <Toast />
     </div>
   </transition>
 </template>
 
 <script>
-import Toast from '../components/Toast.vue'
 import userAPI from '../apis/user'
 
 export default {
-  components: {
-    Toast
-  },
+
 
   data() {
     return {
