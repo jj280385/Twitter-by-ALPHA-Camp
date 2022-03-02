@@ -9,6 +9,25 @@ import store from '../store'
 
 Vue.use(VueRouter)
 
+const authorizeIsAdmin = (to, from, next) => {
+  const currentUser = store.state.currentUser
+  if (currentUser && currentUser.role !== 'admin') {
+    next('/not-found')
+    return
+  }
+  next()
+}
+
+const authorizeIsUser = (to, from, next) => {
+  const currentUser = store.state.currentUser
+  if (currentUser && currentUser.role !== 'user') {
+    next('/admin')
+    return
+  }
+  next()
+}
+
+
 const routes = [
   {
     path: '/',
@@ -43,17 +62,20 @@ const routes = [
   {
     path: '/admin',
     name: 'admin-login',
-    component: AdminLogin
+    component: AdminLogin,
+    authorizeIsUser
   },
   {
     path: '/admin/main',
     name: 'admin-main',
-    component: () => import('../views/AdminMain.vue')
+    component: () => import('../views/AdminMain.vue'),
+    beforeEnter: authorizeIsAdmin
   },
   {
     path: '/admin/users',
     name: 'admin-users',
-    component: () => import('../views/AdminUsers.vue')
+    component: () => import('../views/AdminUsers.vue'),
+    beforeEnter: authorizeIsAdmin
   },
   {
     path: '/profile',
@@ -73,7 +95,7 @@ const routes = [
         component: () => import('../components/ProfileLikeList.vue')
       },
       {
-        path: '/',
+        path: '',
         redirect: '/profile/tweet'
       }
     ]
@@ -109,10 +131,32 @@ const router = new VueRouter({
   routes
 })
 
-//  加在所有路由前
-router.beforeEach((to, from, next) => {
-  // 使用 dispatch 呼叫 Vuex 內的 actions
-  store.dispatch('fetchCurrentUser')
+
+router.beforeEach(async (to, from, next) => {
+  const token = localStorage.getItem('token')
+  const tokenInStore = store.state.token
+
+  let isAuthenticated = store.state.isAuthenticated
+
+  // 有 token 的情況下，才向後端驗證
+  if (token && token !== tokenInStore) {
+    isAuthenticated = await store.dispatch('fetchCurrentUser')
+  }
+
+  const whiteList = ['user-login', 'user-regist', 'admin-login']
+
+  // 若 token 無效，則轉址到登入頁
+  if (!isAuthenticated && !whiteList.includes(to.name)) {
+    next('/login')
+    return
+  }
+
+  // 若 token 有效，則轉址到首頁
+  if (isAuthenticated && whiteList.includes(to.name)) {
+    next('/main')
+    return
+  }
+
   next()
 })
 
