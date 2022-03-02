@@ -4,6 +4,7 @@ import NotFound from '../views/NotFound.vue'
 import UserLogin from '../views/UserLogin.vue'
 import AdminLogin from '../views/AdminLogin.vue'
 import Main from '../views/Main.vue'
+import OtherUserPost from '../views/OtherUserPost.vue'
 
 
 // 載入 Ｖuex方法
@@ -44,6 +45,12 @@ const routes = [
   },
   {
 
+    path: '/tweets/:tweetId',
+    name: 'other-tweet',
+    component: OtherUserPost
+  },
+  {
+
     path: '/admin/main',
     name: 'admin-main',
     component: () => import('../views/AdminMain.vue')
@@ -78,7 +85,6 @@ const routes = [
   },
   {
     path: '/users/:id',
-    name: 'other-user',
     component: () => import('../views/OtherUserProfile.vue'),
     children: [
       {
@@ -93,10 +99,12 @@ const routes = [
         path: 'like',
         component: () => import('../views/OtherUserLike.vue')
       },
-      {
-        path: 'post',
-        component: () => import('../views/OtherUserPost.vue')
-      },
+
+      // {
+      //   path: 'post',
+      //   component: () => import('../views/OtherUserPost.vue')
+      // },
+
       {
         path: '/',
         redirect: '/users/:id/tweet'

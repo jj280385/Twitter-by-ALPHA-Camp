@@ -73,6 +73,7 @@ export default new Vuex.Store({
       }
     }
   },
+
   actions: {
     async fetchCurrentUser() {
       try {
@@ -107,5 +108,6 @@ export default new Vuex.Store({
       }
     }
   },
+
   modules: {}
 })

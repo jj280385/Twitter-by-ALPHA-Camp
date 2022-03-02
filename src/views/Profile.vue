@@ -10,6 +10,33 @@
       <div class="hidden-gap"></div>
 
       <!-- Navtabs -->
+      <div class="nav-tabs">
+        <button
+          class="nav-item tweet"
+          type="button"
+          :class="{ active: isActive }"
+        >
+          <router-link
+            to="/users/:id"
+            class="nav-link"
+            :class="{ active: isActive }"
+          >
+            推文
+          </router-link>
+        </button>
+
+        <button class="nav-item reply" type="button">
+          <router-link to="/users/:id/reply" class="nav-link">
+            推文與回覆
+          </router-link>
+        </button>
+
+        <button class="nav-item like" type="button">
+          <router-link to="/users/:id/like" class="nav-link">
+            喜歡的內容
+          </router-link>
+        </button>
+      </div>
       <ProfileNavTabs/>
 
 
@@ -26,21 +53,11 @@
 </template>
 
 <script>
-
 import Sidebar from "../components/Sidebar.vue";
 import RightColumn from "../components/RightColumn.vue";
 import ProfileNavTabs from "../components/ProfileNavTabs.vue";
 import ProfileTweetList from "../components/ProfileTweetList.vue";
 import ProfileArea from "../components/ProfileArea.vue";
-
-
-
-import Sidebar from '../components/Sidebar.vue'
-import RightColumn from '../components/RightColumn.vue'
-import ProfileNavTabs from '../components/ProfileNavTabs.vue'
-import ProfileTweetList from '../components/ProfileTweetList.vue'
-// 覆蓋當前畫面之上
-import ProfileArea from '../components/ProfileArea.vue'
 import ProfileEditModal from '../components/ProfileEditModal.vue'
 import Toast from '../components/Toast.vue'
 

@@ -35,9 +35,9 @@
           </router-link>
           <router-link 
           :to="{
-            name: 'user-post',
-            params: {id: tweet.id},
-          }" 
+              path: `/tweets/${tweet.id}`,
+              params: { id: tweet.id}
+            }">
           class="tweet-content">
             <span class="tweet-content">
               {{ tweet.description }}
@@ -46,6 +46,7 @@
           <div class="icon-item">
             <router-link class="reply" 
             :to="{
+              path: 'post',
               name: 'user-post',
               params: { id: tweet.id}
             }">
@@ -66,7 +67,8 @@
 
 <script>
 import tweetAPI from "./../apis/mainTweet";
-import { fromNowFilter } from "./../utils/mixins"
+
+import { fromNowFilter } from "./../utils/mixins";
 
 export default {
   mixins: [fromNowFilter],
@@ -90,8 +92,10 @@ export default {
         
         const tweets = response.data
         this.tweets = tweets
-        console.log('response',response.data)
-        console.log('id',tweets[0].id)
+
+        // console.log('response',response.data)
+        // console.log('id',tweets[0].id)
+
       } catch (e) {
         console.log('error')
       }

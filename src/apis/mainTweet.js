@@ -5,10 +5,12 @@ export default {
     const searchParams = new URLSearchParams({id})
     return apiHelper.get(`./tweets?${searchParams.toString()}`)
   },
-  getOtherPost(tweetId){
-    return apiHelper.get(`/tweets/${tweetId}`)
+  
+  getOtherPost(id){
+    // console.log('id',id)
+    return apiHelper.get(`/tweets/${id}`)
   },
-  getTweetReplies(tweetId){
-    return apiHelper.get(`/tweets/${tweetId}/replies`)
+  getTweetReplies(id){
+    return apiHelper.get(`/tweets/${id}/replies`)
   }
 }

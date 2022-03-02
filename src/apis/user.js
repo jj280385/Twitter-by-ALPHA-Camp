@@ -20,7 +20,7 @@ export default {
     })
   },
 
-  // 其他使用者Profile下方列表
+
   getUserTweetList(id) {
     // console.log('id',id)
     return apiHelper.get(`users/${id}/tweets`)
@@ -35,8 +35,8 @@ export default {
     // console.log('id',id)
     return apiHelper.get(`/users/${id}/likes`)
   },
-  
-  // 右側popular列表
+
+ 
   getUsersTop() {
     return apiHelper.get('/users/top')
   }

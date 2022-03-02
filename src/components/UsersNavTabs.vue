@@ -6,7 +6,8 @@
         type="button"
       >
         <router-link 
-        to="/profile" 
+        to="/users/:id" 
+
         class="nav-link"
         > 推文 </router-link>
       </button>
@@ -15,7 +16,7 @@
         class="nav-item reply"
       >
         <router-link 
-        to="/profile" 
+        to="/users/:id/reply" 
         class="nav-link"
         > 推文與回覆 </router-link>
       </button>
@@ -24,7 +25,7 @@
         class="nav-item like"
       >
         <router-link 
-        to="/profile" 
+        to="/users/:id/like" 
         class="nav-link"
         > 喜歡的內容 </router-link>
       </button>
