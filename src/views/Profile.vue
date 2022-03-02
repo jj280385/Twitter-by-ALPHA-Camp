@@ -10,33 +10,6 @@
       <div class="hidden-gap"></div>
 
       <!-- Navtabs -->
-      <div class="nav-tabs">
-        <button
-          class="nav-item tweet"
-          type="button"
-          :class="{ active: isActive }"
-        >
-          <router-link
-            to="/users/:id"
-            class="nav-link"
-            :class="{ active: isActive }"
-          >
-            推文
-          </router-link>
-        </button>
-
-        <button class="nav-item reply" type="button">
-          <router-link to="/users/:id/reply" class="nav-link">
-            推文與回覆
-          </router-link>
-        </button>
-
-        <button class="nav-item like" type="button">
-          <router-link to="/users/:id/like" class="nav-link">
-            喜歡的內容
-          </router-link>
-        </button>
-      </div>
       <ProfileNavTabs/>
 
 

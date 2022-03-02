@@ -9,32 +9,19 @@
         <div class="list-item" v-for="user in users" :key="user.id">
           <div class="user-info">
             <div class="user-avatar">
-              <router-link to="/">
+              <router-link :to="{path: `/users/${user.id}`}">
                 <img class="avatar-img" :src="user.avatar"/>
               </router-link>
             </div>
-            <router-link to="/">
+            <router-link :to="{path: `/users/${user.id}`}">
               <div class="user-name">{{ user.name }}</div>
               <div class="user-accountName">@{{ user.account }}</div>
             </router-link>
           </div>
           <button class="following-btn">正在追隨</button>
+          <!-- <button class="unfollowed-btn">追隨</button> -->
         </div>
 
-        <div class="list-item">
-          <div class="user-info">
-            <div class="user-avatar">
-              <router-link to="/">
-                <img class="avatar-img" />
-              </router-link>
-            </div>
-            <router-link to="/">
-              <div class="user-name">McDonald's</div>
-              <div class="user-accountName">@McDonalds</div>
-            </router-link>
-          </div>
-          <button class="unfollowed-btn">追隨</button>
-        </div>
       </div>
     </div>
   </div>
