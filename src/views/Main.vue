@@ -18,7 +18,9 @@ export default {
     Sidebar,
     RightColumn,
     MainTweetList,
-  }
+  },
+
+  
 }
 </script>
 

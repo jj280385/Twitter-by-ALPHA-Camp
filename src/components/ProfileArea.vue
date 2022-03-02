@@ -240,7 +240,7 @@ export default {
   },
 
   created() {
-    // this.fetchAccount()
+    this.fetchAccount()
   },
   watch: {
     '$route.path'() {

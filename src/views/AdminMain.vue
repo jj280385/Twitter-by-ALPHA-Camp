@@ -1,6 +1,5 @@
 <template>
   <div id="AdminMain">
-    <Toast />
     <!-- AdminSidebar -->
     <AdminSidebar />
     <!-- AdminTweetsList -->
@@ -20,13 +19,11 @@
 import AdminSidebar from '../components/AdminSidebar.vue'
 import AdminTweetsList from '../components/AdminTweetsList.vue'
 import adminAPI from '../apis/admin'
-import Toast from '../components/Toast.vue'
 export default {
   name: 'AdminMain',
   components: {
     AdminSidebar,
     AdminTweetsList,
-    Toast
   },
   data() {
     return {
