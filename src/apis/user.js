@@ -20,6 +20,27 @@ export default {
     })
   },
 
+  // 其他使用者Profile下方列表
+  getUserTweetList(id) {
+    // console.log('id',id)
+    return apiHelper.get(`users/${id}/tweets`)
+  },
+
+  getUserReplyList(id) {
+    // console.log('id',id)
+    return apiHelper.get(`users/${id}/replied_tweets`)
+  },
+  
+  getUserLikeList(id) {
+    // console.log('id',id)
+    return apiHelper.get(`/users/${id}/likes`)
+  },
+  
+  // 右側popular列表
+  getUsersTop() {
+    return apiHelper.get('/users/top')
+  }
+
   // 修改個人資料（封面、頭像）
   editProfile({ userId, formData }) {
     return apiHelper.put(`/users/${userId}`, formData)

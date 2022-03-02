@@ -121,6 +121,16 @@
         </router-link>
       </button>
 
+
+      <button class="twitter-btn" type="submit" >推文</button>
+      <button class="logout-item">
+        <router-link to="/login">
+          <img src="../assets/image/logout.svg" class="logout-icon" />
+          <span class="logout">登出</span>
+        </router-link>
+      </button>
+    </div>
+
       <button
         @click="$bus.$emit('tweetModal', true)"
         class="twitter-btn"
@@ -136,6 +146,7 @@
       </router-link>
     </button>
     <TweetModal />
+
   </div>
 </template>
 
@@ -169,9 +180,9 @@ export default {
 <style lang="scss" scoped>
 .sidebar-container {
   width: 235px;
-  height: 100%;
   @include flex(column, flex-start, flex-start);
   @include margin(4px, 0, 0, 103px);
+  position: relative;
 }
 
 .sidebar-header {
@@ -286,10 +297,10 @@ a {
   padding: 3px 5px;
 }
 
+// logout btn 固定不動
 .logout-item {
-  position: absolute;
+  position: fixed;
   bottom: 17px;
-  @include size(80px, 26px);
   margin-left: 8px;
   display: flex;
 }

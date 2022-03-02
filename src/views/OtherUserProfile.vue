@@ -1,17 +1,18 @@
+// 其他使用者個人資料頁面+推文列表
+
 <template>
   <div class="container">
     <Sidebar />
 
     <div class="profile-container">
       <!-- 個人資料 -->
-      <ProfileArea />
+        <ProfileArea />
 
       <!-- 充當margin -->
       <div class="hidden-gap"></div>
 
       <!-- Navtabs -->
-      <ProfileNavTabs/>
-
+      <ProfileNavTabs />
 
       <!-- 下方推文列表 -->
       <div class="tweet-list">
@@ -19,31 +20,15 @@
       </div>
     </div>
     <RightColumn />
-    <!-- 覆蓋當前畫面之上 -->
-    <ProfileEditModal />
-    <Toast />
   </div>
 </template>
 
 <script>
-
-import Sidebar from "../components/Sidebar.vue";
-import RightColumn from "../components/RightColumn.vue";
-import ProfileNavTabs from "../components/ProfileNavTabs.vue";
-import ProfileTweetList from "../components/ProfileTweetList.vue";
-import ProfileArea from "../components/ProfileArea.vue";
-
-
-
 import Sidebar from '../components/Sidebar.vue'
 import RightColumn from '../components/RightColumn.vue'
 import ProfileNavTabs from '../components/ProfileNavTabs.vue'
-import ProfileTweetList from '../components/ProfileTweetList.vue'
-// 覆蓋當前畫面之上
+import OtherUserTweet from '../components/OtherUserTweet.vue'
 import ProfileArea from '../components/ProfileArea.vue'
-import ProfileEditModal from '../components/ProfileEditModal.vue'
-import Toast from '../components/Toast.vue'
-
 
 export default {
   components: {
@@ -51,17 +36,14 @@ export default {
     RightColumn,
     ProfileArea,
     ProfileNavTabs,
-    ProfileTweetList,
-    ProfileEditModal,
-    Toast
+    OtherUserTweet,
   },
-
   data() {
     return {
-      isActive: true,
-    };
-  },
-};
+      isActive: true
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -78,9 +60,9 @@ export default {
 }
 
 // 個人資料頁面尚未完成
-.hidden-gap {
+.hidden-gap{
   @include size(100%, 35px);
-  visibility: hidden;
+  visibility: hidden
 }
 
 .nav-tabs {

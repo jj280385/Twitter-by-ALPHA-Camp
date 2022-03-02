@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import NotFound from '../views/NotFound.vue'
 import UserLogin from '../views/UserLogin.vue'
 import AdminLogin from '../views/AdminLogin.vue'
+import Main from '../views/Main.vue'
+
 
 // 載入 Ｖuex方法
 import store from '../store'
@@ -26,11 +28,6 @@ const routes = [
     component: () => import('../views/Main.vue')
   },
   {
-    path: '/main/reply',
-    name: 'main-reply',
-    component: () => import('../views/MainReply.vue')
-  },
-  {
     path: '/regist',
     name: 'user-regist',
     component: () => import('../views/UserRegist.vue')
@@ -46,6 +43,7 @@ const routes = [
     component: AdminLogin
   },
   {
+
     path: '/admin/main',
     name: 'admin-main',
     component: () => import('../views/AdminMain.vue')
@@ -75,6 +73,33 @@ const routes = [
       {
         path: '/',
         redirect: '/profile/tweet'
+      }
+    ]
+  },
+  {
+    path: '/users/:id',
+    name: 'other-user',
+    component: () => import('../views/OtherUserProfile.vue'),
+    children: [
+      {
+        path: 'tweet',
+        component: () => import('../views/OtherUserProfile.vue')
+      },
+      {
+        path: 'reply',
+        component: () => import('../views/OtherUserReply.vue')
+      },
+      {
+        path: 'like',
+        component: () => import('../views/OtherUserLike.vue')
+      },
+      {
+        path: 'post',
+        component: () => import('../views/OtherUserPost.vue')
+      },
+      {
+        path: '/',
+        redirect: '/users/:id/tweet'
       }
     ]
   },
