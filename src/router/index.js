@@ -101,18 +101,18 @@ const routes = [
     children: [
       {
         path: 'tweet',
-        component: () => import('../views/OtherUserProfile.vue')
+        component: () => import('../components/OtherUserTweet.vue')
       },
       {
         path: 'reply',
-        component: () => import('../views/OtherUserReply.vue')
+        component: () => import('../components/OtherUserReplyList.vue')
       },
       {
         path: 'like',
-        component: () => import('../views/OtherUserLike.vue')
+        component: () => import('../components/OtherUserLikeList.vue')
       },
       {
-        path: '/',
+        path: '',
         redirect: '/users/:id/tweet'
       }
     ]

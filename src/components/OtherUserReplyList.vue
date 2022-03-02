@@ -2,7 +2,10 @@
 <template>
   <div class="reply-container">
     <!-- Profile頁面下方的回覆列表 -->
-    <div class="reply-list">
+    <div v-if="noReply" class="noReply">
+      <span> 目前沒有任何推文 </span>
+    </div>
+    <div v-else class="reply-list">
       <div class="reply-item" v-for="reply in replies" :key="reply.id">
         <div class="user-avatar">
           <router-link to="/users/:id">
@@ -38,7 +41,8 @@ export default {
   mixins: [fromNowFilter],
   data() {
     return {
-      replies:[]
+      replies:[],
+      noReply: true,
     }
   },
   created() {
@@ -54,10 +58,15 @@ export default {
     async fetchTweets(id) {
       try {
         const { data } = await userAPI.getUserReplyList(id)
-        // console.log('id',id);
         const replies = data;
         this.replies = replies
-        console.log('data',data)
+
+        if ( data.status === 'error') {
+          this.noReply = true
+        } else if(id === id){
+          this.noReply = false
+        }
+        // console.log('data2',data);
       } catch (error) {
         console.log(error);
       }
@@ -72,6 +81,12 @@ export default {
   margin-top: 10px;
 }
 
+.noReply {
+  font-size: 18px;
+  margin: 20px;
+  color: var(--info);
+}
+
 .reply-list {
   position: relative;
   @include size(100%, 100%);
@@ -80,19 +95,19 @@ export default {
 }
 
 .reply-item {
-  @include size(100%, 130px);
-  margin-top: 10px;
+  @include size(100%, 100%);
   display: flex;
   align-items: flex-start;
   font-size: 15px;
   font-weight: 700;
   line-height: 15px;
   border-bottom: 1px solid var(--theme-line);
+  padding: 10px;
 }
 
 .user-avatar {
   @include size(50px, 50px);
-  margin: 0 10px 67px 15px;
+  margin: 0 10px auto 15px;
 }
 
 .avatar-img {
@@ -159,9 +174,10 @@ export default {
 }
 
 .tweet-content {
-  @include size(100%, 66px);
+  @include size(100%, 100%);
   font-size: 15px;
   font-weight: 500;
   line-height: 22px;
+  margin: 10px 0;
 }
 </style>
