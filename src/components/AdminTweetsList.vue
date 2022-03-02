@@ -1,18 +1,19 @@
 <template>
   <div class="list-contents">
-    <Toast />
-    <div 
-    class="list-content"
-    v-for="tweet in Tweets"
-    :key="tweet.id"
-      >
+    <div class="list-content" v-for="tweet in Tweets" :key="tweet.id">
       <div class="user-avatar">
-        <img class="user-avatar-img" :src=" tweet.User.avatar " alt="" />
+        <img class="user-avatar-img" :src="tweet.User.avatar" alt="" />
       </div>
       <div class="content-detail">
-        <div class="detail">{{ tweet.User.name }}
-          <span class="account-date">@{{ tweet.User.account }}・{{ tweet.createdAt }}</span>
-          <div class="del-btn" @click.stop.prevent="handleDeleteButtonClick(tweet.id)">
+        <div class="detail">
+          {{ tweet.User.name }}
+          <span class="account-date"
+            >@{{ tweet.User.account }}・{{ tweet.createdAt }}</span
+          >
+          <div
+            class="del-btn"
+            @click.stop.prevent="handleDeleteButtonClick(tweet.id)"
+          >
             x
           </div>
         </div>
@@ -20,17 +21,13 @@
       </div>
     </div>
   </div>
-  
-
 </template>
 
 <script>
-import Toast from '../components/Toast.vue'
+
 export default {
   name: 'AdminTweetsList',
-  components: {
-    Toast
-  },
+  components: {},
   props: {
     Tweets: {
       type: Array,
@@ -39,7 +36,7 @@ export default {
   },
   watch: {
     Tweets(newValue) {
-      console.log(newValue);
+      console.log(newValue)
       this.tweet = {
         ...this.tweet,
         ...newValue
@@ -49,14 +46,17 @@ export default {
   methods: {
     handleDeleteButtonClick(id) {
       this.$emit('after-delete-tweet', id)
-      // TODO 這邊想改成ALERT 確定刪除後才回傳
-      this.$bus.$emit('toast', { icon: 'success', title:  '刪除成功！' })
     }
   },
+
   filters: {
     slice(description) {
       if (!description) return '-'
-      return description.slice(0, 50)
+      description = description.slice(0, 50)
+      if (description.length >= 50) {
+        description = description + '...'
+      }
+      return description
     }
   }
 }

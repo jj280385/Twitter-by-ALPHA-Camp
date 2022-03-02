@@ -94,7 +94,6 @@ export default {
         })
         this.$router.push({name: 'admin-main'})
       } catch (error) {
-        this.$bus.$emit('toast', { icon: 'error', title: `${error}` })
         this.isProcessing = false
         console.log(error)
       }
