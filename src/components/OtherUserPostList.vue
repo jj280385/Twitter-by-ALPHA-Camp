@@ -24,27 +24,27 @@
       <div class="poster-info">
         <div class="poster-avatar">
           <router-link to="/main">
-            <img class="avatar-img" :src="tweet.User.avatar" />
+            <img class="avatar-img" :src="tweets.User.avatar"/>
           </router-link>
         </div>
         <router-link to="/user/:id">
           <div class="user-info">
-            <div class="user-name">{{ tweet.User.name }}</div>
-            <div class="user-accountName">@{{ tweet.User.account }}</div>
+            <div class="user-name">{{ tweets.User.name }}</div>
+            <div class="user-accountName">@{{ tweets.User.account }}</div>
           </div>
         </router-link>
       </div>
       <div class="post-content">
-        <span class="post-text"> {{ tweet.description }} </span>
+        <span class="post-text"> {{ tweets.description }} </span>
       </div>
-      <span class="post-time">{{ tweet.createdAt | fromNow }}</span>
+      <span class="post-time">{{ tweets.createdAt | fromNow }}</span>
       <div class="count">
         <span class="reply-count"
-          ><p class="number">{{ tweet.replyCount }}</p>
+          ><p class="number">{{ tweets.replyCount }}</p>
           回覆</span
         >
         <span class="like-count">
-          <p class="number">{{ tweet.likeCount }}</p>
+          <p class="number">{{ tweets.likeCount }}</p>
           喜歡次數</span
         >
       </div>
@@ -69,11 +69,18 @@
       </div>
     </div>
     <!-- 下方回覆列表 -->
-    <div class="reply-list" v-for="reply in replies" :key="reply.id">
+    <!-- v-for="reply in replies" :key="reply.id" -->
+    <div v-if="noReply">
+      <span class="noReply"> 目前沒有回覆 </span>
+    </div>
+    <div class="reply-list" 
+    v-else
+    v-for="reply in replies" 
+    :key="reply.id">
       <div class="reply-item">
         <div class="user-avatar">
           <router-link to="/profile">
-            <img class="avatar-img" :src="tweet.User.avatar" />
+            <img class="avatar-img" />
           </router-link>
         </div>
         <div class="reply-content">
@@ -81,13 +88,13 @@
             <div class="replier-info">
               <div class="user-name">{{ reply.User.name }}</div>
               <div class="user-accountName">@{{ reply.User.account }}</div>
-              <div class="reply-time">‧{{ reply.createdAt | fromNow }}</div>
+              <div class="reply-time">‧{{ reply.createdAt || fromNow }}</div>
             </div>
           </router-link>
           <div class="reply">
             <span class="text">回覆</span>
-            <router-link to="/" class="reply-to"
-              >@{{ tweet.User.name }}</router-link
+            <router-link to="/" class="reply-to">
+            @{{ tweets.User.name }}</router-link
             >
           </div>
           <span class="reply-text"> {{ reply.comment }} </span>
@@ -106,69 +113,48 @@ export default {
   data() {
     return {
       isActive: false,
-      tweet: {
-        id: -1,
-        description: "",
+      tweets: {
+        id: 1,
+        User:{},
+        description:'',
         likeCount: 0,
         replyCount: 0,
-        isLike: true,
-        createdAt: "",
-        User: {},
-        name: "",
+        isLiked: false,
       },
       replies: [],
+      noReply: false,
     };
   },
-  created() {
-    const { id: tweetId } = this.$route.params;
+  created (){
+    const id = this.$route.params;
+    const tweetId = id.tweetId;
     this.fetchTweet(tweetId);
     this.fetchReplies(tweetId);
-  },
-  beforeRouteUpdate(to, from, next) {
-    const { id: tweetId } = to.params;
-    this.fetchTweet(tweetId);
-    this.fetchReplies(tweetId);
-    next();
   },
   methods: {
+    // 上方其他使用者推文
     async fetchTweet(tweetId) {
       try {
-        const { data } = await postAPI.getOtherPost({
-          tweetId: this.$route.params.id,
-        });
-        const {
-          id,
-          description,
-          likeCount,
-          replyCount,
-          isLike,
-          createdAt,
-          User,
-          Replies,
-        } = data;
-        this.tweet = {
-          id,
-          description,
-          likeCount,
-          replyCount,
-          isLike,
-          createdAt,
-          User,
-          Replies,
-        };
+        const { data } = await postAPI.getOtherPost(tweetId);
+        const tweets = data;
+        this.tweets = tweets;
+        // console.log('tweets',tweets);
       } catch (error) {
         console.log(error);
       }
     },
-    async fetchReplies(tweetId) {   
+    // 下方推文回覆列表
+    async fetchReplies(tweetId) { 
       try {
-        const response = await postAPI.getTweetReplies({
-          tweetId: this.$route.params.id,
-        });
-
-        const replies = response.data;
+        const { data } = await postAPI.getTweetReplies(tweetId);
+        // console.log('tweetid',tweetId);
+        // console.log('路由變化') 
+        const replies = data;
         this.replies = replies;
-        console.log(response.data);
+        console.log("data", data);
+        if (data.status=== 'error') {
+          this.noReply=true
+        }
       } catch (error) {
         console.log("error");
       }
@@ -224,7 +210,6 @@ button {
 }
 
 .post-content {
-  height: 136px;
   width: 510px;
   margin-top: 18px;
   margin-bottom: 15px;
@@ -249,7 +234,7 @@ button {
 }
 
 .post {
-  height: 399px;
+  height: 100%;
   // width: 570px;
   padding: 15px;
   display: flex;
@@ -377,6 +362,12 @@ button {
 .reply-time {
   font-size: 15px;
   font-weight: 500;
+  color: var(--info);
+}
+
+.noReply {
+  font-size: 25px;
+  margin-left: 10px;
   color: var(--info);
 }
 // 個人資料共用樣式
