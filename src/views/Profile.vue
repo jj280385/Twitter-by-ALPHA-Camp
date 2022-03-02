@@ -48,7 +48,6 @@
     <RightColumn />
     <!-- 覆蓋當前畫面之上 -->
     <ProfileEditModal />
-    <Toast />
   </div>
 </template>
 
@@ -59,7 +58,6 @@ import ProfileNavTabs from "../components/ProfileNavTabs.vue";
 import ProfileTweetList from "../components/ProfileTweetList.vue";
 import ProfileArea from "../components/ProfileArea.vue";
 import ProfileEditModal from '../components/ProfileEditModal.vue'
-import Toast from '../components/Toast.vue'
 
 
 export default {
@@ -70,7 +68,6 @@ export default {
     ProfileNavTabs,
     ProfileTweetList,
     ProfileEditModal,
-    Toast
   },
 
   data() {

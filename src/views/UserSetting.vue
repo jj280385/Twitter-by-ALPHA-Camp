@@ -63,13 +63,11 @@
 
       <button class="saveBtn" :disabled="isProcessing">儲存</button>
     </form>
-    <Toast />
   </div>
 </template>
 
 <script>
 import Sidebar from '../components/Sidebar.vue'
-import Toast from '../components/Toast.vue'
 import userAPI from '../apis/user'
 
 export default {
@@ -192,7 +190,6 @@ export default {
   },
   components: {
     Sidebar,
-    Toast
   }
 }
 </script>

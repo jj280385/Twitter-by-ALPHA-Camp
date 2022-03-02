@@ -67,9 +67,11 @@ export default new Vuex.Store({
           updatedAt,
           role
         })
+        return true
       } catch (error) {
         console.error('can not fetch user information')
         console.log('error', error)
+        return false
       }
     }
   },

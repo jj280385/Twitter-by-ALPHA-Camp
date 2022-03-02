@@ -1,18 +1,18 @@
 <template>
   <!-- Modal background-->
   <transition name="fade" mode="in-out">
-    <div v-show="modal" @click.stop.prevent="modal = false" class="modal">
+    <div v-show="modal" @click.stop="modal = false" class="modal">
       <!-- Modal dialog -->
       <transition name="slide">
         <form
           @submit.prevent="submitTweet"
           v-show="modal"
-          @click.stop.prevent="modal = true"
+          @click.stop="modal = true"
           class="modal-dialog d-flex flex-column"
         >
           <div class="modal-header">
             <button
-              @click.stop.prevent="modal = false"
+              @click.stop="modal = false"
               class="close d-flex justify-content-center align-items-center"
             >
               <!-- SVG -->
@@ -36,7 +36,7 @@
           <div class="modal-body d-flex">
             <div class="avatar">
               <router-link to="/main">
-                <img :src="currentUser.avatar" alt="預設的頭像" />
+                <img :src="currentUser.avatar | nullAvatar" alt="預設的頭像" />
               </router-link>
             </div>
 
@@ -68,8 +68,10 @@
 <script>
 import tweetAPI from '../apis/tweet'
 import { mapState } from 'vuex'
+import { nullAvatarFilter } from "../utils/mixins";
 
 export default {
+  mixins:[nullAvatarFilter],
   data() {
     return {
       modal: false,

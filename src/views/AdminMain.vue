@@ -1,6 +1,5 @@
 <template>
   <div id="AdminMain">
-    <Toast />
     <!-- AdminSidebar -->
     <AdminSidebar />
     <!-- AdminTweetsList -->
@@ -27,7 +26,6 @@ export default {
   components: {
     AdminSidebar,
     AdminTweetsList,
-    Toast
   },
   data() {
     return {

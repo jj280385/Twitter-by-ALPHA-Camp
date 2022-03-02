@@ -1,5 +1,8 @@
 <template>
+  <main>
     <router-view />
+    <Toast />
+  </main>
 </template>
 
 <style lang="scss">
@@ -9,5 +12,11 @@
 @import './styles/layout.scss';
 @import './styles/font.scss';
 @import './styles/color.scss';
-
 </style>
+
+<script>
+import Toast from './components/Toast.vue'
+export default {
+  components: { Toast }
+}
+</script>

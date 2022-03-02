@@ -39,12 +39,7 @@
       </router-link>
     </div>
     <div class="sidebar-items">
-      <button
-        @click="activeTab = 'home'"
-        :class="{ active: activeTab === 'home' }"
-        class="sidebar-item home"
-        type="button"
-      >
+      <button class="sidebar-item home" type="button">
         <router-link to="/main">
           <!-- Home SVG -->
           <svg
@@ -65,13 +60,8 @@
         </router-link>
       </button>
 
-      <button
-        @click="activeTab = 'userInfo'"
-        :class="{ active: activeTab === 'userInfo' }"
-        class="sidebar-item userInfo"
-        type="button"
-      >
-        <router-link to="/profile">
+      <button class="sidebar-item userInfo" type="button">
+        <router-link to="/profile" :class="{ active: isSelf }">
           <!-- User SVG -->
           <svg
             class="item-icon"
@@ -91,12 +81,7 @@
         </router-link>
       </button>
 
-      <button
-        @click="activeTab = 'setting'"
-        :class="{ active: activeTab === 'setting' }"
-        class="sidebar-item setting"
-        type="button"
-      >
+      <button class="sidebar-item setting" type="button">
         <router-link to="/setting">
           <!-- Setting SVG -->
           <svg
@@ -138,11 +123,9 @@
         推文
       </button>
     </div>
-    <button class="logout-item">
-      <router-link to="/login">
-        <img src="../assets/image/logout.svg" class="logout-icon" />
-        <span class="logout">登出</span>
-      </router-link>
+    <button @click="logout" class="logout-item">
+      <img src="../assets/image/logout.svg" class="logout-icon" />
+      <span class="logout">登出</span>
     </button>
     <TweetModal />
 
@@ -156,21 +139,17 @@ import { mapState } from 'vuex'
 export default {
   components: { TweetModal },
 
-  data(){
-    return{
-      activeTab:false
+  computed: {
+    ...mapState(['currentUser']),
+    isSelf() {
+      return this.currentUser.id === Number(this.$route.params.id)
     }
   },
 
-  computed: {
-    ...mapState(['currentUser'])
-  },
-
-  watch:{
-    // 有home, userInfo, setting 三種
-    // 到其他人的跟隨中列表、跟髓者列表取消
-    'this.$route.params.id'(){
-      this.currentUser.id === this.$route.params.id?(this.activeTab ='userInfo'):(this.activeTab =false)
+  methods: {
+    logout() {
+      this.$store.commit('revokeAuthentication')
+      this.$router.push({ name: 'user-login' })
     }
   }
 }

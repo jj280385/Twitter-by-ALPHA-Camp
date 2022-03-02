@@ -68,7 +68,7 @@ export default {
     })
   },
   beforeDestroy() {
-    this.$bus.$off('toast')
+    // this.$bus.$off('toast')
   }
 }
 </script>

@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <Toast />
-    <form class="login-container" @submit.prevent.stop="handleSubmit">
+    <form class="login-container" @submit="handleSubmit">
       <img class="logo" src="../assets/image/logo.svg" />
 
       <span class="page-title"> 登入 Alphitter </span>
@@ -48,12 +47,8 @@
 
 <script>
 import authorizationAPI from '../apis/authorization'
-import Toast from '../components/Toast.vue'
 
 export default {
-  components: {
-    Toast
-  },
   data() {
     return {
       account: '',
@@ -101,8 +96,7 @@ export default {
           icon: 'success',
           title: '登入成功'
         })
-        // TODO: 完成登入要轉址去首頁喔～～
-        // this.$router.push({name: ''})
+        this.$router.push({name: 'main'})
       } catch (error) {
         this.$bus.$emit('toast', { icon: 'error', title: `${error}` })
         this.isProcessing = false
