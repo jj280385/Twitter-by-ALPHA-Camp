@@ -7,6 +7,7 @@
       >
         <router-link 
         to="/users/:id" 
+
         class="nav-link"
         > 推文 </router-link>
       </button>

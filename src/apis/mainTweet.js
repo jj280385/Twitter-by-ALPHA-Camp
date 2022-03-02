@@ -5,6 +5,7 @@ export default {
     const searchParams = new URLSearchParams({id})
     return apiHelper.get(`./tweets?${searchParams.toString()}`)
   },
+  
   getOtherPost(id){
     // console.log('id',id)
     return apiHelper.get(`/tweets/${id}`)

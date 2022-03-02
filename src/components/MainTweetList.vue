@@ -47,6 +47,7 @@
             <router-link class="reply" 
             :to="{
               path: 'post',
+              name: 'user-post',
               params: { id: tweet.id}
             }">
               <img class="reply-icon" src="../assets/image/reply-icon.svg" />
@@ -66,6 +67,7 @@
 
 <script>
 import tweetAPI from "./../apis/mainTweet";
+
 import { fromNowFilter } from "./../utils/mixins";
 
 export default {
@@ -90,8 +92,10 @@ export default {
         
         const tweets = response.data
         this.tweets = tweets
+
         // console.log('response',response.data)
         // console.log('id',tweets[0].id)
+
       } catch (e) {
         console.log('error')
       }

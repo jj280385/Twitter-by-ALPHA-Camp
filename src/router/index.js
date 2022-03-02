@@ -6,6 +6,7 @@ import AdminLogin from '../views/AdminLogin.vue'
 import Main from '../views/Main.vue'
 import OtherUserPost from '../views/OtherUserPost.vue'
 
+
 // 載入 Ｖuex方法
 import store from '../store'
 
@@ -28,11 +29,6 @@ const routes = [
     component: () => import('../views/Main.vue')
   },
   {
-    path: '/main/reply',
-    name: 'main-reply',
-    component: () => import('../views/MainReply.vue')
-  },
-  {
     path: '/regist',
     name: 'user-regist',
     component: () => import('../views/UserRegist.vue')
@@ -48,11 +44,13 @@ const routes = [
     component: AdminLogin
   },
   {
+
     path: '/tweets/:tweetId',
     name: 'other-tweet',
     component: OtherUserPost
   },
   {
+
     path: '/admin/main',
     name: 'admin-main',
     component: () => import('../views/AdminMain.vue')
@@ -101,10 +99,12 @@ const routes = [
         path: 'like',
         component: () => import('../views/OtherUserLike.vue')
       },
+
       // {
       //   path: 'post',
       //   component: () => import('../views/OtherUserPost.vue')
       // },
+
       {
         path: '/',
         redirect: '/users/:id/tweet'

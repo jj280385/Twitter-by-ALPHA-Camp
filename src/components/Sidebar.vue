@@ -129,6 +129,7 @@
         </router-link>
       </button>
     </div>
+
       <button
         @click="$bus.$emit('tweetModal', true)"
         class="twitter-btn"
@@ -144,6 +145,7 @@
       </router-link>
     </button>
     <TweetModal />
+
   </div>
 </template>
 

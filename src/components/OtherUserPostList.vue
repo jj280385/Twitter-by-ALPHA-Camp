@@ -29,12 +29,14 @@
         </div>
         <router-link to="/user/:id">
           <div class="user-info">
+
             <div class="user-name">{{ tweets.User.name }}</div>
             <div class="user-accountName">@{{ tweets.User.account }}</div>
           </div>
         </router-link>
       </div>
       <div class="post-content">
+
         <span class="post-text"> {{ tweets.description }} </span>
       </div>
       <span class="post-time">{{ tweets.createdAt | fromNow }}</span>
@@ -45,6 +47,7 @@
         >
         <span class="like-count">
           <p class="number">{{ tweets.likeCount }}</p>
+
           喜歡次數</span
         >
       </div>
@@ -69,6 +72,7 @@
       </div>
     </div>
     <!-- 下方回覆列表 -->
+
     <!-- v-for="reply in replies" :key="reply.id" -->
     <div v-if="noReply">
       <span class="noReply"> 目前沒有回覆 </span>
@@ -81,6 +85,7 @@
         <div class="user-avatar">
           <router-link to="/profile">
             <img class="avatar-img" />
+
           </router-link>
         </div>
         <div class="reply-content">
@@ -88,13 +93,17 @@
             <div class="replier-info">
               <div class="user-name">{{ reply.User.name }}</div>
               <div class="user-accountName">@{{ reply.User.account }}</div>
-              <div class="reply-time">‧{{ reply.createdAt || fromNow }}</div>
+
+              <div class="reply-time">‧{{ reply.createdAt | fromNow }}</div>
+
             </div>
           </router-link>
           <div class="reply">
             <span class="text">回覆</span>
+
             <router-link to="/" class="reply-to">
             @{{ tweets.User.name }}</router-link
+
             >
           </div>
           <span class="reply-text"> {{ reply.comment }} </span>
@@ -113,6 +122,7 @@ export default {
   data() {
     return {
       isActive: false,
+
       tweets: {
         id: 1,
         User:{},
@@ -143,6 +153,7 @@ export default {
         console.log(error);
       }
     },
+
     // 下方推文回覆列表
     async fetchReplies(tweetId) { 
       try {
@@ -155,6 +166,7 @@ export default {
         if (data.status=== 'error') {
           this.noReply=true
         }
+
       } catch (error) {
         console.log("error");
       }
@@ -234,7 +246,9 @@ button {
 }
 
 .post {
+
   height: 100%;
+
   // width: 570px;
   padding: 15px;
   display: flex;
@@ -370,6 +384,7 @@ button {
   margin-left: 10px;
   color: var(--info);
 }
+
 // 個人資料共用樣式
 .user-accountName {
   color: var(--info);

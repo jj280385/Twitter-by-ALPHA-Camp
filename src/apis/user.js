@@ -20,6 +20,7 @@ export default {
     })
   },
 
+
   getUserTweetList(id) {
     // console.log('id',id)
     return apiHelper.get(`users/${id}/tweets`)
@@ -35,6 +36,7 @@ export default {
     return apiHelper.get(`/users/${id}/likes`)
   },
 
+ 
   getUsersTop() {
     return apiHelper.get('/users/top')
   }

@@ -39,6 +39,7 @@
       </div>
       <ProfileNavTabs/>
 
+
       <!-- 下方推文列表 -->
       <div class="tweet-list">
         <router-view></router-view>
@@ -57,13 +58,9 @@ import RightColumn from "../components/RightColumn.vue";
 import ProfileNavTabs from "../components/ProfileNavTabs.vue";
 import ProfileTweetList from "../components/ProfileTweetList.vue";
 import ProfileArea from "../components/ProfileArea.vue";
-import Sidebar from '../components/Sidebar.vue'
-import RightColumn from '../components/RightColumn.vue'
-import ProfileNavTabs from '../components/ProfileNavTabs.vue'
-import ProfileTweetList from '../components/ProfileTweetList.vue'
-import ProfileArea from '../components/ProfileArea.vue'
 import ProfileEditModal from '../components/ProfileEditModal.vue'
 import Toast from '../components/Toast.vue'
+
 
 export default {
   components: {
