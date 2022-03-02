@@ -3,13 +3,13 @@
     <!-- title -->
     <div class="follower-header">
       <button type="button" class="back-to">
-        <router-link to="/profile">
+        <router-link to="/">
           <img class="back-icon" src="../assets/image/back-icon.svg" />
         </router-link>
       </button>
       <div class="title">
-        <span class="name">John Doe</span>
-        <p>25 推文</p>
+        <span class="name">{{ name }}</span>
+        <p>{{ tweetCount }} 推文</p>
       </div>
     </div>
     <!-- NavTabs 切換分頁 -->
@@ -20,7 +20,8 @@
         :class="{active: isActive}"
       >
         <router-link 
-        to="/profile/follower" 
+        :to="{ name: 'user-follower', params: { id }}"
+        
         class="nav-link"
         :class="{active: isActive}"
         > 跟隨者 </router-link>
@@ -31,7 +32,7 @@
         type="button"
       >
         <router-link 
-        to="/profile/following" 
+        :to="{ name: 'user-following', params: { id }}"
         class="nav-link"
         > 正在跟隨 </router-link>
       </button>
@@ -39,93 +40,84 @@
 
     <!-- 追隨者列表 -->
     <div class="follower-list">
-      <div class="list-item">
-      <div class="user-info">
-        <div class="user-avatar">
-          <router-link to="/profile" class="avatar-img">
-            <img class="avatar-img" />
-          </router-link>
+      <div class="list-item"
+        v-for="follower in followers"
+        :key="follower.id">
+        <div class="user-info">
+          <div class="user-avatar">
+            <router-link to="/user/" class="avatar-img">
+              <img class="avatar-img" :src=" follower.Followings.avatar " />
+            </router-link>
+          </div>
+          <div class="content">
+            <router-link to="/profile">
+              <div class="user-name">{{ follower.Followings.name }}</div>
+              <div class="user-accountName">@{{ follower.Followings.account }}</div>
+            </router-link>
+            <span class="introduce">
+            {{ follower.Followings.introduction }}
+            </span>
+          </div>
         </div>
-        <div class="content">
-          <router-link to="/profile">
-            <div class="user-name">McDonald's</div>
-            <div class="user-accountName">@McDonalds</div>
-          </router-link>
-          <span class="introduce">
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.
-        </span>
+        <div class="toggleBtn" v-if="follower.isFollowed">
+          <button 
+          class="unfollowed-btn" 
+          @click.stop.prevent="addFollow(follower.Followings.id)" 
+          >追隨</button>
         </div>
-      </div>
-      <div class="toggleBtn" v-if="isActive = isActive">
-        <button 
-        class="unfollowed-btn" 
-        @click="toggle"
-        :class="{active:isActive}"
-        >追隨</button>
-      </div>
-      <div class="toggleBtn" v-else>
-        <button 
-        class="following-btn" 
-        @click="toggle"
-        :class="{active:isActive}"
-        >正在追隨</button>
-      </div>
-      
-      </div>
-      
-      <div class="list-item">
-      <div class="user-info">
-        <div class="user-avatar">
-          <router-link to="/profile" class="avatar-img">
-            <img class="avatar-img" />
-          </router-link>
-        </div>
-        <div class="content">
-          <router-link to="/profile">
-            <div class="user-name">McDonald's</div>
-            <div class="user-accountName">@McDonalds</div>
-          </router-link>
-          <span class="introduce">
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.
-        </span>
+        <div class="toggleBtn" v-else>
+          <button 
+          class="following-btn"
+          @click.stop.prevent="removeFollow(follower.Followers.id)" 
+          >正在追隨</button>
         </div>
       </div>
-      <div class="toggleBtn" v-if="isActive = isActive">
-        <button 
-        class="unfollowed-btn" 
-        @click="toggle"
-        :class="{active:isActive}"
-        >追隨</button>
-      </div>
-      <div class="toggleBtn" v-else>
-        <button 
-        class="following-btn" 
-        @click="toggle"
-        :class="{active:isActive}"
-        >正在追隨</button>
-      </div>
-      
-      </div>
+    
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import userAPI from "../apis/user";
+import followAPI from "../apis/follow";
 export default {
+  name: 'FollowerList',
+  props: {
+    followers: {
+      type: Array,
+      required: true
+    },
+  },
   data() {
     return {
+      id:'',
+      name:'',
+      tweetCount:'',
       isActive: true,
     };
   },
+  created () {
+    const { id } = this.$route.params
+    console.log(id)
+    
+    this.fetchUser(id)
+  },
+  computed: {
+    ...mapState(['currentUser'])
+  },
   methods: {
-    toggle() {
-      if (!this.isActive) {
-        this.isActive = true;
-      } else {
-        this.isActive = false;
+    async fetchUser (userId) {
+      try {
+        const { data } = await userAPI.getProfile({ userId })
+        this.id = await data.id
+        this.name = data.name
+        this.tweetCount = data.tweetCount
+      } catch (error) {
+        console.log(error)
       }
     },
-  },
+  }
 };
 </script>
 

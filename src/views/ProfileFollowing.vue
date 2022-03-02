@@ -2,7 +2,8 @@
   <div class="container">
     <Sidebar /> 
     <div class="follower">
-      <FollowingList />
+      <FollowingList 
+      :followings="followings"/>
     </div>
     <RightColumn />
   </div>
@@ -12,12 +13,62 @@
 import Sidebar from "../components/Sidebar.vue"
 import RightColumn from "../components/RightColumn.vue"
 import FollowingList from "../components/FollowingList.vue"
+import userAPI from "../apis/user";
+import { mapState } from 'vuex';
 
 export default {
+  name: "UserFollowings",
   components: {
     Sidebar,
     RightColumn,
     FollowingList,
+  },
+  data() {
+    return {
+      following: {
+        followerId: '',
+        followingId: '',
+        createdAt: '',
+        followings: {
+          name: '',
+          account: '',
+          avatar: '',
+          id: -1,
+          introduction: ''
+        },
+        isFollowed:false,
+      },
+      followings: [],
+    }
+  },
+  created () {
+    const { id } = this.$route.params
+    this.fetchUser(id)
+    this.fetchFollowings(id)
+  },
+  computed: {
+    ...mapState(['currentUser'])
+  },
+  methods: {
+    async fetchFollowings(userId) {
+      try {
+        const { data } = await userAPI.getUserFollowings(userId)
+        this.followings = data
+        console.log(this.followings)
+        
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async fetchUser (userId) {
+      try {
+        const { data } = await userAPI.getProfile({ userId })
+        this.name = data.name
+        this.tweetCount = data.tweetCount
+      } catch (error) {
+        console.log(error)
+      }
+    },
   }
 }
 </script>

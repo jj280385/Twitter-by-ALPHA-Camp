@@ -156,9 +156,9 @@ export default {
             title: '資料修改成功'
           })
 
-          this.isProcessing =false
-        }else{
-          throw new Error(response.data.message)
+          this.isProcessing = false
+        } else {
+          throw new Error(data.message)
         }
       } catch (error) {
         this.isProcessing = false
@@ -168,7 +168,7 @@ export default {
     },
     async fetchAccount() {
       try {
-        const { data } = await userAPI.getAccount()
+        const { data } = await userAPI.getCurrent()
 
         if (data.status !== 'success') {
           this.$bus.$emit('toast', {
