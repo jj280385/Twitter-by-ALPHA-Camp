@@ -225,8 +225,6 @@
 import userAPI from '../apis/user'
 
 export default {
-
-
   data() {
     return {
       modal: false,
@@ -320,7 +318,7 @@ export default {
             title: '如果沒有設定頭像圖片，我們會隨機產生文青的插畫頭像呦～'
           })
 
-        if (this.name.length > 50) {
+        if (this.name && this.name.length > 50) {
           this.nameHint = true
           this.$bus.$emit('toast', {
             icon: 'error',
@@ -329,7 +327,7 @@ export default {
           return
         }
 
-        if (this.description.length > 160) {
+        if (this.description &&  this.description.length > 160) {
           this.descriptionHint = true
           this.$bus.$emit('toast', {
             icon: 'error',
@@ -349,12 +347,13 @@ export default {
           this.$bus.$emit('toast', {
             icon: 'success',
             title: '已儲存成功！！'
-
           })
-        this.isProcessing = false
-        }else{
+          this.isProcessing = false
+          this.$router.go(0)
+        } else {
           throw new Error(data.message)
         }
+        
       } catch (error) {
         this.isProcessing = false
         console.log(error)
@@ -368,15 +367,23 @@ export default {
 
   computed: {
     nameCount() {
-      this.name.length > 50 && (this.nameHint = true)
-      this.name.length < 50 && (this.nameHint = false)
-      return this.name.length
+      if (this.name) {
+        this.name.length > 160 && (this.descriptionHint = true)
+        this.name.length < 160 && (this.descriptionHint = false)
+        return this.name.length
+      } else {
+        return 0
+      }
     },
 
     descriptionCount() {
-      this.description.length > 160 && (this.descriptionHint = true)
-      this.description.length < 160 && (this.descriptionHint = false)
-      return this.description.length
+      if (this.description) {
+        this.description.length > 160 && (this.descriptionHint = true)
+        this.description.length < 160 && (this.descriptionHint = false)
+        return this.description.length
+      } else {
+        return 0
+      }
     }
   },
 
