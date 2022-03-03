@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import userAPI from './../apis/user'
-import { fromNowFilter } from "./../utils/mixins";
+import userAPI from '../apis/user'
+import { fromNowFilter } from "../utils/mixins";
 import { mapState } from 'vuex'
 
 export default {

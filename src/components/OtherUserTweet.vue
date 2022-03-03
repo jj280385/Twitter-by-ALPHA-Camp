@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import userAPI from './../apis/user'
-import { fromNowFilter } from "./../utils/mixins";
+import userAPI from '../apis/user'
+import { fromNowFilter } from "../utils/mixins";
 
 export default {
   mixins: [fromNowFilter],
