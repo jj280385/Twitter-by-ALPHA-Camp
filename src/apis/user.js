@@ -20,23 +20,18 @@ export default {
     })
   },
 
-
   getUserTweetList(id) {
-    // console.log('id',id)
     return apiHelper.get(`users/${id}/tweets`)
   },
 
   getUserReplyList(id) {
-    // console.log('id',id)
     return apiHelper.get(`users/${id}/replied_tweets`)
   },
   
   getUserLikeList(id) {
-    // console.log('id',id)
     return apiHelper.get(`/users/${id}/likes`)
   },
 
- 
   getUsersTop() {
     return apiHelper.get('/users/top')
   },

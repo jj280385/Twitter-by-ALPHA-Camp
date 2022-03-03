@@ -6,8 +6,7 @@
         type="button"
       >
         <router-link 
-        to="/users/:id" 
-
+        :to="{path: `/users/${$route.params.id}/tweet`}" 
         class="nav-link"
         > 推文 </router-link>
       </button>
@@ -16,7 +15,7 @@
         class="nav-item reply"
       >
         <router-link 
-        to="/users/:id/reply" 
+        :to="{path: `/users/${$route.params.id}/reply`}"
         class="nav-link"
         > 推文與回覆 </router-link>
       </button>
@@ -25,7 +24,7 @@
         class="nav-item like"
       >
         <router-link 
-        to="/users/:id/like" 
+        :to="{path: `/users/${$route.params.id}/like`}"
         class="nav-link"
         > 喜歡的內容 </router-link>
       </button>
@@ -34,21 +33,10 @@
 </template>
 
 <script>
-import ProfileTweetList from "./ProfileTweetList.vue";
-import ProfileReplyList from "./ProfileReplyList.vue";
-import ProfileLikeList from "./ProfileLikeList.vue";
-
 export default {
   data() {
     return {
-      activeTab: "tweet",
-      link: "a",
     };
-  },
-  components: {
-    ProfileTweetList,
-    ProfileReplyList,
-    ProfileLikeList,
   },
 };
 </script>
@@ -64,7 +52,7 @@ export default {
   border-bottom: 1px solid var(--theme-line);
 }
 
-.nav-item {
+.nav-item, .nav-link {
   @include size(130px, 52px);
   font-size: 15px;
   font-weight: 700;

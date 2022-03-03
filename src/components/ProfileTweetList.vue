@@ -1,68 +1,34 @@
+// 使用者Profile下方推文列表
 <template>
-  <div class="tweet-container" >
+  <div class="tweet-container">
     <!-- Profile頁面下方的推文列表 -->
     <div class="tweet-list">
-      <div class="tweet-item">
+      <div class="tweet-item" v-for="tweet in tweets" :key="tweet.id">
         <div class="user-avatar">
           <router-link to="/profile">
-            <img class="avatar-img"/>
+            <img class="avatar-img" :src="tweet.avatar"/>
           </router-link>
         </div>
         <div class="post-content">
           <router-link to="/profile">
             <div class="user-info">
-              <div class="user-name">123</div>
-              <div class="user-accountName">@hryjohn</div>
-              <div class="post-time">‧3小時</div>
+              <div class="user-name">{{ tweet.User.name }}</div>
+              <div class="user-accountName">@{{ tweet.User.account }}</div>
+              <div class="post-time">‧{{ tweet.createdAt | fromNow }}</div>
             </div>
           </router-link>
           <span class="tweet-content">
-            Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-            sint. Velit officia consequat duis enim velit mollit. Exercitation
-            veniam consequat sunt nostrud amet.
+            {{ tweet.description }}
           </span>
           <div class="icon-item">
-            <router-link class="reply" to="/profile">
+            <router-link class="reply" to="/users/:id">
               <img class="reply-icon" src="../assets/image/reply-icon.svg" />
-              <span class="replay-count">13</span>
+              <span class="replay-count">{{ tweet.likeCount }}</span>
             </router-link>
 
-            <router-link class="like" to="/profile">
+            <router-link class="like" to="/users/:id">
               <img class="like-icon" src="../assets/image/like-icon.svg" />
-              <span class="like-count">76</span>
-            </router-link>
-          </div>
-        </div>
-      </div>
-
-      <div class="tweet-item">
-        <div class="user-avatar">
-          <router-link to="/profile">
-            <img class="avatar-img" />
-          </router-link>
-        </div>
-        <div class="post-content">
-          <router-link to="/profile">
-            <div class="user-info">
-              <div class="user-name">Jhon Deo</div>
-              <div class="user-accountName">@hryjohn</div>
-              <div class="post-time">‧3小時</div>
-            </div>
-          </router-link>
-          <span class="tweet-content">
-            Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-            sint. Velit officia consequat duis enim velit mollit. Exercitation
-            veniam consequat sunt nostrud amet.
-          </span>
-          <div class="icon-item">
-            <router-link class="reply" to="/profile">
-              <img class="reply-icon" src="../assets/image/reply-icon.svg" />
-              <span class="replay-count">13</span>
-            </router-link>
-
-            <router-link class="like" to="/profile">
-              <img class="like-icon" src="../assets/image/like-icon.svg" />
-              <span class="like-count">76</span>
+              <span class="like-count">{{ tweet.replyCount }}</span>
             </router-link>
           </div>
         </div>
@@ -71,11 +37,57 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<script>
+import userAPI from './../apis/user'
+import { fromNowFilter } from "./../utils/mixins";
+import { mapState } from 'vuex'
 
+export default {
+  mixins: [fromNowFilter],
+  data() {
+    return {
+      tweets:[],
+      noReply: true,
+    }
+  },
+  created() {
+    const id = this.currentUser.id;
+    this.fetchTweets(id);
+  },
+  computed: {
+    ...mapState(['currentUser'])
+  },
+  beforeRouteUpdate(to, from, next) {
+    const id = this.currentUser.id;
+    this.fetchTweets(id);
+    next();
+  },
+  methods: {
+    async fetchTweets(id) {
+      try {
+        const { data } = await userAPI.getUserTweetList(id)
+        const tweets = data;
+        this.tweets = tweets
+        // console.log('data',tweets)
+      } catch (error) {
+        console.log('error');
+      }
+    },
+  }
+};
+
+</script>
+
+<style lang="scss" scoped>
 .tweet-container {
   @include size(100%, 100%);
   margin-top: 10px;
+}
+
+.noReply {
+  font-size: 18px;
+  margin: 20px;
+  color: var(--info);
 }
 
 .tweet-list {
@@ -86,18 +98,19 @@
 }
 
 .tweet-item {
-  @include size(100%, 145px);
+  @include size(100%, 100%);
   display: flex;
-  align-items: center;
+  // align-items: center;
   font-size: 15px;
   font-weight: 700;
   line-height: 15px;
   border-bottom: 1px solid var(--theme-line);
+  padding: 10px;
 }
 
 .user-avatar {
   @include size(50px, 50px);
-  margin: 0 10px 82px 15px;
+  margin: 0 10px auto 15px;
 }
 
 .avatar-img {
@@ -109,11 +122,13 @@
 }
 
 .post-content {
-  @include size(510px, 145px);
+  @include size(510px, 100%);
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-around;
+  // flex-wrap: wrap;
   margin-right: 15px;
-  padding-top: 10px;
+  // padding-top: 10px;
 }
 
 .user-info {
@@ -147,10 +162,11 @@
 }
 
 .tweet-content {
-  @include size(100%, 66px);
+  @include size(100%, 100%);
   font-size: 15px;
   font-weight: 500;
   line-height: 22px;
+  margin: 10px 0;
 }
 
 .icon-item {
@@ -177,74 +193,3 @@
   line-height: 13px;
 }
 </style>
-
-// <script>
-// import userAPI from './../apis/user'
-
-// export default {
-//   data() {
-//     return {
-//       tweets:{
-//       id: -1,
-//       description:'',
-//       likeCount:0,
-//       replyCount:0,
-//       isLike: true,
-//       createdAt:'',
-//       User: {},
-//       }
-//     }
-//   },
-//   created() {
-//     const { userId } = this.$route.params;
-//     this.fetchTweets(userId);
-//   },
-//   beforeRouteUpdate(to, from, next) {
-//     const { userId } = to.params;
-//     this.fetchTweets(userId);
-//     next();
-//   },
-//   methods: {
-//       // async fetchTweets(userId) {   
-//       // try {
-//       //   const response = await userAPI.getUserTweetList({
-//       //     userId: this.$route.params.id,
-//       //   });
-
-//       //   const tweets = response.data;
-//       //   this.tweets = tweets;
-//       //   console.log('data',response.data);
-//       //   } catch (error) {
-//       //   console.log("error");
-//       //   }
-//       // }
-//     async fetchTweets(userId) {
-//       try {
-//         const response = await userAPI.getUserTweetList(userId)
-//         const tweets = response.data;
-//         this.tweets = tweets;
-//         // const {id,
-//         // description,
-//         // likeCount,
-//         // replyCount,
-//         // isLike,
-//         // createdAt,
-//         // User}
-//         // = data
-        
-//         // this.id = id;
-//         // this.description = description;
-//         // this.likeCount = likeCount;
-//         // this.replyCount = replyCount;
-//         // this.isLike = isLike;
-//         // this.createdAt = createdAt;
-//         // this.User = User;
-
-//         console.log('data',response)
-//       } catch (error) {
-//         console.log(error);
-//       }
-//     },
-//   }
-// };
-// </script>

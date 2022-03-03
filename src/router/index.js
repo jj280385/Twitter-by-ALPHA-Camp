@@ -3,9 +3,7 @@ import VueRouter from 'vue-router'
 import NotFound from '../views/NotFound.vue'
 import UserLogin from '../views/UserLogin.vue'
 import AdminLogin from '../views/AdminLogin.vue'
-import Main from '../views/Main.vue'
 import OtherUserPost from '../views/OtherUserPost.vue'
-
 
 // 載入 Ｖuex方法
 import store from '../store'
@@ -29,7 +27,6 @@ const authorizeIsUser = (to, from, next) => {
   }
   next()
 }
-
 
 const routes = [
   {
@@ -64,13 +61,6 @@ const routes = [
     authorizeIsUser
   },
   {
-
-    path: '/tweets/:tweetId',
-    name: 'other-tweet',
-    component: OtherUserPost
-  },
-  {
-
     path: '/admin/main',
     name: 'admin-main',
     component: () => import('../views/AdminMain.vue'),
@@ -84,7 +74,7 @@ const routes = [
   },
   {
     path: '/profile',
-    name: 'profile',
+    // name: 'profile',
     component: () => import('../views/Profile.vue'),
     children: [
       {
@@ -111,24 +101,18 @@ const routes = [
     children: [
       {
         path: 'tweet',
-        component: () => import('../views/OtherUserProfile.vue')
+        component: () => import('../components/OtherUserTweet.vue')
       },
       {
         path: 'reply',
-        component: () => import('../views/OtherUserReply.vue')
+        component: () => import('../components/OtherUserReplyList.vue')
       },
       {
         path: 'like',
-        component: () => import('../views/OtherUserLike.vue')
+        component: () => import('../components/OtherUserLikeList.vue')
       },
-
-      // {
-      //   path: 'post',
-      //   component: () => import('../views/OtherUserPost.vue')
-      // },
-
       {
-        path: '/',
+        path: '',
         redirect: '/users/:id/tweet'
       }
     ]
@@ -142,6 +126,11 @@ const routes = [
     path: '/profile/following',
     name: 'profile-following',
     component: () => import('../views/ProfileFollowing.vue')
+  },
+  {
+    path: '/tweets/:tweetId',
+    name: 'other-tweet',
+    component: OtherUserPost
   },
   {
     // 其他使用者

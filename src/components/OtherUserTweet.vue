@@ -2,10 +2,13 @@
 <template>
   <div class="tweet-container">
     <!-- Profile頁面下方的推文列表 -->
-    <div class="tweet-list">
+    <div v-if="noReply" class="noReply">
+      <span> 目前沒有任何推文 </span>
+    </div>
+    <div v-else class="tweet-list">
       <div class="tweet-item" v-for="tweet in tweets" :key="tweet.id">
         <div class="user-avatar">
-          <router-link to="/users/:id">
+          <router-link :to="{path: `/users/${tweet.id}`}">
             <img class="avatar-img" :src="tweet.avatar"/>
           </router-link>
         </div>
@@ -25,7 +28,6 @@
               <img class="reply-icon" src="../assets/image/reply-icon.svg" />
               <span class="replay-count">{{ tweet.likeCount }}</span>
             </router-link>
-
             <router-link class="like" to="/users/:id">
               <img class="like-icon" src="../assets/image/like-icon.svg" />
               <span class="like-count">{{ tweet.replyCount }}</span>
@@ -42,16 +44,16 @@ import userAPI from './../apis/user'
 import { fromNowFilter } from "./../utils/mixins";
 
 export default {
-  mixins: [fromNowFilter],   
+  mixins: [fromNowFilter],
   data() {
     return {
-      tweets:[]
+      tweets:[],
+      noReply: true,
     }
   },
   created() {
     const { id } = this.$route.params;
     this.fetchTweets(id);
-    // console.log('id',id);
   },
   beforeRouteUpdate(to, from, next) {
     const { id } = to.params;
@@ -62,12 +64,18 @@ export default {
     async fetchTweets(id) {
       try {
         const { data } = await userAPI.getUserTweetList(id)
-        // console.log('id',id);
         const tweets = data;
         this.tweets = tweets
-        // console.log('data',data)
+
+        if ( data.status === 'error') {
+          this.noReply = true
+        } else if(id === id){
+          this.noReply = false
+        }
+        // console.log('data',data);
       } catch (error) {
-        console.log(error);
+        this.noReply = true
+        console.log('error');
       }
     },
   }
@@ -79,6 +87,12 @@ export default {
 .tweet-container {
   @include size(100%, 100%);
   margin-top: 10px;
+}
+
+.noReply {
+  font-size: 18px;
+  margin: 20px;
+  color: var(--info);
 }
 
 .tweet-list {
@@ -153,11 +167,11 @@ export default {
 }
 
 .tweet-content {
-  @include size(100%, 66px);
+  @include size(100%, 100%);
   font-size: 15px;
   font-weight: 500;
   line-height: 22px;
-  margin: 5px 0;
+  margin: 10px 0;
 }
 
 .icon-item {

@@ -2,76 +2,28 @@
   <div class="like-container">
     <!-- Profile頁面下方的喜歡的列表 -->
     <div class="like-list">
-      <div class="like-item">
+      <div class="like-item" v-for="tweet in tweets" :key="tweet.id">
         <div class="user-avatar">
           <router-link to="/users/:id">
-            <img class="avatar-img" />
+            <img class="avatar-img" :src="tweet.avatar"/>
           </router-link>
         </div>
         <div class="post-content">
           <router-link to="/profile">
             <div class="user-info">
-              <div class="user-name">Devon Lane</div>
-              <div class="user-accountName">@DL</div>
-              <div class="post-time">‧3小時</div>
+              <div class="user-name">{{ tweet.User.name }}</div>
+              <div class="user-accountName">@{{ tweet.User.account }}</div>
+              <div class="post-time">‧{{ tweet.createdAt | fromNow }}</div>
             </div>
           </router-link>
           <span class="tweet-content">
-            Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-            sint. Velit officia consequat duis enim velit mollit. Exercitation
-            veniam consequat sunt nostrud amet.
+            {{ tweet.description }}
           </span>
           <div class="icon-item">
             <button class="reply-btn">
               <router-link class="reply" to="/profile/like">
                 <img class="reply-icon" src="../assets/image/reply-icon.svg" />
-                <span class="replay-count">13</span>
-              </router-link>
-            </button>
-            
-          
-            <button 
-            class="like-btn"
-            @click="isActive = !isActive"
-            :class="{active:isActive}"
-            >
-            <router-link
-              class="like"
-              to="/profile/like"
-            >
-              <img class="like-icon" src="../assets/image/liked-icon.svg" v-if="isActive"/>
-              <img class="like-icon" src="../assets/image/like-icon.svg" v-else />
-              <span class="like-count" :class="{ active: isActive }">76</span>
-            </router-link>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="like-item">
-        <div class="user-avatar">
-          <router-link to="/profile">
-            <img class="avatar-img" />
-          </router-link>
-        </div>
-        <div class="post-content">
-          <router-link to="/profile">
-            <div class="user-info">
-              <div class="user-name">Devon Lane</div>
-              <div class="user-accountName">@DL</div>
-              <div class="post-time">‧3小時</div>
-            </div>
-          </router-link>
-          <span class="tweet-content">
-            Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-            sint. Velit officia consequat duis enim velit mollit. Exercitation
-            veniam consequat sunt nostrud amet.
-          </span>
-          <div class="icon-item">
-            <button class="reply-btn">
-              <router-link class="reply" to="/profile/like">
-                <img class="reply-icon" src="../assets/image/reply-icon.svg" />
-                <span class="replay-count">13</span>
+                <span class="replay-count">{{ tweet.likeCount }}</span>
               </router-link>
             </button>
             
@@ -86,7 +38,7 @@
             >
               <img class="like-icon" src="../assets/image/liked-icon.svg" v-if="isActive"/>
               <img class="like-icon" src="../assets/image/like-icon.svg" v-else />
-              <span class="like-count" :class="{ active: isActive }">76</span>
+              <span class="like-count" :class="{ active: isActive }">{{ tweet.replyCount }}</span>
             </router-link>
             </button>
           </div>
@@ -97,20 +49,42 @@
 </template>
 
 <script>
+import userAPI from './../apis/user'
+import { fromNowFilter } from "./../utils/mixins";
+import { mapState } from 'vuex'
+
 export default {
+  mixins: [fromNowFilter],
   data() {
     return {
-      isActive: false,
+      tweets:[],
+      noReply: true,
+      isActive: true,
     };
   },
+  created() {
+    const id = this.currentUser.id;
+    this.fetchTweets(id);
+  },
+  computed: {
+    ...mapState(['currentUser'])
+  },
+  beforeRouteUpdate(to, from, next) {
+    const id = this.currentUser.id;
+    this.fetchTweets(id);
+    next();
+  },
   methods: {
-    toggle() {
-  if (!this.isActive) {
-    this.isActive = true;
-  } else {
-    this.isActive = false;
-  }
-},
+    async fetchTweets(id) {
+      try {
+        const { data } = await userAPI.getUserTweetList(id)
+        const tweets = data;
+        this.tweets = tweets
+        // console.log('data',tweets)
+      } catch (error) {
+        console.log('error');
+      }
+    },
   }
 };
 </script>
@@ -130,17 +104,18 @@ export default {
 
 .like-item {
   padding-top: 10px;
-  @include size(100%, 144px);
+  @include size(100%, 100%);
   display: flex;
   font-size: 15px;
   font-weight: 700;
   line-height: 15px;
   border-bottom: 1px solid var(--theme-line);
+  padding: 10px;
 }
 
 .user-avatar {
   @include size(50px, 50px);
-  margin: 0 10px 82px 15px;
+  margin: 0 10px auto 15px;
 }
 
 .avatar-img {
@@ -152,7 +127,7 @@ export default {
 }
 
 .post-content {
-  @include size(510px, 144px);
+  @include size(510px, 100%);
   display: flex;
   flex-wrap: wrap;
   margin-right: 15px;
@@ -189,10 +164,11 @@ export default {
 }
 
 .tweet-content {
-  @include size(100%, 66px);
+  @include size(100%, 100%);
   font-size: 15px;
   font-weight: 500;
   line-height: 22px;
+  margin: 10px 0;
 }
 
 .icon-item {
