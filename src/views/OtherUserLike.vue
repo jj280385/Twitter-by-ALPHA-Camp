@@ -94,45 +94,45 @@ export default {
 }
 </style>
 
-.container {
-  @include flex (row, center, normal);
-}
+// .container {
+//   @include flex (row, center, normal);
+// }
 
-.profile-container {
-  @include size(100%, 100%);
-  border: 1px solid var(--theme-line);
-  max-width: 600px;
-  min-width: 576px;
-  margin: 0 30px;
-}
+// .profile-container {
+//   @include size(100%, 100%);
+//   border: 1px solid var(--theme-line);
+//   max-width: 600px;
+//   min-width: 576px;
+//   margin: 0 30px;
+// }
 
-.user-area {
-  outline: 1px solid tomato;
-  @include size(100%, 450px);
-}
+// .user-area {
+//   outline: 1px solid tomato;
+//   @include size(100%, 450px);
+// }
 
-.nav-tabs {
-  @include size(100%, 52px);
-  display: flex;
-  border-bottom: 1px solid var(--theme-line);
-}
+// .nav-tabs {
+//   @include size(100%, 52px);
+//   display: flex;
+//   border-bottom: 1px solid var(--theme-line);
+// }
 
-.nav-item {
-  @include size(130px, 52px);
-  @include flex (row, center, center);
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 21.72px;
-  color: var(--info);
-  &.active,
-  &:focus {
-    border-bottom: 2px solid var(--theme-color);
-    color: var(--theme-color);
-  }
-}
+// .nav-item {
+//   @include size(130px, 52px);
+//   @include flex (row, center, center);
+//   font-size: 15px;
+//   font-weight: 700;
+//   line-height: 21.72px;
+//   color: var(--info);
+//   &.active,
+//   &:focus {
+//     border-bottom: 2px solid var(--theme-color);
+//     color: var(--theme-color);
+//   }
+// }
 
-.nav-link{
-  @include size(100%, 100%);
-  @include flex (row, center, center);
-}
-</style>
+// .nav-link{
+//   @include size(100%, 100%);
+//   @include flex (row, center, center);
+// }
+// </style>

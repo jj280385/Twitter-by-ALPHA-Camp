@@ -2,7 +2,10 @@
 <template>
   <div class="like-container">
     <!-- Profile頁面下方的喜歡的列表 -->
-    <div class="like-list">
+    <div v-if="noReply" class="noReply">
+      <span> 目前沒有任何喜歡的內容 </span>
+    </div>
+    <div v-else class="like-list">
       <div class="like-item" v-for="like in likes" :key="like.id">
         <div class="user-avatar">
           <router-link to="/users/:id">
@@ -27,8 +30,7 @@
                 <span class="replay-count">{{ like.tweet.likeCount }}</span>
               </router-link>
             </button>
-            
-          
+
             <button 
             class="like-btn"
             @click="isActive = !isActive"
@@ -61,7 +63,8 @@ export default {
   data() {
     return {
       isActive: false,
-      likes:[]
+      likes:[],
+      noReply: true,
     };
   },
   created() {
@@ -85,10 +88,15 @@ export default {
   async fetchLikes(id) {
       try {
         const { data } = await userAPI.getUserLikeList(id)
-        // console.log('id',id);
         const likes = data;
         this.likes = likes
-        // console.log('data',data)
+
+        if ( data.status === 'error') {
+          this.noReply = true
+        } else if(id === id){
+          this.noReply = false
+        }
+        // console.log('data3',data)
       } catch (error) {
         console.log(error);
       }
@@ -103,6 +111,12 @@ export default {
   margin-top: 10px;
 }
 
+.noReply {
+  font-size: 18px;
+  margin: 20px;
+  color: var(--info);
+}
+
 .like-list {
   position: relative;
   @include size(100%, 100%);
@@ -112,17 +126,18 @@ export default {
 
 .like-item {
   padding-top: 10px;
-  @include size(100%, 144px);
+  @include size(100%, 100%);
   display: flex;
   font-size: 15px;
   font-weight: 700;
   line-height: 15px;
   border-bottom: 1px solid var(--theme-line);
+  padding: 10px;
 }
 
 .user-avatar {
   @include size(50px, 50px);
-  margin: 0 10px 82px 15px;
+  margin: 0 10px auto 15px;
 }
 
 .avatar-img {
@@ -134,7 +149,7 @@ export default {
 }
 
 .post-content {
-  @include size(510px, 144px);
+  @include size(510px, 100%);
   display: flex;
   flex-wrap: wrap;
   margin-right: 15px;
@@ -171,10 +186,11 @@ export default {
 }
 
 .tweet-content {
-  @include size(100%, 66px);
+  @include size(100%, 100%);
   font-size: 15px;
   font-weight: 500;
   line-height: 22px;
+  margin: 10px 0;
 }
 
 .icon-item {

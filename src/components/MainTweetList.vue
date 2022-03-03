@@ -47,15 +47,15 @@
           <div class="icon-item">
             <!-- 點擊回覆icon不會跳轉頁面 -->
             <!-- TODO:應要觸發回覆貼文modal -->
-            <router-link class="reply" to="/main">
+            <button class="reply">
               <img class="reply-icon" src="../assets/image/reply-icon.svg" />
               <span class="replay-count">{{ tweet.replyCount }}</span>
-            </router-link>
+            </button>
             <!-- 點擊喜歡icon不會跳轉頁面 -->
-            <router-link class="like" to="/main">
+            <button class="like">
               <img class="like-icon" src="../assets/image/like-icon.svg" />
               <span class="like-count">{{ tweet.likeCount }}</span>
-            </router-link>
+            </button>
           </div>
         </div>
       </div>
@@ -228,7 +228,7 @@ input[type="text"] {
   font-size: 15px;
   font-weight: 500;
   line-height: 22px;
-  margin: 15px 0;
+  margin: 10px 0;
 }
 
 .icon-item {

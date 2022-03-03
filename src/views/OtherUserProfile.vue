@@ -1,23 +1,23 @@
 // 其他使用者個人資料頁面+推文列表
-
 <template>
   <div class="container">
     <Sidebar />
 
     <div class="profile-container">
       <!-- 個人資料 -->
-        <ProfileArea />
+      <ProfileArea />
 
       <!-- 充當margin -->
       <div class="hidden-gap"></div>
 
       <!-- Navtabs -->
-      <ProfileNavTabs />
+      <UsersNavTabs />
 
       <!-- 下方推文列表 -->
       <div class="tweet-list">
         <router-view></router-view>
       </div>
+      
     </div>
     <RightColumn />
   </div>
@@ -26,7 +26,7 @@
 <script>
 import Sidebar from '../components/Sidebar.vue'
 import RightColumn from '../components/RightColumn.vue'
-import ProfileNavTabs from '../components/ProfileNavTabs.vue'
+import UsersNavTabs from '../components/UsersNavTabs.vue'
 import OtherUserTweet from '../components/OtherUserTweet.vue'
 import ProfileArea from '../components/ProfileArea.vue'
 
@@ -35,7 +35,7 @@ export default {
     Sidebar,
     RightColumn,
     ProfileArea,
-    ProfileNavTabs,
+    UsersNavTabs,
     OtherUserTweet,
   },
   data() {

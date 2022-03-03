@@ -186,10 +186,8 @@ export default {
 
   .tweet-content {
     margin: 5px 0 19px;
-
     max-height: 90px;
     overflow: scroll;
-
     color: var(--main-text);
     font-size: 15px;
     line-height: 22px;
