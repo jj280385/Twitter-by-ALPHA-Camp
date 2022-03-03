@@ -9,8 +9,9 @@
 ## 2.安裝專案資料
 
 1. 將原始碼安裝至指定位置，你可以採取下列其中一種方法
-  a. 點選右上方綠色『Code』按鈕，選擇『Download ZIP』下載 ZIP 檔，並解壓縮至專案資料夾中。
-  b. 開啟『終端機 Terminal.app』，或在Ｗ indows 開啟『命令提示字元 cmd』
+
+   a. 點選右上方綠色『Code』按鈕，選擇『Download ZIP』下載 ZIP 檔，並解壓縮至專案資料夾中。
+   b. 開啟『終端機 Terminal.app』，或在Ｗ indows 開啟『命令提示字元 cmd』
 
 輸入指令，移動到該專案資料夾位置
 
