@@ -39,41 +39,46 @@
                 />
               </svg>
               <!-- SVG -->
-              <span class="replay-count">{{ like.tweet.likeCount }}</span>
+              <span class="replay-count">{{ like.tweet.replyCount }}</span>
             </button>
-
-            <button
-              class="like-btn"
-              @click="isActive = !isActive"
-              :class="{ active: isActive }"
-            >
-              <router-link class="like" to="/profile/like">
-                <img
-                  class="like-icon"
-                  src="../assets/image/liked-icon.svg"
-                  v-if="isActive"
-                />
+            <!-- 點擊喜歡icon不會跳轉頁面 -->
+            <div class="like-item">
+              <button
+                class="like"
+                v-if="!like.tweet.User.isLiked"
+                @click.stop.prevent="addLikes(like)"
+              >
                 <img
                   class="like-icon"
                   src="../assets/image/like-icon.svg"
-                  v-else
+                  alt="/"
                 />
-                <span class="like-count" :class="{ active: isActive }">
-                  {{ like.tweet.replyCount }}</span
-                >
-              </router-link>
-            </button>
+                <span>{{ like.tweet.likeCount }}</span>
+              </button>
+              <button
+                v-else
+                class="like"
+                type="button"
+                @click.stop.prevent="deleteLikes(like)"
+              >
+                <img
+                  class="like-icon"
+                  src="../assets/image/liked-icon.svg"
+                  alt=""
+                />
+                <span>{{ like.tweet.likeCount }}</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 import userAPI from '../apis/user'
 import { fromNowFilter } from '../utils/mixins'
-
+import tweetAPI from './../apis/mainTweet'
 export default {
   mixins: [fromNowFilter],
   data() {
@@ -106,7 +111,6 @@ export default {
         const { data } = await userAPI.getUserLikeList(id)
         const likes = data
         this.likes = likes
-
         if (id === id) {
           this.noReply = false
         } else if (data.status === 'error') {
@@ -116,30 +120,48 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    async addLikes(like) {
+      try {
+        const { data } = await tweetAPI.addLike(like.TweetId)
+        // console.log('data',data)
+        like.tweet.User.isLiked = !like.tweet.User.isLiked
+        like.tweet.likeCount += 1
+      } catch (error) {
+        console.log('error')
+      }
+    },
+    async deleteLikes(like) {
+      try {
+        const { data } = await tweetAPI.deleteLike(like.TweetId)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        like.tweet.User.isLiked = !like.tweet.User.isLiked
+        like.tweet.likeCount -= 1
+      } catch (error) {
+        console.log('error2')
+      }
     }
   }
 }
 </script>
-
 <style lang="scss" scoped>
 .like-container {
   @include size(100%, 100%);
   margin-top: 10px;
 }
-
 .noReply {
   font-size: 18px;
   margin: 20px;
   color: var(--info);
 }
-
 .like-list {
   position: relative;
   @include size(100%, 100%);
   display: flex;
   flex-direction: column;
 }
-
 .like-item {
   padding-top: 10px;
   @include size(100%, 100%);
@@ -147,15 +169,12 @@ export default {
   font-size: 15px;
   font-weight: 700;
   line-height: 15px;
-  border-bottom: 1px solid var(--theme-line);
   padding: 10px;
 }
-
 .user-avatar {
   @include size(50px, 50px);
   margin: 0 10px auto 15px;
 }
-
 .avatar-img {
   background-color: var(--avatar-img-background);
   border-radius: 50%;
@@ -163,18 +182,15 @@ export default {
     background-color: darkgray;
   }
 }
-
 .post-content {
   @include size(510px, 100%);
   display: flex;
   flex-wrap: wrap;
   margin-right: 15px;
 }
-
 .user-info {
   display: flex;
 }
-
 .user-name {
   color: var(--main-text);
   margin-right: 5px;
@@ -182,7 +198,6 @@ export default {
     text-decoration: underline;
   }
 }
-
 .user-accountName {
   color: var(--info);
   font-size: 15px;
@@ -191,7 +206,6 @@ export default {
     text-decoration: underline;
   }
 }
-
 .post-time {
   color: var(--info);
   font-size: 15px;
@@ -200,7 +214,6 @@ export default {
     text-decoration: none;
   }
 }
-
 .tweet-content {
   @include size(100%, 100%);
   font-size: 15px;
@@ -209,40 +222,33 @@ export default {
   margin: 10px 0;
   word-break: break-all;
 }
-
 .icon-item {
   @include size(130px, 21px);
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   button {
     display: flex;
     justify-content: center;
     align-items: center;
-
     svg {
       @include size(15px, 15px);
       margin-right: 10px;
     }
-
     &:hover {
       span {
         color: var(--hover-color);
       }
-
       path {
         fill: var(--hover-color);
       }
     }
   }
 }
-
 .like-icon {
   @include size(20.1px, 18.91px);
   margin-right: 10px;
 }
-
 .replay-count,
 .like-count {
   color: var(--info);
@@ -250,7 +256,6 @@ export default {
   font-weight: 500;
   line-height: 13px;
 }
-
 .like-btn,
 .like-count {
   &.active {

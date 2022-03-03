@@ -26,12 +26,26 @@
           <div class="icon-item">
             <button @click="$bus.$emit('replyModal',tweet.id)" class="reply">
               <img class="reply-icon" src="../assets/image/reply-icon.svg" />
-              <span class="replay-count">{{ tweet.likeCount }}</span>
+              <span class="replay-count">{{ tweet.replyCount }}</span>
             </button>
-            <button class="like" >
-              <img class="like-icon" src="../assets/image/like-icon.svg" />
-              <span class="like-count">{{ tweet.replyCount }}</span>
-            </button>
+            <div class="like-item">
+              <button
+              class="likes"
+              v-if="!tweet.isLiked"
+              @click.stop.prevent="addLike(tweet)"
+              >
+              <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
+              </button>
+              <button
+              v-else
+              class="likes" 
+              type="button"
+              @click.stop.prevent="deleteLike(tweet)" 
+              >
+              <img class="like-icon" src="../assets/image/liked-icon.svg" alt="">
+              </button>
+              <span class="like-count">{{ tweet.likeCount }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -78,6 +92,29 @@ export default {
         console.log('error');
       }
     },
+    async addLike(tweet) {
+      try {
+        const { data } = await userAPI.getUserTweetList(tweet.id)
+        tweet.isLiked = !tweet.isLiked
+        console.log('tweet',tweet)
+        tweet.likeCount += 1
+      } catch (error) {
+        console.log('error')
+      }
+    },
+    async deleteLike(tweet) {
+      try {
+        const { data } = await userAPI.getUserTweetList(tweet.id)
+        // if (data.status !== 'success') {
+        //   throw new Error(data.message)
+        // }
+        console.log('路由變化',tweet)
+        tweet.isLiked = !tweet.isLiked
+        tweet.likeCount -= 1
+      } catch (error) {
+        console.log('error2')
+      }
+    }
   }
 };
 

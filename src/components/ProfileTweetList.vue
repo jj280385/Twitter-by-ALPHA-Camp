@@ -45,7 +45,7 @@
             <div class="like-item">
               <button
               class="likes"
-              v-if="!tweets.isLiked"
+              v-if="!tweet.isLiked"
               @click.stop.prevent="addLike(tweet)"
               >
               <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
@@ -102,6 +102,28 @@ export default {
         console.log('data',tweets)
       } catch (error) {
         console.log('error')
+      }
+    },
+    async addLike(tweet) {
+      try {
+        const { data } = await tweetAPI.addLike(tweet.id)
+        tweet.isLiked = !tweet.isLiked
+        console.log('tweet',tweet)
+        tweet.likeCount += 1
+      } catch (error) {
+        console.log('error')
+      }
+    },
+    async deleteLike(tweet) {
+      try {
+        const { data } = await tweetAPI.deleteLike(tweet.id)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        tweet.isLiked = !tweet.isLiked
+        tweet.likeCount -= 1
+      } catch (error) {
+        console.log('error2')
       }
     },
     async addLike(tweet) {

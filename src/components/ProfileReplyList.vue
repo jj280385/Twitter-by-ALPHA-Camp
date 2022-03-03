@@ -1,50 +1,51 @@
 <template>
   <div class="reply-container">
     <!-- Profile頁面下方的回覆列表 -->
-    <div class="reply-list">
-      <div class="reply-item" v-for="tweet in tweets" :key="tweet.id">
+    <div v-if="noReply" class="noReply">
+      <span> 目前沒有任何回覆 </span>
+    </div>
+    <div v-else class="reply-list">
+      <div class="reply-item" v-for="reply in replies" :key="reply.id">
         <div class="user-avatar">
-          <router-link to="/profile">
-            <img class="avatar-img" :src="tweet.User.avatar"/>
+          <router-link to="{path: `/profile/reply`}">
+            <img class="avatar-img" :src="reply.User.avatar"/>
           </router-link>
         </div>
         <div class="post-content">
-          <router-link to="/profile">
+          <router-link to="{path: `/profile/reply`}">
             <div class="user-info">
-              <div class="user-name">{{ tweet.User.name }}</div>
-              <div class="user-accountName">@{{ tweet.User.account }}</div>
-              <div class="post-time">‧{{ tweet.createdAt | fromNow }}</div>
+              <div class="user-name">{{ reply.User.name }}</div>
+              <div class="user-accountName">@{{ reply.User.account }}</div>
+              <div class="post-time">‧{{ reply.createdAt | fromNow }}</div>
             </div>
           </router-link>
           <div class="reply">
             <span class="text">回覆</span>
-            <router-link to="/" class="reply-to">@Daniel</router-link>
+            <router-link to="{path: `/profile/reply`}" class="reply-to">@{{ reply.Tweet.User.account }}</router-link>
           </div>
           <span class="tweet-content">
-            {{ tweet.description }}
+            {{ reply.comment }}
           </span>
         </div>
-      </div>
-
+    </div>
     </div>
   </div>
 </template>
-
 <script>
 import userAPI from './../apis/user'
 import { fromNowFilter } from "./../utils/mixins";
 import { mapState } from 'vuex'
-
 export default {
   mixins: [fromNowFilter],
   data() {
     return {
-      tweets:[],
+      replies:[],
       noReply: true,
     }
   },
   created() {
     const id = this.currentUser.id;
+    console.log(id)
     this.fetchTweets(id);
   },
   computed: {
@@ -58,10 +59,14 @@ export default {
   methods: {
     async fetchTweets(id) {
       try {
-        const { data } = await userAPI.getUserTweetList(id)
-        const tweets = data;
-        this.tweets = tweets
-        console.log('data',tweets)
+        const { data } = await userAPI.getUserReplyList(id)
+        const replies = data;
+        this.replies = replies
+        if (id === id) {
+          this.noReply = false
+        } else if(data.status === 'error'){
+          this.noReply = true
+        }
       } catch (error) {
         console.log('error');
       }
@@ -69,20 +74,22 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
 .reply-container {
   @include size(100%, 100%);
   margin-top: 10px;
 }
-
+.noReply {
+  font-size: 18px;
+  margin: 20px;
+  color: var(--info);
+}
 .reply-list {
   position: relative;
   @include size(100%, 100%);
   display: flex;
   flex-direction: column;
 }
-
 .reply-item {
   @include size(100%, 100%);
   display: flex;
@@ -93,12 +100,10 @@ export default {
   border-bottom: 1px solid var(--theme-line);
   padding: 10px;
 }
-
 .user-avatar {
   @include size(50px, 50px);
   margin: 0 10px auto 15px;
 }
-
 .avatar-img {
   background-color: var(--avatar-img-background);
   border-radius: 50%;
@@ -106,7 +111,6 @@ export default {
     background-color: darkgray;
   }
 }
-
 .post-content {
   width: 510px;
   display: flex;
@@ -114,12 +118,10 @@ export default {
   flex-direction: column;
   margin-right: 15px;
 }
-
 .user-info {
   display: flex;
   margin-bottom: 5px;
 }
-
 .user-name {
   color: var(--main-text);
   margin-right: 5px;
@@ -127,7 +129,6 @@ export default {
     text-decoration: underline;
   }
 }
-
 .user-accountName {
   color: var(--info);
   font-size: 15px;
@@ -136,7 +137,6 @@ export default {
     text-decoration: underline;
   }
 }
-
 .post-time {
   color: var(--info);
   font-size: 15px;
@@ -145,23 +145,19 @@ export default {
     text-decoration: none;
   }
 }
-
 .reply {
-  @include size(94px, 22px);
+  @include size(100%, 22px);
   font-size: 15px;
   font-weight: 500;
   line-height: 21.72px;
 }
-
 .text {
   color: var(--info);
   margin-right: 5px;
 }
-
 .reply-to {
   color: var(--theme-color);
 }
-
 .tweet-content {
   @include size(100%, 100%);
   font-size: 15px;

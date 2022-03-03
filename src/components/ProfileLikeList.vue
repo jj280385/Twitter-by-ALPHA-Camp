@@ -38,27 +38,26 @@
                 />
               </svg>
               <!-- SVG -->
-              <span class="replay-count">{{ like.tweet.likeCount }}</span>
+              <span class="replay-count">{{ like.tweet.replyCount }}</span>
             </button>
-            <button
-              class="like-btn"
-              @click="isActive = !isActive"
-              :class="{ active: isActive }"
-            >
-              <router-link class="like" to="/profile">
-                <img
-                  class="like-icon"
-                  src="../assets/image/liked-icon.svg"
-                  v-if="isActive"
-                />
-                <img
-                  class="like-icon"
-                  src="../assets/image/like-icon.svg"
-                  v-else
-                />
-                <span class="like-count" :class="{ active: isActive }">{{ like.tweet.replyCount }}</span>
-              </router-link>
-            </button>
+            <div>
+              <button 
+              class="likes"
+              v-if="!like.tweet.User.isLiked"
+              @click.stop.prevent="addLikes(like)"
+              >
+                <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
+              </button>
+              <button 
+              v-else
+              class="likes" 
+              type="button"
+              @click.stop.prevent="deleteLikes(like)"
+              >
+                <img class="like-icon" src="../assets/image/liked-icon.svg" alt="">
+              </button>
+              <span class="like-count">{{ like.tweet.likeCount }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -69,6 +68,8 @@
 import userAPI from '../apis/user'
 import { fromNowFilter } from '../utils/mixins'
 import { mapState } from 'vuex'
+import tweetAPI from './../apis/mainTweet'
+
 export default {
   mixins: [fromNowFilter],
   data() {
@@ -110,6 +111,28 @@ export default {
         }
       } catch (error) {
         console.log('error')
+      }
+    },
+    async addLikes(like) {
+      try {
+        const { data } = await tweetAPI.addLike(like.TweetId)
+        // console.log('data',data)
+        like.tweet.User.isLiked = !like.tweet.User.isLiked
+        like.tweet.likeCount += 1
+      } catch (error) {
+        console.log('error')
+      }
+    },
+    async deleteLikes(like) {
+      try {
+        const { data } = await tweetAPI.deleteLike(like.TweetId)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        like.tweet.User.isLiked = !like.tweet.User.isLiked
+        like.tweet.likeCount -= 1
+      } catch (error) {
+        console.log('error2')
       }
     }
   }
@@ -216,7 +239,9 @@ export default {
 .like-icon {
   @include size(20.1px, 18.91px);
   margin-right: 10px;
+  display: flex;
 }
+
 .replay-count,
 .like-count {
   color: var(--info);
@@ -224,6 +249,7 @@ export default {
   font-weight: 500;
   line-height: 13px;
 }
+
 .like-btn,
 .like-count {
   &.active {
