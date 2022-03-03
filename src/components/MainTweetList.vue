@@ -120,8 +120,10 @@ export default {
   mounted(){
     this.$bus.$on('fetch-MainTweetList', ()=>{
     this.fetchTweets()
-  })
+    })
+  }
 }
+
 </script>
 
 <style lang="scss" scoped>

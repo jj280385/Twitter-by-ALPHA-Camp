@@ -9,7 +9,7 @@
       <div class="like-item" v-for="like in likes" :key="like.id">
         <div class="user-avatar">
           <router-link to="/users/:id">
-            <img class="avatar-img" />
+            <img class="avatar-img" :src="like.tweet.User.avatar"/>
           </router-link>
         </div>
         <div class="post-content">
