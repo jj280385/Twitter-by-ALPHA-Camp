@@ -36,22 +36,26 @@
                 />
               </svg>
 
-              <!-- SVG -->
-              <span class="replay-count">{{ tweet.likeCount }}</span>
+              <span class="replay-count">{{ tweet.replyCount }}</span>
             </button>
 
             <div class="like-item">
               <button
               class="likes"
+              v-if="!tweets.isLiked"
+              @click.stop.prevent="addLike(tweet)"
               >
               <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
               </button>
               <button
+              v-else
               class="likes" 
-              type="button" 
+              type="button"
+              @click.stop.prevent="deleteLike(tweet)" 
               >
               <img class="like-icon" src="../assets/image/liked-icon.svg" alt="">
               </button>
+              <span class="like-count">{{ tweet.likeCount }}</span>
             </div>
           </div>
         </div>
@@ -62,6 +66,7 @@
 
 <script>
 import userAPI from './../apis/user'
+import tweetAPI from './../apis/mainTweet'
 import { fromNowFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
 
@@ -91,12 +96,34 @@ export default {
         const { data } = await userAPI.getUserTweetList(id)
         const tweets = data
         this.tweets = tweets
-        // console.log('data',tweets)
+        console.log('data',tweets)
       } catch (error) {
         console.log('error')
       }
+    },
+    async addLike(tweet) {
+      try {
+        const { data } = await tweetAPI.addLike(tweet.id)
+        tweet.isLiked = !tweet.isLiked
+        console.log('tweet',tweet)
+        tweet.likeCount += 1
+      } catch (error) {
+        console.log('error')
+      }
+    },
+    async deleteLike(tweet) {
+      try {
+        const { data } = await tweetAPI.deleteLike(tweet.id)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        tweet.isLiked = !tweet.isLiked
+        tweet.likeCount -= 1
+      } catch (error) {
+        console.log('error2')
+      }
     }
-  }
+  },
 }
 </script>
 
@@ -217,6 +244,14 @@ export default {
       }
     }
   }
+}
+
+.like-item {
+  display: flex;
+}
+
+.like-count {
+  margin-left: 10px;
 }
 
 .replay-count,
