@@ -40,24 +40,19 @@
               <span class="replay-count">{{ tweet.likeCount }}</span>
             </button>
 
-            <button class="like">
-              <!-- SVG -->
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 15 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            <div class="like-item">
+              <button
+              class="likes"
               >
-                <path
-                  d="M7.5 13.5236H7.49125C5.87687 13.4936 1.21875 9.28489 1.21875 5.29864C1.21875 3.38364 2.79687 1.70239 4.59562 1.70239C6.02687 1.70239 6.98937 2.68989 7.49937 3.40864C8.00812 2.69114 8.97062 1.70239 10.4025 1.70239C12.2025 1.70239 13.78 3.38364 13.78 5.29927C13.78 9.28427 9.12125 13.493 7.50687 13.5224H7.5V13.5236ZM4.59625 2.64052C3.29625 2.64052 2.15687 3.88302 2.15687 5.29989C2.15687 8.88739 6.55312 12.5474 7.50062 12.5861C8.44937 12.5474 12.8444 8.88802 12.8444 5.29989C12.8444 3.88302 11.705 2.64052 10.405 2.64052C8.825 2.64052 7.9425 4.47552 7.935 4.49364C7.79125 4.84489 7.2125 4.84489 7.06812 4.49364C7.05937 4.47489 6.1775 2.64052 4.59687 2.64052H4.59625Z"
-                  fill="#657786"
-                />
-              </svg>
-
-              <!-- SVG -->
-              <span class="like-count">{{ tweet.replyCount }}</span>
-            </button>
+              <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
+              </button>
+              <button
+              class="likes" 
+              type="button" 
+              >
+              <img class="like-icon" src="../assets/image/liked-icon.svg" alt="">
+              </button>
+            </div>
           </div>
         </div>
       </div>
