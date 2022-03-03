@@ -39,7 +39,7 @@ export default {
  
   getUsersTop() {
     return apiHelper.get('/users/top')
-  }
+  },
 
   // 修改個人資料（封面、頭像）
   editProfile({ userId, formData }) {

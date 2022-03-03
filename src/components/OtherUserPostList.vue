@@ -19,44 +19,46 @@
       </button>
       <span class="title">推文</span>
     </div>
+
     <!-- 回覆的推文 -->
     <div class="post">
       <div class="poster-info">
+
+        <!-- 點擊照片會跳轉頁面到推文者的個人資料 -->
         <div class="poster-avatar">
-          <router-link to="/main">
+          <router-link :to="{ path: `/users/${tweets.id}`}">
             <img class="avatar-img" :src="tweets.User.avatar"/>
           </router-link>
         </div>
-        <router-link to="/user/:id">
-          <div class="user-info">
 
+        <!-- 點擊名稱和帳號會跳轉頁面到推文者的個人資料 -->
+        <router-link :to="{ path: `/users/${tweets.id}`}">
+          <div class="user-info">
             <div class="user-name">{{ tweets.User.name }}</div>
             <div class="user-accountName">@{{ tweets.User.account }}</div>
           </div>
         </router-link>
       </div>
-      <div class="post-content">
 
+      <div class="post-content">
         <span class="post-text"> {{ tweets.description }} </span>
       </div>
       <span class="post-time">{{ tweets.createdAt | fromNow }}</span>
       <div class="count">
         <span class="reply-count"
           ><p class="number">{{ tweets.replyCount }}</p>
-          回覆</span
-        >
+          回覆</span>
         <span class="like-count">
           <p class="number">{{ tweets.likeCount }}</p>
-
-          喜歡次數</span
-        >
+          喜歡次數</span>
       </div>
+
       <div class="icon">
         <!-- TODO:回覆icon要綁回覆的modal -->
         <button class="reply-btn">
           <img class="reply-icon" src="../assets/image/reply-icon.svg" />
         </button>
-
+        <!-- TODO:喜歡次數要能加減 -->
         <button
           class="like-btn"
           @click="isActive = !isActive"
@@ -71,9 +73,8 @@
         </button>
       </div>
     </div>
-    <!-- 下方回覆列表 -->
 
-    <!-- v-for="reply in replies" :key="reply.id" -->
+    <!-- 下方回覆列表 -->
     <div v-if="noReply">
       <span class="noReply"> 目前沒有回覆 </span>
     </div>
@@ -82,28 +83,28 @@
     v-for="reply in replies" 
     :key="reply.id">
       <div class="reply-item">
+        <!-- 點擊照片會跳轉頁面到回覆者的個人資料 -->
         <div class="user-avatar">
-          <router-link to="/profile">
-            <img class="avatar-img" />
-
+          <router-link :to="{ path: `/users/${reply.id}`}">
+            <img class="avatar-img" :src="reply.User.avatar"/>
           </router-link>
         </div>
         <div class="reply-content">
-          <router-link to="/profile">
+          <!-- 點擊名稱和帳號會跳轉頁面到回覆者的個人資料 -->
+          <router-link :to="{ path: `/users/${reply.id}`}">
             <div class="replier-info">
               <div class="user-name">{{ reply.User.name }}</div>
               <div class="user-accountName">@{{ reply.User.account }}</div>
-
               <div class="reply-time">‧{{ reply.createdAt | fromNow }}</div>
-
             </div>
           </router-link>
           <div class="reply">
             <span class="text">回覆</span>
-
-            <router-link to="/" class="reply-to">
+            <!-- 點擊@名稱會跳轉至推文者的個人資料頁面 -->
+            <router-link 
+            :to="{ path: `/users/${tweets.id}`}" 
+            class="reply-to">
             @{{ tweets.User.name }}</router-link
-
             >
           </div>
           <span class="reply-text"> {{ reply.comment }} </span>
@@ -122,7 +123,6 @@ export default {
   data() {
     return {
       isActive: false,
-
       tweets: {
         id: 1,
         User:{},
@@ -162,11 +162,10 @@ export default {
         // console.log('路由變化') 
         const replies = data;
         this.replies = replies;
-        console.log("data", data);
+        // console.log("data", data);
         if (data.status=== 'error') {
           this.noReply=true
         }
-
       } catch (error) {
         console.log("error");
       }

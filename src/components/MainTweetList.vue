@@ -7,7 +7,8 @@
     <!-- 推文區域 -->
     <div class="tweet-area">
       <div class="avatar">
-        <router-link to="/">
+        <!-- 點擊照片會跳轉頁面到個人資料 -->
+        <router-link to="/profile">
           <img src="../assets/image/john-doe-50.svg" alt="預設的頭像" />
         </router-link>
       </div>
@@ -20,40 +21,37 @@
     <!-- 下方推文列表 -->
     <div class="tweet-list" v-for="tweet in tweets" :key="tweet.id">
       <div class="tweet-item">
+        <!-- 點擊照片會跳轉頁面到其他使用者個人資料 -->
         <div class="user-avatar">
-          <router-link to="/user/:id">
+          <router-link :to="{path: `/users/${tweet.id}`}">
             <img class="avatar-img" :src="tweet.User.avatar" alt="/" />
           </router-link>
         </div>
+        <!-- 點擊名稱和帳號會跳轉頁面到其他使用者個人資料 -->
         <div class="post-content">
-          <router-link to="/user/:id">
+          <router-link :to="{path: `/users/${tweet.id}`}">
             <div class="user-info">
               <div class="user-name">{{ tweet.User.name }}</div>
               <div class="user-accountName">{{ tweet.User.account }}</div>
               <div class="post-time">‧{{ tweet.createdAt | fromNow }}</div>
             </div>
           </router-link>
-          <router-link 
-          :to="{
-              path: `/tweets/${tweet.id}`,
-              params: { id: tweet.id}
-            }">
+          <!-- 點擊貼文內容會跳轉頁面到推文頁面 -->
+          <router-link :to="{path: `/tweets/${tweet.id}`}"
           class="tweet-content">
             <span class="tweet-content">
               {{ tweet.description }}
             </span>
           </router-link>
+
           <div class="icon-item">
-            <router-link class="reply" 
-            :to="{
-              path: 'post',
-              name: 'user-post',
-              params: { id: tweet.id}
-            }">
+            <!-- 點擊回覆icon不會跳轉頁面 -->
+            <!-- TODO:應要觸發回覆貼文modal -->
+            <router-link class="reply" to="/main">
               <img class="reply-icon" src="../assets/image/reply-icon.svg" />
               <span class="replay-count">{{ tweet.replyCount }}</span>
             </router-link>
-
+            <!-- 點擊喜歡icon不會跳轉頁面 -->
             <router-link class="like" to="/main">
               <img class="like-icon" src="../assets/image/like-icon.svg" />
               <span class="like-count">{{ tweet.likeCount }}</span>
@@ -163,22 +161,21 @@ input[type="text"] {
   @include size(100%, 100%);
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
 }
 
 .tweet-item {
-  @include size(100%, 145px);
+  @include size(100%, 100%);
   display: flex;
-  align-items: center;
   font-size: 15px;
   font-weight: 700;
   line-height: 15px;
   border-bottom: 1px solid var(--theme-line);
+  padding: 15px;
 }
 
 .user-avatar {
   @include size(50px, 50px);
-  margin: 0 10px 82px 15px;
+  margin: 0 10px auto 15px;
 }
 
 .avatar-img {
@@ -190,11 +187,10 @@ input[type="text"] {
 }
 
 .post-content {
-  @include size(510px, 145px);
+  @include size(510px, 100%);
   display: flex;
   flex-flow: row wrap;
   margin-right: 15px;
-  padding-top: 10px;
 }
 
 .user-info {
@@ -228,10 +224,11 @@ input[type="text"] {
 }
 
 .tweet-content {
-  @include size(100%, 66px);
+  @include size(100%, 100%);
   font-size: 15px;
   font-weight: 500;
   line-height: 22px;
+  margin: 15px 0;
 }
 
 .icon-item {
