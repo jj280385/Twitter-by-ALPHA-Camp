@@ -94,7 +94,7 @@
               ></transition
             >
             <button @click="submitReply" :disabled="isProcessing" type="button">
-              推文
+              回覆
             </button>
           </div>
         </div>

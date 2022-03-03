@@ -1,24 +1,27 @@
 // 其他使用者的推文回覆主頁
 <template>
   <div class="container">
-    <Sidebar /> 
+    <Sidebar />
     <div class="main-reply">
       <OtherUserPostList />
     </div>
     <RightColumn />
+    <ReplyModal />
   </div>
 </template>
 
 <script>
-import Sidebar from "../components/Sidebar.vue"
-import RightColumn from "../components/RightColumn.vue"
-import OtherUserPostList from "../components/OtherUserPostList.vue"
+import Sidebar from '../components/Sidebar.vue'
+import RightColumn from '../components/RightColumn.vue'
+import OtherUserPostList from '../components/OtherUserPostList.vue'
+import ReplyModal from '../components/ReplyModal.vue'
 
 export default {
   components: {
     Sidebar,
     RightColumn,
     OtherUserPostList,
+    ReplyModal
   }
 }
 </script>

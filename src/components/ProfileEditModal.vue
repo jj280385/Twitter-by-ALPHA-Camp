@@ -349,7 +349,7 @@ export default {
             title: '已儲存成功！！'
           })
           this.isProcessing = false
-          this.$router.push({name:'profile'})
+          this.$router.push({path:'/profile'})
           this.modal=false
         } else {
           throw new Error(data.message)

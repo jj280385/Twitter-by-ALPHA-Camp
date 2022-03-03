@@ -22,7 +22,7 @@
           </router-link>
           <div class="reply">
             <span class="text">回覆</span>
-            <router-link :to="{path: `/users/${reply.userId}`}" class="reply-to">@Daniel</router-link>
+            <router-link :to="{path: `/users/${reply.userId}`}" class="reply-to">@{{reply.Tweet.User.account}}</router-link>
           </div>
           <span class="tweet-content">
             {{ reply.comment }}
