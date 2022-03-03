@@ -19,7 +19,6 @@
       </div>
     </div>
     <RightColumn />
-    <ProfileEditModal />
   </div>
 </template>
 
@@ -29,7 +28,6 @@ import RightColumn from '../components/RightColumn.vue'
 import UsersNavTabs from '../components/UsersNavTabs.vue'
 import OtherUserTweet from '../components/OtherUserTweet.vue'
 import ProfileArea from '../components/ProfileArea.vue'
-import ProfileEditModal from '../components/ProfileEditModal.vue'
 
 export default {
   components: {
@@ -38,7 +36,6 @@ export default {
     ProfileArea,
     UsersNavTabs,
     OtherUserTweet,
-    ProfileEditModal
   },
   data() {
     return {

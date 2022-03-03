@@ -20,7 +20,6 @@
     <RightColumn />
     <!-- 覆蓋當前畫面之上 -->
     <ReplyModal />
-    <ProfileEditModal />
   </div>
 </template>
 
@@ -30,7 +29,6 @@ import RightColumn from '../components/RightColumn.vue'
 import ProfileNavTabs from '../components/ProfileNavTabs.vue'
 import ProfileTweetList from '../components/ProfileTweetList.vue'
 import ProfileArea from '../components/ProfileArea.vue'
-import ProfileEditModal from '../components/ProfileEditModal.vue'
 import ReplyModal from '../components/ReplyModal.vue'
 
 export default {
@@ -40,7 +38,6 @@ export default {
     ProfileArea,
     ProfileNavTabs,
     ProfileTweetList,
-    ProfileEditModal,
     ReplyModal
   },
 

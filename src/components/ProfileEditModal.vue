@@ -390,13 +390,13 @@ export default {
 
   created() {
     this.fetchProfile()
-    this.$bus.$on('profileEditModal', (modal) => {
-      this.modal = modal
+    this.$bus.$on('profileEditModal', () => {
+      this.modal = true
     })
   },
 
   beforeDestroy() {
-    this.$bus.$off('profileEditModal')
+    // this.$bus.$off('profileEditModal')
   }
 }
 </script>
