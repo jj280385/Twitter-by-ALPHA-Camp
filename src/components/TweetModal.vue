@@ -87,7 +87,7 @@ export default {
 
   watch: {
     tweet() {
-      if (this.tweet.length > 140) {
+      if (this.tweet.length >= 140) {
         this.tweetHint = true
       } else this.tweetHint = false
     }
@@ -101,7 +101,7 @@ export default {
           return
         }
 
-        if (this.tweet.length > 140) {
+        if (this.tweet.length >= 140) {
           this.tweetHint = 'empty'
           this.$bus.$emit('toast', {
             icon: 'error',
