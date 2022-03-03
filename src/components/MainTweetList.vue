@@ -22,14 +22,6 @@
               <div class="post-time">‧{{ tweet.createdAt | fromNow }}</div>
             </div>
           </router-link>
-          <router-link
-            class="tweet-content"
-            :to="{
-              path: `/tweets/${tweet.id}`,
-              params: { id: tweet.id }
-            }"
-          >
-          </router-link >
           <!-- 點擊貼文內容會跳轉頁面到推文頁面 -->
           <router-link :to="{path: `/tweets/${tweet.id}`}"
           class="tweet-content">
@@ -60,14 +52,13 @@
               <span class="replay-count">{{ tweet.replyCount }}</span>
             </button>
 
-
             <!-- 點擊喜歡icon不會跳轉頁面 -->
             <div class="like-item">
               <button
                 class="like"
                 v-if="!tweet.isLiked"
                 @click.stop.prevent="addLikes(tweet)"
-                >
+              >
                 <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
                 <span>{{ tweet.likeCount }}</span>
               </button>
@@ -76,11 +67,12 @@
                 class="like" 
                 type="button" 
                 @click.stop.prevent="deleteLikes(tweet)"
-                >
+              >
                 <img class="like-icon" src="../assets/image/liked-icon.svg" alt="">
                 <span>{{ tweet.likeCount }}</span>
               </button>
             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -122,6 +114,28 @@ export default {
         // console.log('id',tweets[0].id)
       } catch (e) {
         console.log('error')
+      }
+    },
+    async addLikes(tweet) {
+      try {
+        const { data } = await tweetAPI.addLike(tweet.id)
+        // console.log('data',data)
+        tweet.isLiked = !tweet.isLiked
+        tweet.likeCount += 1
+      } catch (error) {
+        console.log('error')
+      }
+    },
+    async deleteLikes(tweet) {
+      try {
+        const { data } = await tweetAPI.deleteLike(tweet.id)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        tweet.isLiked = !tweet.isLiked
+        tweet.likeCount -= 1
+      } catch (error) {
+        console.log('error2')
       }
     }
   },
@@ -213,6 +227,7 @@ export default {
   font-weight: 500;
   line-height: 22px;
   margin: 10px 0;
+  word-break: break-all;
 }
 
 .icon-item {
@@ -241,7 +256,6 @@ export default {
   }
 }
 
-
 .like-item {
   display: flex;
 }
@@ -250,7 +264,6 @@ export default {
 .like {
   display: flex;
 }
-
 .reply-icon,
 .like-icon {
   @include size(15px, 15px);
