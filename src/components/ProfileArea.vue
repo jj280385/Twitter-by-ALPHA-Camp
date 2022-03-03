@@ -211,9 +211,6 @@ export default {
       }
     },
 
-
-    // console.log(data)
-
     async toggleFollow() {
       try {
         if (!this.isFollowed) {
@@ -221,11 +218,13 @@ export default {
           const { data } = await followAPI.addFollow({ id: this.id })
           if (data.status === 'success') {
             this.isFollowed = true
+            this.followerCount++
           }
         } else {
           const { data } = await followAPI.deleteFollow({ userId: this.id })
           if (data.status === 'success') {
             this.isFollowed = false
+            this.followerCount--
           }
         }
 
