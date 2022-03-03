@@ -277,6 +277,7 @@ export default {
     font-size: 15px;
     line-height: 22px;
     font-weight: 400;
+    word-break: break-all;
   }
 
   span.reply-to {

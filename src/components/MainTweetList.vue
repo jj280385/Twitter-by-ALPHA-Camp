@@ -2,7 +2,6 @@
   <div class="main-container">
     <!-- title -->
 
-
     <!-- 下方推文列表 -->
     <div class="tweet-list" v-for="tweet in tweets" :key="tweet.id">
       <div class="tweet-item">
@@ -139,6 +138,7 @@ export default {
         })
 
         const tweets = response.data
+        // console.log('response',response)
         this.tweets = tweets
 
         // console.log(tweets)
@@ -146,6 +146,28 @@ export default {
         // console.log('id',tweets[0].id)
       } catch (e) {
         console.log('error')
+      }
+    },
+    async addLikes(tweet) {
+      try {
+        const { data } = await tweetAPI.addLike(tweet.id)
+        // console.log('data',data)
+        tweet.isLiked = !tweet.isLiked
+        tweet.likeCount += 1
+      } catch (error) {
+        console.log('error')
+      }
+    },
+    async deleteLikes(tweet) {
+      try {
+        const { data } = await tweetAPI.deleteLike(tweet.id)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        tweet.isLiked = !tweet.isLiked
+        tweet.likeCount -= 1
+      } catch (error) {
+        console.log('error2')
       }
     }
   }

@@ -179,5 +179,6 @@ export default {
   font-weight: 500;
   line-height: 22px;
   margin: 10px 0;
+  word-break: break-all;
 }
 </style>
