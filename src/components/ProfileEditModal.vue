@@ -205,7 +205,7 @@
                 <textarea
                   v-model="description"
                   id="description"
-                  name="description"
+                  name="introduction"
                   maxlength="160"
                   autofocus
                 />
