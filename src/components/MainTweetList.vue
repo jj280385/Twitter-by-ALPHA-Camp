@@ -148,6 +148,12 @@ export default {
         console.log('error')
       }
     }
+  },
+
+  mounted(){
+    this.$bus.$on('fetch-MainTweetList', ()=>{
+      this.fetchTweets()
+    })
   }
 }
 </script>

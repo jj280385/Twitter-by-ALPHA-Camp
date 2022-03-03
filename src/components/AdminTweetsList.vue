@@ -8,7 +8,7 @@
         <div class="detail">
           {{ tweet.User.name }}
           <span class="account-date"
-            >@{{ tweet.User.account }}・{{ tweet.createdAt }}</span
+            >@{{ tweet.User.account }}・{{ tweet.createdAt | fromNow }}</span
           >
           <div
             class="del-btn"
@@ -24,10 +24,9 @@
 </template>
 
 <script>
-
 export default {
   name: 'AdminTweetsList',
-  components: {},
+
   props: {
     Tweets: {
       type: Array,
@@ -57,8 +56,12 @@ export default {
         description = description + '...'
       }
       return description
-    }
-  }
+    },
+
+    fromNow(datetime) {
+      return datetime ? moment(datetime).fromNow() : '-'
+    },
+  },
 }
 </script>
 
