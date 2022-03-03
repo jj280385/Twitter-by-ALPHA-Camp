@@ -10,8 +10,7 @@
       <div class="hidden-gap"></div>
 
       <!-- Navtabs -->
-      <ProfileNavTabs/>
-
+      <ProfileNavTabs />
 
       <!-- 下方推文列表 -->
       <div class="tweet-list">
@@ -20,18 +19,19 @@
     </div>
     <RightColumn />
     <!-- 覆蓋當前畫面之上 -->
+    <ReplyModal />
     <ProfileEditModal />
   </div>
 </template>
 
 <script>
-import Sidebar from "../components/Sidebar.vue";
-import RightColumn from "../components/RightColumn.vue";
-import ProfileNavTabs from "../components/ProfileNavTabs.vue";
-import ProfileTweetList from "../components/ProfileTweetList.vue";
-import ProfileArea from "../components/ProfileArea.vue";
+import Sidebar from '../components/Sidebar.vue'
+import RightColumn from '../components/RightColumn.vue'
+import ProfileNavTabs from '../components/ProfileNavTabs.vue'
+import ProfileTweetList from '../components/ProfileTweetList.vue'
+import ProfileArea from '../components/ProfileArea.vue'
 import ProfileEditModal from '../components/ProfileEditModal.vue'
-
+import ReplyModal from '../components/ReplyModal.vue'
 
 export default {
   components: {
@@ -41,14 +41,15 @@ export default {
     ProfileNavTabs,
     ProfileTweetList,
     ProfileEditModal,
+    ReplyModal
   },
 
   data() {
     return {
-      isActive: true,
-    };
-  },
-};
+      isActive: true
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

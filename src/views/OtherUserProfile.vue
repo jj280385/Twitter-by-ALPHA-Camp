@@ -17,9 +17,9 @@
       <div class="tweet-list">
         <router-view></router-view>
       </div>
-      
     </div>
     <RightColumn />
+    <ProfileEditModal />
   </div>
 </template>
 
@@ -29,6 +29,7 @@ import RightColumn from '../components/RightColumn.vue'
 import UsersNavTabs from '../components/UsersNavTabs.vue'
 import OtherUserTweet from '../components/OtherUserTweet.vue'
 import ProfileArea from '../components/ProfileArea.vue'
+import ProfileEditModal from '../components/ProfileEditModal.vue'
 
 export default {
   components: {
@@ -37,6 +38,7 @@ export default {
     ProfileArea,
     UsersNavTabs,
     OtherUserTweet,
+    ProfileEditModal
   },
   data() {
     return {
@@ -60,9 +62,9 @@ export default {
 }
 
 // 個人資料頁面尚未完成
-.hidden-gap{
+.hidden-gap {
   @include size(100%, 35px);
-  visibility: hidden
+  visibility: hidden;
 }
 
 .nav-tabs {
