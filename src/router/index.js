@@ -101,6 +101,7 @@ const routes = [
     children: [
       {
         path: 'tweet',
+        name: 'user-tweet',
         component: () => import('../components/OtherUserTweet.vue')
       },
       {

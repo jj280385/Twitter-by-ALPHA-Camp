@@ -18,8 +18,23 @@
               <div class="user-accountName">@{{ user.account }}</div>
             </router-link>
           </div>
-          <button class="following-btn">正在追隨</button>
-          <!-- <button class="unfollowed-btn">追隨</button> -->
+        
+          <div class="toggleBtn"  v-if=" user.isFollowed ">
+            <button
+              class="following-btn"
+              @click.stop.prevent="deleteFollow(user.id)"
+            >
+              正在追隨
+            </button>
+          </div>
+          <div class="toggleBtn" v-else>
+            <button
+              class="unfollowed-btn"
+              @click.stop.prevent="addFollow(user.id)"
+            >
+              追隨
+            </button>
+          </div>
         </div>
 
       </div>
@@ -29,34 +44,106 @@
 
 <script>
 import userAPI from "../apis/user"
+import Toast from '../components/Toast.vue'
+import followAPI from '../apis/follow'
 
 export default {
+  components:{
+    Toast
+  },
   data() {
     return {
-      users: []
+      users: [],
+      topUsers:[],
+      isFollowed:false,
     }
   },
   created() {
     this.fetchUser()
   },
+  watch: {
+    topUsers: function(newValue) {
+      this.users=[...newValue]
+    }
+  },
   methods: {
     async fetchUser() {
       try {
-        const { data } = await userAPI.getUsersTop()
-        const users = data
+        const { data } = await userAPI.getUsersTop()   
+        this.topUsers = data
         this.users = data
-
-        // console.log('data', data)
-        // console.log('user', users)
+        this.isFollowed = data.isFollowed
       } catch (error) {
         console.log('error')
       }
-    }
+    },
+    async addFollow(id) {
+      try {
+        const { data } = await followAPI.addFollow(id)
+        this.isFollowed = true
+        this.$bus.$emit('toast', { icon: 'success', title:"追隨成功" })
+        this.topUsers.filter((topUser,key) => {
+          if (topUser.id === id) {
+            topUser.isFollowed = true
+            this.users[key].isFollowed = true
+          }
+        })
+      } catch (error) {
+        console.log(error)
+      } 
+    },
+    async deleteFollow(id) {
+      try {
+        const { data } = await followAPI.deleteFollow(id)
+        this.isFollowed = false
+        this.$bus.$emit('toast', { icon: 'success', title:"取消追隨成功" })
+        this.topUsers.filter((topUser,key) => {
+          if (topUser.id === id) {
+            topUser.isFollowed = false
+            this.users[key].isFollowed = false
+          }
+        })
+      } catch (error) {
+        console.log(error)
+      } 
+    },    
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.following-btn {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  @include size(90px, 25px);
+  color: var(--just-white);
+  background-color: var(--theme-color);
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 15px;
+  &:hover {
+    background-color: var(--hover-color);
+  }
+}
+
+.unfollowed-btn {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  @include size(60px, 25px);
+  color: var(--theme-color);
+  border: 1px solid var(--theme-color);
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 15px;
+  &:hover {
+    color: var(--just-white);
+    background-color: var(--hover-color);
+  }
+}
 .column-container {
   @include size(350px, 756px);
   margin-top: 15px;

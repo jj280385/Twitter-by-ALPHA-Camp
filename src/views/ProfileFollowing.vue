@@ -43,7 +43,6 @@ export default {
   },
   created () {
     const { id } = this.$route.params
-    this.fetchUser(id)
     this.fetchFollowings(id)
   },
   computed: {
@@ -54,17 +53,6 @@ export default {
       try {
         const { data } = await userAPI.getUserFollowings(userId)
         this.followings = data
-        console.log(this.followings)
-        
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    async fetchUser (userId) {
-      try {
-        const { data } = await userAPI.getProfile({ userId })
-        this.name = data.name
-        this.tweetCount = data.tweetCount
       } catch (error) {
         console.log(error)
       }
