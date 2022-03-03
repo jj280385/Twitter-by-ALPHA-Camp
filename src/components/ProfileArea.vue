@@ -122,10 +122,10 @@
         {{ introduction | nullDescribe }}
       </p>
       <div class="follow d-flex">
-        <router-link :to="`user/${this.id}/following`">
+        <router-link :to="`/user/${this.id}/following`">
           <p>{{ followingCount }}個&thinsp;<span>跟隨中</span></p>
         </router-link>
-        <router-link :to="`user/${this.id}/follower`">
+        <router-link :to="`/user/${this.id}/follower`">
           <p>{{ followerCount }}位&thinsp;<span>跟隨者</span></p>
         </router-link>
       </div>
