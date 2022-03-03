@@ -130,6 +130,7 @@
         </router-link>
       </div>
     </div>
+    <ProfileEditModal />
   </div>
 </template>
 
@@ -138,11 +139,11 @@ import userAPI from '../apis/user'
 import followAPI from '../apis/follow'
 import { nullAvatarFilter, nullCoverFilter } from '../utils/mixins'
 import { mapState } from 'vuex'
-import Toast from '../components/Toast.vue'
+import ProfileEditModal from '../components/ProfileEditModal.vue'
 
 export default {
-  components:{
-    Toast
+  components: {
+    ProfileEditModal
   },
   data() {
     return {
@@ -220,21 +221,20 @@ export default {
         if (!this.isFollowed) {
           // 加入跟隨
           const { data } = await followAPI.addFollow(this.id)
-          
+
           if (data.status === 'success') {
             this.isFollowed = true
             this.followerCount++
-            this.$bus.$emit('toast', { icon: 'success', title:"追隨成功" })
+            this.$bus.$emit('toast', { icon: 'success', title: '追隨成功' })
           }
         } else {
           const { data } = await followAPI.deleteFollow(this.id)
           if (data.status === 'success') {
             this.isFollowed = false
             this.followerCount--
-            this.$bus.$emit('toast', { icon: 'success', title:"取消追隨成功" })
+            this.$bus.$emit('toast', { icon: 'success', title: '取消追隨成功' })
           }
         }
-
       } catch (error) {
         console.log(error)
       }

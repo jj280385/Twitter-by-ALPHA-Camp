@@ -21,7 +21,7 @@
             {{ tweet.description }}
           </span>
           <div class="icon-item d-flex align-content-center">
-            <button @click="$bus.$emit('replyModal',tweet)" class="reply">
+            <button @click="$bus.$emit('replyModal',tweet.id)" class="reply">
               <!-- SVG -->
               <svg
                 width="15"
@@ -35,8 +35,11 @@
                   fill="#657786"
                 />
               </svg>
+              <!-- SVG -->
+
 
               <span class="replay-count">{{ tweet.replyCount }}</span>
+
             </button>
 
             <div class="like-item">
