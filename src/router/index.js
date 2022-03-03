@@ -74,7 +74,7 @@ const routes = [
   },
   {
     path: '/profile',
-    // name: 'profile',
+    name: 'profile',
     component: () => import('../views/Profile.vue'),
     children: [
       {
@@ -118,19 +118,19 @@ const routes = [
     ]
   },
   {
-    path: '/profile/follower',
-    name: 'profile-follower',
-    component: () => import('../views/ProfileFollower.vue')
-  },
-  {
-    path: '/profile/following',
-    name: 'profile-following',
-    component: () => import('../views/ProfileFollowing.vue')
-  },
-  {
     path: '/tweets/:tweetId',
     name: 'other-tweet',
     component: OtherUserPost
+  },
+  {
+    path: '/user/:id/follower',
+    name: 'user-follower',
+    component: () => import('../views/ProfileFollower.vue')
+  },
+  {
+    path: '/user/:id/following',
+    name: 'user-following',
+    component: () => import('../views/ProfileFollowing.vue')
   },
   {
     // 其他使用者
@@ -152,7 +152,6 @@ const router = new VueRouter({
   linkActiveClass: 'active',
   routes
 })
-
 
 router.beforeEach(async (to, from, next) => {
   const token = localStorage.getItem('token')

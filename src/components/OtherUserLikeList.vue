@@ -8,12 +8,12 @@
     <div v-else class="like-list">
       <div class="like-item" v-for="like in likes" :key="like.id">
         <div class="user-avatar">
-          <router-link :to="{path:`/users/${like.tweet.id}`}">
-            <img class="avatar-img" :src="like.tweet.User.avatar" alt="/"/>
+          <router-link to="/users/:id">
+            <img class="avatar-img" />
           </router-link>
         </div>
         <div class="post-content">
-          <router-link :to="{path:`/users/${like.tweet.id}`}">
+          <router-link to="/users/:id">
             <div class="user-info">
               <div class="user-name">{{ like.tweet.User.name }}</div>
               <div class="user-accountName">@{{ like.tweet.User.account }}</div>
@@ -24,20 +24,27 @@
             {{ like.tweet.description }}
           </span>
           <div class="icon-item">
-            <button class="reply">
-              <img class="reply-icon" src="../assets/image/reply-icon.svg" />
-              <span class="replay-count">{{ like.tweet.likeCount }}</span>
+            <button class="reply-btn">
+              <router-link class="reply" to="/users/:id/like">
+                <img class="reply-icon" src="../assets/image/reply-icon.svg" />
+                <span class="replay-count">{{ like.tweet.likeCount }}</span>
+              </router-link>
             </button>
 
             <button 
-            class="like"
+            class="like-btn"
             @click="isActive = !isActive"
             :class="{active:isActive}"
+            >
+            <router-link
+              class="like"
+              to="/profile/like"
             >
               <img class="like-icon" src="../assets/image/liked-icon.svg" v-if="isActive"/>
               <img class="like-icon" src="../assets/image/like-icon.svg" v-else />
               <span class="like-count" :class="{ active: isActive }">
                 {{ like.tweet.replyCount }}</span>
+            </router-link>
             </button>
           </div>
         </div>
@@ -198,9 +205,6 @@ export default {
 .like {
   display: flex;
   align-items: center;
-  &.active {
-  color: var(--like-icon);
-  }
 }
 
 .reply-icon {
@@ -219,6 +223,12 @@ export default {
   font-size: 13px;
   font-weight: 500;
   line-height: 13px;
+}
+
+.like-btn, .like-count {
+  &.active {
+  color: var(--like-icon);
+  }
 }
 
 </style>

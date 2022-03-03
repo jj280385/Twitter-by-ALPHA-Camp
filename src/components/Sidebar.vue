@@ -148,9 +148,9 @@ export default {
 <style lang="scss" scoped>
 .sidebar-container {
   width: 235px;
+  height: 100%;
   @include flex(column, flex-start, flex-start);
   @include margin(4px, 0, 0, 103px);
-  position: relative;
 }
 
 .sidebar-header {
@@ -265,10 +265,10 @@ a {
   padding: 3px 5px;
 }
 
-// logout btn 固定不動
 .logout-item {
-  position: fixed;
+  position: absolute;
   bottom: 17px;
+  @include size(80px, 26px);
   margin-left: 8px;
   display: flex;
 }

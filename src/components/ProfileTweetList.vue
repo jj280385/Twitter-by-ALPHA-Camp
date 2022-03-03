@@ -6,7 +6,7 @@
       <div class="tweet-item" v-for="tweet in tweets" :key="tweet.id">
         <div class="user-avatar">
           <router-link to="/profile">
-            <img class="avatar-img" :src="tweet.User.avatar"/>
+            <img class="avatar-img" :src="tweet.avatar"/>
           </router-link>
         </div>
         <div class="post-content">
@@ -21,15 +21,15 @@
             {{ tweet.description }}
           </span>
           <div class="icon-item">
-            <button class="reply">
+            <router-link class="reply" to="/users/:id">
               <img class="reply-icon" src="../assets/image/reply-icon.svg" />
               <span class="replay-count">{{ tweet.likeCount }}</span>
-            </button>
+            </router-link>
 
-            <button class="like">
+            <router-link class="like" to="/users/:id">
               <img class="like-icon" src="../assets/image/like-icon.svg" />
               <span class="like-count">{{ tweet.replyCount }}</span>
-            </button>
+            </router-link>
           </div>
         </div>
       </div>

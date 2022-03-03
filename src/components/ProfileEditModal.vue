@@ -118,7 +118,7 @@
                 class="mask d-flex justify-content-center align-items-center"
               >
                 <label
-                  v-if="!avatarImg"
+                  v-show="!avatarImg"
                   for="upload-avatar"
                   class="camera d-flex justify-content-center align-items-center"
                 >
@@ -349,7 +349,8 @@ export default {
             title: '已儲存成功！！'
           })
           this.isProcessing = false
-          this.$router.go(0)
+          this.$router.push({name:'profile'})
+          this.modal=false
         } else {
           throw new Error(data.message)
         }
@@ -368,8 +369,8 @@ export default {
   computed: {
     nameCount() {
       if (this.name) {
-        this.name.length > 160 && (this.descriptionHint = true)
-        this.name.length < 160 && (this.descriptionHint = false)
+        this.name.length >= 160 && (this.descriptionHint = true)
+        this.name.length <= 160 && (this.descriptionHint = false)
         return this.name.length
       } else {
         return 0
@@ -378,8 +379,8 @@ export default {
 
     descriptionCount() {
       if (this.description) {
-        this.description.length > 160 && (this.descriptionHint = true)
-        this.description.length < 160 && (this.descriptionHint = false)
+        this.description.length >= 160 && (this.descriptionHint = true)
+        this.description.length <= 160 && (this.descriptionHint = false)
         return this.description.length
       } else {
         return 0

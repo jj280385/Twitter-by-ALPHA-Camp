@@ -122,10 +122,10 @@
         {{ introduction | nullDescribe }}
       </p>
       <div class="follow d-flex">
-        <router-link :to="`user/${this.id}/following`">
+        <router-link :to="`/user/${this.id}/following`">
           <p>{{ followingCount }}個&thinsp;<span>跟隨中</span></p>
         </router-link>
-        <router-link :to="`user/${this.id}/follower`">
+        <router-link :to="`/user/${this.id}/follower`">
           <p>{{ followerCount }}位&thinsp;<span>跟隨者</span></p>
         </router-link>
       </div>
@@ -211,9 +211,6 @@ export default {
       }
     },
 
-
-    // console.log(data)
-
     async toggleFollow() {
       try {
         if (!this.isFollowed) {
@@ -221,11 +218,13 @@ export default {
           const { data } = await followAPI.addFollow({ id: this.id })
           if (data.status === 'success') {
             this.isFollowed = true
+            this.followerCount++
           }
         } else {
           const { data } = await followAPI.deleteFollow({ userId: this.id })
           if (data.status === 'success') {
             this.isFollowed = false
+            this.followerCount--
           }
         }
 

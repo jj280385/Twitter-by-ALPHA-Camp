@@ -14,100 +14,99 @@
     </div>
     <!-- NavTabs 切換分頁 -->
     <div class="nav-tabs">
-      <button
-        class="nav-item"
-        type="button"
-        :class="{active: isActive}"
-      >
-        <router-link 
-        :to="{ name: 'user-follower', params: { id }}"
-        
-        class="nav-link"
-        :class="{active: isActive}"
-        > 跟隨者 </router-link>
+      <button class="nav-item" type="button" :class="{ active: isActive }">
+        <router-link
+          :to="{ name: 'user-follower', params: { id } }"
+          class="nav-link"
+          :class="{ active: isActive }"
+        >
+          跟隨者
+        </router-link>
       </button>
 
-      <button
-        class="nav-item"
-        type="button"
-      >
-        <router-link 
-        :to="{ name: 'user-following', params: { id }}"
-        class="nav-link"
-        > 正在跟隨 </router-link>
+      <button class="nav-item" type="button">
+        <router-link
+          :to="{ name: 'user-following', params: { id } }"
+          class="nav-link"
+        >
+          正在跟隨
+        </router-link>
       </button>
     </div>
 
     <!-- 追隨者列表 -->
     <div class="follower-list">
-      <div class="list-item"
-        v-for="follower in followers"
-        :key="follower.id">
+      <div class="list-item" v-for="follower in followers" :key="follower.id">
         <div class="user-info">
           <div class="user-avatar">
             <router-link to="/user/" class="avatar-img">
-              <img class="avatar-img" :src=" follower.Followings.avatar " />
+              <img class="avatar-img" :src="follower.Followings.avatar" />
             </router-link>
           </div>
           <div class="content">
             <router-link to="/profile">
               <div class="user-name">{{ follower.Followings.name }}</div>
-              <div class="user-accountName">@{{ follower.Followings.account }}</div>
+              <div class="user-accountName">
+                @{{ follower.Followings.account }}
+              </div>
             </router-link>
             <span class="introduce">
-            {{ follower.Followings.introduction }}
+              {{ follower.Followings.introduction }}
             </span>
           </div>
         </div>
         <div class="toggleBtn" v-if="follower.isFollowed">
-          <button 
-          class="unfollowed-btn" 
-          @click.stop.prevent="addFollow(follower.Followings.id)" 
-          >追隨</button>
+          <button
+            class="unfollowed-btn"
+            @click.stop.prevent="addFollow(follower.Followings.id)"
+          >
+            追隨
+          </button>
         </div>
         <div class="toggleBtn" v-else>
-          <button 
-          class="following-btn"
-          @click.stop.prevent="removeFollow(follower.Followers.id)" 
-          >正在追隨</button>
+          <button
+            class="following-btn"
+            @click.stop.prevent="removeFollow(follower.Followers.id)"
+          >
+            正在追隨
+          </button>
         </div>
       </div>
-    
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import userAPI from "../apis/user";
-import followAPI from "../apis/follow";
+import { mapState } from 'vuex'
+import userAPI from '../apis/user'
+import followAPI from '../apis/follow'
 export default {
   name: 'FollowerList',
   props: {
     followers: {
       type: Array,
       required: true
-    },
+    }
   },
   data() {
     return {
-      id:'',
-      name:'',
-      tweetCount:'',
-      isActive: true,
-    };
+      id: '',
+      name: '',
+      tweetCount: '',
+      isActive: true
+    }
   },
-  created () {
+  created() {
     const { id } = this.$route.params
     console.log(id)
-    
+
     this.fetchUser(id)
   },
   computed: {
     ...mapState(['currentUser'])
   },
   methods: {
-    async fetchUser (userId) {
+    async fetchUser(userId) {
       try {
         const { data } = await userAPI.getProfile({ userId })
         this.id = await data.id
@@ -116,9 +115,9 @@ export default {
       } catch (error) {
         console.log(error)
       }
-    },
+    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -152,7 +151,7 @@ export default {
 
 .nav-item {
   @include size(130px, 54px);
-  @include flex (row, center, center);
+  @include flex(row, center, center);
   font-size: 15px;
   font-weight: 700;
   line-height: 21.72px;
@@ -183,7 +182,7 @@ p {
 }
 
 .list-item {
-  @include flex (row, normal, center);
+  @include flex(row, normal, center);
   position: relative;
   padding: 10px 15px 10px 15px;
   border-bottom: 1px solid var(--theme-line);
@@ -191,7 +190,7 @@ p {
 }
 
 .user-info {
-  @include flex (row, normal, center);
+  @include flex(row, normal, center);
   font-size: 15px;
   font-weight: 700;
   line-height: 15px;

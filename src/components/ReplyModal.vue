@@ -37,25 +37,34 @@
             <div class="tweet d-flex">
               <div class="avatar">
                 <router-link to="/">
-                  <img src="https://via.placeholder.com/150" alt="預設的頭像" />
+                  <img :src="tweet.User.avatar | nullAvatar" alt="預設的頭像" />
                 </router-link>
               </div>
 
               <div class="tweet-body">
                 <div class="d-flex">
-                  <h3 class="name"><router-link to="/"> Apple</router-link></h3>
+                  <h3 class="name">
+                    <router-link :to="`users/${tweet.UserId}`">{{
+                      tweet.User.name
+                    }}</router-link>
+                  </h3>
                   <span class="info">
-                    <router-link to="/">@apple</router-link>．
-                    <router-link to="/">3小時</router-link>
+                    <router-link :to="`users/${tweet.UserId}`"
+                      >@{{ tweet.User.account }}</router-link
+                    >．
+                    <router-link :to="`users/${tweet.UserId}`">{{
+                      tweet.createdAt | fromNow
+                    }}</router-link>
                   </span>
                 </div>
 
                 <div class="tweet-content">
-                  連好好的筆電都要挖瀏海是怎樣！？還有那個口罩Face
-                  ID只有新機才能用真的是騙肖耶，凸！！以下是假字剛剛好140字喔，啾咪～麻看不出沒有，大笑書原本的。的創都這樣箱許，很難位旅人自己一點就。過就好感便宜的，收到切國中印象花可不可，事件文章不要好像也喜是為什⋯那邊的麼一買然後那。
+                  {{ tweet.description }}
                 </div>
                 <span class="reply-to"
-                  >回覆給&thinsp;<router-link to="/">@apple</router-link></span
+                  >回覆給&thinsp;<router-link :to="`users/${tweet.UserId}`"
+                    >@{{ tweet.User.account }}</router-link
+                  ></span
                 >
               </div>
             </div>
@@ -68,6 +77,7 @@
               </div>
 
               <textarea
+                v-model="reply"
                 class="reply-content"
                 placeholder="推你的回覆"
                 autofocus
@@ -78,8 +88,11 @@
           <div
             class="modal-footer d-flex justify-content-end align-items-center"
           >
-            <span class="hint">字數不可超過140字</span>
-            <button type="button">推文</button>
+            <transition name="hint">
+              <span v-if="replyHint" class="hint">字數不可超過140字</span>
+              ></transition
+            >
+            <button @click="submitReply" :disabled="isProcessing" type="button">推文</button>
           </div>
         </div>
       </transition>
@@ -88,17 +101,89 @@
 </template>
 
 <script>
+import { fromNowFilter, nullAvatarFilter } from '../utils/mixins'
+import replyAPI from "../apis/reply";
+
 export default {
+  mixins: [fromNowFilter, nullAvatarFilter],
   data() {
     return {
-      modal: false,
-    };
+      modal: true,
+      tweet: [],
+      reply: '',
+      replyHint: false,
+      isProcessing: false,
+    }
   },
-};
+
+  computed: {
+    replyCount() {
+      if (this.reply) {
+        this.reply.length >= 140 && (this.replyHint = true)
+        this.reply.length <= 140 && (this.replyHint = false)
+        return this.reply.length
+      } else {
+        return 0
+      }
+    }
+  },
+
+  methods: {
+    async submitReply() {
+      try {
+        if (!this.reply) {
+          this.replyHint = true
+          this.$bus.$emit('toast', { icon: 'error', title: '內容不可空白' })
+          return
+        }
+
+        if (this.tweet.length >= 140) {
+          this.replyHint = true
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: '字數不可超過 140 字'
+          })
+          return
+        }
+
+        this.isProcessing = true
+
+        const { data } = await replyAPI.subMitReply({ tweetId:this.tweet.id, comment: this.reply })
+        console.log('測試成功',data)
+
+        if (data.status === 'success') {
+          this.$bus.$emit('toast', {
+            icon: 'success',
+            title: '回覆發送成功'
+          })
+        } else {
+          throw new Error(data.message)
+        }
+        this.modal = false
+        this.isProcessing = false
+        this.reply = ''
+      } catch (error) {
+        console.log(error)
+        this.isProcessing = false
+        this.$bus.$emit('toast', {
+          icon: 'error',
+          title: `${error}`
+        })
+      }
+    }
+  },
+
+  mounted() {
+    this.$bus.$on('replyModal', (tweet) => {
+      this.modal = true
+      this.tweet = tweet
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/modalCommon.scss";
+@import '../styles/modalCommon.scss';
 
 .modal {
   --modal-dialog-height: 600px;
@@ -131,7 +216,7 @@ export default {
     // 產生連接線
     &::after {
       position: absolute;
-      content: "";
+      content: '';
 
       left: 25px;
       // 圖片的 margin + 圖片高度
@@ -213,7 +298,7 @@ export default {
   span.hint {
     margin: 0 20px;
 
-    color: var(--modal-error);
+    color: var(--invalid);
     font-size: 15px;
     line-height: 15px;
   }
@@ -233,6 +318,23 @@ export default {
       color: var(--theme-white);
     }
   }
+}
+
+// Vue transition
+.hint-enter-active,
+.hint-leave-active,
+.hint-move {
+  transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+}
+
+.hint-enter {
+  opacity: 10%;
+  transform: translateY(-50%);
+}
+
+.hint-leave-to {
+  opacity: 10%;
+  transform: translateY(50%);
 }
 
 @media screen and (min-width: $breakpoint) {
