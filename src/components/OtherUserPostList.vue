@@ -23,16 +23,15 @@
     <!-- 回覆的推文 -->
     <div class="post">
       <div class="poster-info">
-
         <!-- 點擊照片會跳轉頁面到推文者的個人資料 -->
         <div class="poster-avatar">
-          <router-link :to="{ path: `/users/${tweets.id}`}">
-            <img class="avatar-img" :src="tweets.User.avatar"/>
+          <router-link :to="{ path: `/users/${tweets.id}` }">
+            <img class="avatar-img" :src="tweets.User.avatar" />
           </router-link>
         </div>
 
         <!-- 點擊名稱和帳號會跳轉頁面到推文者的個人資料 -->
-        <router-link :to="{ path: `/users/${tweets.id}`}">
+        <router-link :to="{ path: `/users/${tweets.id}` }">
           <div class="user-info">
             <div class="user-name">{{ tweets.User.name }}</div>
             <div class="user-accountName">@{{ tweets.User.account }}</div>
@@ -47,15 +46,17 @@
       <div class="count">
         <span class="reply-count"
           ><p class="number">{{ tweets.replyCount }}</p>
-          回覆</span>
+          回覆</span
+        >
         <span class="like-count">
           <p class="number">{{ tweets.likeCount }}</p>
-          喜歡次數</span>
+          喜歡次數</span
+        >
       </div>
 
       <div class="icon">
         <!-- TODO:回覆icon要綁回覆的modal -->
-        <button class="reply-btn">
+        <button @click="$bus.$emit('replyModal', tweets.id)" class="reply-btn">
           <img class="reply-icon" src="../assets/image/reply-icon.svg" />
         </button>
         <!-- TODO:喜歡次數要能加減 -->
@@ -65,15 +66,23 @@
             v-if="!tweets.isLiked"
             @click.stop.prevent="addLike(tweets.id)"
           >
-            <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
+            <img
+              class="like-icon"
+              src="../assets/image/like-icon.svg"
+              alt="/"
+            />
           </button>
           <button
-            class="likes" 
-            type="button" 
+            class="likes"
+            type="button"
             v-else
             @click.stop.prevent="deleteLike(tweets.id)"
           >
-            <img class="like-icon" src="../assets/image/liked-icon.svg" alt="">
+            <img
+              class="like-icon"
+              src="../assets/image/liked-icon.svg"
+              alt=""
+            />
           </button>
         </div>
       </div>
@@ -83,20 +92,17 @@
     <div v-if="noReply">
       <span class="noReply"> 目前沒有回覆 </span>
     </div>
-    <div class="reply-list" 
-    v-else
-    v-for="reply in replies" 
-    :key="reply.id">
+    <div class="reply-list" v-else v-for="reply in replies" :key="reply.id">
       <div class="reply-item">
         <!-- 點擊照片會跳轉頁面到回覆者的個人資料 -->
         <div class="user-avatar">
-          <router-link :to="{ path: `/users/${reply.User.id}`}">
-            <img class="avatar-img" :src="reply.User.avatar"/>
+          <router-link :to="{ path: `/users/${reply.User.id}` }">
+            <img class="avatar-img" :src="reply.User.avatar" />
           </router-link>
         </div>
         <div class="reply-content">
           <!-- 點擊名稱和帳號會跳轉頁面到回覆者的個人資料 -->
-          <router-link :to="{ path: `/users/${reply.id}`}">
+          <router-link :to="{ path: `/users/${reply.id}` }">
             <div class="replier-info">
               <div class="user-name">{{ reply.User.name }}</div>
               <div class="user-accountName">@{{ reply.User.account }}</div>
@@ -106,10 +112,8 @@
           <div class="reply">
             <span class="text">回覆</span>
             <!-- 點擊@名稱會跳轉至推文者的個人資料頁面 -->
-            <router-link 
-            :to="{ path: `/users/${tweets.id}`}" 
-            class="reply-to">
-            @{{ tweets.User.name }}</router-link
+            <router-link :to="{ path: `/users/${tweets.id}` }" class="reply-to">
+              @{{ tweets.User.name }}</router-link
             >
           </div>
           <span class="reply-text"> {{ reply.comment }} </span>
@@ -120,9 +124,9 @@
 </template>
 
 <script>
-import tweet from '../apis/tweet';
-import getAPI from "./../apis/mainTweet";
-import { fromNowFilter } from "./../utils/mixins";
+import tweet from '../apis/tweet'
+import getAPI from './../apis/mainTweet'
+import { fromNowFilter } from './../utils/mixins'
 
 export default {
   mixins: [fromNowFilter],
@@ -131,77 +135,77 @@ export default {
       tweets: {
         id: 1,
         User: {},
-        description: "",
+        description: '',
         likeCount: 0,
         replyCount: 0,
-        isLiked: false,
+        isLiked: false
       },
-      noReply: false,
-    };
+      noReply: false
+    }
   },
   created() {
-    const id = this.$route.params;
-    const tweetId = id.tweetId;
-    this.fetchTweet(tweetId);
-    this.fetchReplies(tweetId);
+    const id = this.$route.params
+    const tweetId = id.tweetId
+    this.fetchTweet(tweetId)
+    this.fetchReplies(tweetId)
   },
   methods: {
     // 上方其他使用者推文
     async fetchTweet(tweetId) {
       try {
-        const { data } = await getAPI.getOtherPost(tweetId);
-        const tweets = data;
-        this.tweets = tweets;
-        console.log('tweets',tweets);
+        const { data } = await getAPI.getOtherPost(tweetId)
+        const tweets = data
+        this.tweets = tweets
+        console.log('tweets', tweets)
         // if (id === id) {
         //   this.noReply = false
         // } else if(data.status === 'error'){
         //   this.noReply = true
         // }
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
     async addLike(tweetId) {
       try {
-        const { data } = await getAPI.getOtherPost(tweetId);
+        const { data } = await getAPI.getOtherPost(tweetId)
         const tweets = data
         // console.log("data1", tweets.isLiked);
-        this.tweets.isLiked = true ;
-        this.tweets.likeCount += 1;
+        this.tweets.isLiked = true
+        this.tweets.likeCount += 1
       } catch (error) {
-        console.log("error");
+        console.log('error')
       }
     },
     async deleteLike(tweetId) {
       try {
-        const { data } = await getAPI.getOtherPost(tweetId);
-        const tweets = data;
+        const { data } = await getAPI.getOtherPost(tweetId)
+        const tweets = data
         // console.log("data2", tweets.isLiked);
-        this.tweets.isLiked = false; ;
-        this.tweets.likeCount -= 1;
+        this.tweets.isLiked = false
+        this.tweets.likeCount -= 1
       } catch (error) {
-        console.log("error");
+        console.log('error')
       }
     },
     // 下方推文回覆列表
     async fetchReplies(tweetId) {
       try {
-        const { data } = await getAPI.getTweetReplies(tweetId);
-        console.log('tweetid',data);
+        const { data } = await getAPI.getTweetReplies(tweetId)
+        console.log('tweetid', data)
         console.log('路由變化')
-        const replies = data;
-        this.replies = replies;
+        const replies = data
+        this.replies = replies
         // console.log("data", data);
-        if (data.status === "error") {
-          this.noReply = true;
+        if (data.status === 'error') {
+          this.noReply = true
         }
       } catch (error) {
-        console.log("error");
+        console.log('error')
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

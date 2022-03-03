@@ -9,69 +9,88 @@
         <div class="list-item" v-for="user in users" :key="user.id">
           <div class="user-info">
             <div class="user-avatar">
-              <router-link :to="{path: `/users/${user.id}`}">
-                <img class="avatar-img" :src="user.avatar"/>
+              <router-link :to="{ path: `/users/${user.id}` }">
+                <img class="avatar-img" :src="user.avatar" />
               </router-link>
             </div>
-            <router-link :to="{path: `/users/${user.id}`}">
+            <router-link :to="{ path: `/users/${user.id}` }">
               <div class="user-name">{{ user.name }}</div>
               <div class="user-accountName">@{{ user.account }}</div>
             </router-link>
           </div>
-        
-          <div class="toggleBtn"  v-if=" user.isFollowed ">
-            <button
-              class="following-btn"
-              @click.stop.prevent="deleteFollow(user.id)"
-            >
-              正在追隨
-            </button>
-          </div>
-          <div class="toggleBtn" v-else>
-            <button
-              class="unfollowed-btn"
-              @click.stop.prevent="addFollow(user.id)"
-            >
-              追隨
-            </button>
-          </div>
-        </div>
 
+          <template v-if="!user.isSelf">
+            <div class="toggleBtn" v-if="user.isFollowed && !user.isSelf">
+              <button
+                class="following-btn"
+                @click.stop.prevent="deleteFollow(user.id)"
+              >
+                正在追隨
+              </button>
+            </div>
+            <div class="toggleBtn" v-if="!user.isFollowed && !user.isSelf">
+              <button
+                class="unfollowed-btn"
+                @click.stop.prevent="addFollow(user.id)"
+              >
+                追隨
+              </button>
+            </div>
+          </template>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import userAPI from "../apis/user"
+import userAPI from '../apis/user'
 import Toast from '../components/Toast.vue'
 import followAPI from '../apis/follow'
+import { mapState } from 'vuex'
 
 export default {
-  components:{
+  components: {
     Toast
   },
   data() {
     return {
       users: [],
-      topUsers:[],
-      isFollowed:false,
+      // topUsers:[],
+      isFollowed: false
     }
   },
+
+  computed: {
+    ...mapState(['currentUser'])
+  },
+
   created() {
     this.fetchUser()
   },
   watch: {
-    topUsers: function(newValue) {
-      this.users=[...newValue]
+    topUsers: function (newValue) {
+      this.users = [...newValue]
     }
   },
   methods: {
     async fetchUser() {
       try {
-        const { data } = await userAPI.getUsersTop()   
-        this.topUsers = data
+        const { data } = await userAPI.getUsersTop()
+        // this.topUsers = data
         this.users = data
+        // 過濾本人
+        this.users = this.users.map((user) => {
+          if (user.id === this.currentUser.id) {
+            return {
+              ...user,
+              isSelf: true
+            }
+          } else {
+            return user
+          }
+        })
+
         this.isFollowed = data.isFollowed
       } catch (error) {
         console.log('error')
@@ -81,8 +100,8 @@ export default {
       try {
         const { data } = await followAPI.addFollow(id)
         this.isFollowed = true
-        this.$bus.$emit('toast', { icon: 'success', title:"追隨成功" })
-        this.topUsers.filter((topUser,key) => {
+        this.$bus.$emit('toast', { icon: 'success', title: '追隨成功' })
+        this.topUsers.filter((topUser, key) => {
           if (topUser.id === id) {
             topUser.isFollowed = true
             this.users[key].isFollowed = true
@@ -90,14 +109,14 @@ export default {
         })
       } catch (error) {
         console.log(error)
-      } 
+      }
     },
     async deleteFollow(id) {
       try {
         const { data } = await followAPI.deleteFollow(id)
         this.isFollowed = false
-        this.$bus.$emit('toast', { icon: 'success', title:"取消追隨成功" })
-        this.topUsers.filter((topUser,key) => {
+        this.$bus.$emit('toast', { icon: 'success', title: '取消追隨成功' })
+        this.topUsers.filter((topUser, key) => {
           if (topUser.id === id) {
             topUser.isFollowed = false
             this.users[key].isFollowed = false
@@ -105,8 +124,8 @@ export default {
         })
       } catch (error) {
         console.log(error)
-      } 
-    },    
+      }
+    }
   }
 }
 </script>
