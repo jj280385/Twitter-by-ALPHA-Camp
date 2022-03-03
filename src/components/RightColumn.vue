@@ -1,3 +1,10 @@
+Skip to content Search or jump to… Pull requests Issues Marketplace Explore
+@Pudding1989 jj280385 / Twitter-by-ALPHA-Camp Public Code Issues Pull requests
+Actions Projects Wiki Security Insights
+Twitter-by-ALPHA-Camp/src/components/RightColumn.vue @ReoNaBear ReoNaBear 4
+pages of follow/unfollow function Latest commit d40a415 5 hours ago History 2
+contributors @jj280385@ReoNaBear 240 lines (224 sloc) 5.18 KB
+
 <template>
   <div class="column-container">
     <div class="column-header">
@@ -20,7 +27,7 @@
           </div>
 
           <template v-if="!user.isSelf">
-            <div class="toggleBtn" v-if="user.isFollowed && !user.isSelf">
+            <div class="toggleBtn" v-if="user.isFollowed">
               <button
                 class="following-btn"
                 @click.stop.prevent="deleteFollow(user.id)"
@@ -28,7 +35,7 @@
                 正在追隨
               </button>
             </div>
-            <div class="toggleBtn" v-if="!user.isFollowed && !user.isSelf">
+            <div class="toggleBtn" v-else>
               <button
                 class="unfollowed-btn"
                 @click.stop.prevent="addFollow(user.id)"
@@ -56,7 +63,7 @@ export default {
   data() {
     return {
       users: [],
-      // topUsers:[],
+      topUsers: [],
       isFollowed: false
     }
   },
@@ -77,10 +84,12 @@ export default {
     async fetchUser() {
       try {
         const { data } = await userAPI.getUsersTop()
-        // this.topUsers = data
+        this.topUsers = data
         this.users = data
+        this.isFollowed = data.isFollowed
+
         // 過濾本人
-        this.users = this.users.map((user) => {
+        this.topUsers = this.topUsers.map((user) => {
           if (user.id === this.currentUser.id) {
             return {
               ...user,
@@ -90,8 +99,6 @@ export default {
             return user
           }
         })
-
-        this.isFollowed = data.isFollowed
       } catch (error) {
         console.log('error')
       }
@@ -146,7 +153,6 @@ export default {
     background-color: var(--hover-color);
   }
 }
-
 .unfollowed-btn {
   position: absolute;
   right: 15px;
@@ -169,18 +175,15 @@ export default {
   border-radius: 14px;
   background-color: var(--column-background-color);
 }
-
 .column-header {
   @include size(350px, 45px);
   padding: 10px 15px;
 }
-
 .column-title {
   font-size: 18px;
   font-weight: 700;
   line-height: 26.06px;
 }
-
 .list-item {
   position: relative;
   @include size(100%, 70px);
@@ -189,7 +192,6 @@ export default {
   align-items: center;
   border-top: 1px solid var(--theme-line);
 }
-
 .user-info {
   display: flex;
   align-items: center;
@@ -197,12 +199,10 @@ export default {
   font-weight: 700;
   line-height: 15px;
 }
-
 .user-avatar {
   @include size(50px, 50px);
   margin-right: 10px;
 }
-
 .avatar-img {
   background-color: var(--avatar-img-background);
   border-radius: 50%;
@@ -210,14 +210,12 @@ export default {
     background-color: darkgray;
   }
 }
-
 .user-name {
   color: var(--main-text);
   &:hover {
     text-decoration: underline;
   }
 }
-
 .user-accountName {
   color: var(--info);
   margin-top: 3px;
@@ -225,7 +223,6 @@ export default {
     text-decoration: underline;
   }
 }
-
 .following-btn {
   position: absolute;
   right: 15px;
@@ -240,7 +237,6 @@ export default {
     background-color: var(--hover-color);
   }
 }
-
 .unfollowed-btn {
   position: absolute;
   right: 15px;
@@ -257,3 +253,5 @@ export default {
   }
 }
 </style>
+© 2022 GitHub, Inc. Terms Privacy Security Status Docs Contact GitHub Pricing
+API Training Blog About
