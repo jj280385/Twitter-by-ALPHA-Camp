@@ -115,13 +115,12 @@ export default {
       } catch (error) {
         console.log('error2')
       }
-    },
-    mounted(){
+    }
+  },
+  mounted(){
     this.$bus.$on('fetch-MainTweetList', ()=>{
-      this.fetchTweets()
-    })
-  }
-  }
+    this.fetchTweets()
+  })
 }
 </script>
 
