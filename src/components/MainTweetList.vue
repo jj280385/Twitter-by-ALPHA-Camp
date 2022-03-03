@@ -1,35 +1,21 @@
 <template>
   <div class="main-container">
     <!-- title -->
-    <div class="main-header">
-      <span class="title">首頁</span>
-    </div>
-    <!-- 推文區域 -->
-    <div class="tweet-area">
-      <div class="user-avatar">
-        <router-link to="/profile">
-          <img class="avatar" :src="currentUser.avatar" alt="/">
-        </router-link>
-      </div>
 
-      <!-- 推文輸入框 -->
-      <input type="text" class="text-area" placeholder="有什麼新鮮事？" />
-      <button class="tweet-btn" type="submit">推文</button>
-    </div>
 
     <!-- 下方推文列表 -->
     <div class="tweet-list" v-for="tweet in tweets" :key="tweet.id">
       <div class="tweet-item">
         <!-- 點擊照片會跳轉頁面到其他使用者個人資料 -->
         <div class="user-avatar">
-          <router-link :to="{path: `/users/${tweet.userId}`}">
+          <router-link :to="{path: `/users/${tweet.id}`}">
             <img class="avatar-img" :src="tweet.User.avatar" alt="/" />
           </router-link>
         </div>
 
         <!-- 點擊名稱和帳號會跳轉頁面到其他使用者個人資料 -->
         <div class="post-content">
-          <router-link :to="{path: `/users/${tweet.userId}`}">
+          <router-link :to="{path: `/users/${tweet.id}`}">
             <div class="user-info">
               <div class="user-name">{{ tweet.User.name }}</div>
               <div class="user-accountName">{{ tweet.User.account }}</div>
@@ -43,7 +29,7 @@
               params: { id: tweet.id }
             }"
           >
-            >
+          </router-link >
           <!-- 點擊貼文內容會跳轉頁面到推文頁面 -->
           <router-link :to="{path: `/tweets/${tweet.id}`}"
           class="tweet-content">
@@ -105,8 +91,8 @@
                   fill="#E0245E"
                 />
               </svg>
-
               <!-- SVG -->
+            </button>
             <!-- 點擊回覆icon不會跳轉頁面 -->
             <!-- TODO:應要觸發回覆貼文modal -->
             <button class="reply">
@@ -114,25 +100,10 @@
               <span class="replay-count">{{ tweet.replyCount }}</span>
             </button>
             <!-- 點擊喜歡icon不會跳轉頁面 -->
-            <div class="like-item">
-              <button
-                class="likes"
-                v-if="!tweet.isLiked"
-                @click.stop.prevent="addLikes(tweet)"
-              >
-                <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
-                <span>{{ tweet.likeCount }}</span>
-              </button>
-              <button
-                v-else
-                class="likes" 
-                type="button" 
-                @click.stop.prevent="deleteLikes(tweet)"
-              >
-                <img class="like-icon" src="../assets/image/like-fill.svg" alt="">
-                <span>{{ tweet.likeCount }}</span>
-              </button>
-            </div>
+            <button class="like">
+              <img class="like-icon" src="../assets/image/like-icon.svg" />
+              <span class="like-count">{{ tweet.likeCount }}</span>
+            </button>
           </div>
         </div>
       </div>
@@ -143,9 +114,8 @@
 </template>
 
 <script>
-import tweetAPI from "./../apis/mainTweet";
-import { mapState } from 'vuex'
-import { fromNowFilter } from "./../utils/mixins";
+import tweetAPI from './../apis/mainTweet'
+import { fromNowFilter } from './../utils/mixins'
 import ReplyModal from '../components/ReplyModal.vue'
 
 export default {
@@ -153,7 +123,7 @@ export default {
   mixins: [fromNowFilter],
   data() {
     return {
-      tweets: [],
+      tweets: []
     }
   },
 
@@ -161,46 +131,21 @@ export default {
     const { queryId } = this.$route.params
     this.fetchTweets({ queryId })
   },
-  computed: {
-    ...mapState(['currentUser'])
-  },
   methods: {
     async fetchTweets(queryId) {
       try {
         const response = await tweetAPI.getTweets({
           id: queryId
         })
+
         const tweets = response.data
-        console.log('response',response)
         this.tweets = tweets
+
         // console.log(tweets)
         // console.log('response',response.data)
         // console.log('id',tweets[0].id)
       } catch (e) {
         console.log('error')
-      }
-    },
-    async addLikes(tweet) {
-      try {
-        const { data } = await tweetAPI.addLike(tweet.id)
-        
-        // console.log('data',data)
-        tweet.isLiked = !tweet.isLiked
-        tweet.likeCount += 1
-      } catch (error) {
-        console.log('error')
-      }
-    },
-    async deleteLikes(tweet) {
-      try {
-        const { data } = await tweetAPI.deleteLike(tweet.id)
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-        tweet.isLiked = !tweet.isLiked
-        tweet.likeCount -= 1
-      } catch (error) {
-        console.log('error2')
       }
     }
   }
@@ -209,57 +154,6 @@ export default {
 
 <style lang="scss" scoped>
 .main-container {
-  @include size(100%, 100%);
-  border: 1px solid var(--theme-line);
-}
-
-.main-header {
-  @include size(100%, 55px);
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid var(--theme-line);
-}
-
-.title {
-  margin-left: 15px;
-  color: var(--main-text);
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 26.06px;
-}
-
-.tweet-area {
-  display: flex;
-  height: 120px;
-  border-bottom: 10px solid var(--theme-line);
-  padding: 10px 15px 10px 15px;
-}
-
-.avatar {
-  @include size(50px, 50px);
-  border-radius: 50%;
-}
-
-.text-area {
-  border: none;
-  height: 100%;
-  width: 80%;
-  padding: 21px 0 73px 10px;
-}
-
-input[type="text"] {
-  font-size: 18px;
-}
-
-.tweet-btn {
-  @include size(66px, 38px);
-  background-color: var(--theme-color);
-  color: var(--just-white);
-  border-radius: 100px;
-  margin-top: 51px;
-  &:hover {
-    background-color: var(--hover-color);
-  }
   max-height: 80vh;
   overflow: scroll;
 }
@@ -337,7 +231,6 @@ input[type="text"] {
   font-weight: 500;
   line-height: 22px;
   margin: 10px 0;
-  word-break: break-all;
 }
 
 .icon-item {
@@ -345,16 +238,33 @@ input[type="text"] {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  button {
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+      margin-left: 10px;
+    }
+
+    &:hover {
+      span {
+        color: var(--hover-color);
+      }
+
+      path {
+        fill: var(--hover-color);
+      }
+    }
+  }
 }
 
 .reply,
-.likes {
+.like {
   display: flex;
-  margin-right: 5px;
-  align-items: center;
 }
-
-.reply-icon, .like-icon {
+.reply-icon,
+.like-icon {
   @include size(15px, 15px);
   margin-right: 10px;
 }

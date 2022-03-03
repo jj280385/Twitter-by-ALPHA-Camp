@@ -1,7 +1,7 @@
 <template>
   <div class="setting-container">
     <Sidebar />
-    <form class="setting-form" @submit.prevent="handleSubmit">
+    <form class="setting-form" @submit="handleSubmit">
       <div class="form-header">
         <span class="form-title">帳戶設定</span>
       </div>
@@ -153,15 +153,21 @@ export default {
             icon: 'success',
             title: '資料修改成功'
           })
-
           this.isProcessing = false
         } else {
+          this.$bus.$emit('toast', {
+            icon: 'error',
+            title: `${data.message}`
+          })
           throw new Error(data.message)
         }
       } catch (error) {
         this.isProcessing = false
         console.log(error)
-        this.$bus.$emit({ title: `${error}` })
+        this.$bus.$emit('toast', {
+          icon: 'error',
+          title: `${data.message}`
+        })
       }
     },
     async fetchAccount() {
@@ -189,7 +195,7 @@ export default {
     this.fetchAccount()
   },
   components: {
-    Sidebar,
+    Sidebar
   }
 }
 </script>
