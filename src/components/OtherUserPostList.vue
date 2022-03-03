@@ -59,17 +59,19 @@
           <img class="reply-icon" src="../assets/image/reply-icon.svg" />
         </button>
         <!-- TODO:喜歡次數要能加減 -->
-        <button
-          class="like-btn"
+        <div class="like-item">
+          <button
+            class="likes"
           >
-          <!-- @click.stop.prevent="addLike(tweet)" -->
-          <img
-            class="like-icon"
-            src="../assets/image/liked-icon.svg"
-            v-if="isActive"
-          />
-          <img class="like-icon" src="../assets/image/like-icon.svg" v-else />
-        </button>
+            <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
+          </button>
+          <button
+            class="likes" 
+            type="button" 
+          >
+            <img class="like-icon" src="../assets/image/liked-icon.svg" alt="">
+          </button>
+        </div>
       </div>
     </div>
 
@@ -124,8 +126,8 @@ export default {
       isActive: false,
       tweets: {
         id: 1,
-        User:{},
-        description:'',
+        User: {},
+        description: "",
         likeCount: 0,
         replyCount: 0,
         isLiked: false,
@@ -134,7 +136,7 @@ export default {
       noReply: false,
     };
   },
-  created (){
+  created() {
     const id = this.$route.params;
     const tweetId = id.tweetId;
     this.fetchTweet(tweetId);
@@ -147,44 +149,40 @@ export default {
         const { data } = await postAPI.getOtherPost(tweetId);
         const tweets = data;
         this.tweets = tweets;
-        console.log('tweets',tweets);
+        console.log("tweets", tweets);
       } catch (error) {
         console.log(error);
       }
     },
-    // async addLike(tweet){
-    //   try {
-    //   const { data } = await postAPI.addLike(tweet);
-    //   console.log("data2", data);
-    //   tweet.isLiked = !tweet.isLiked
-    //   tweet.likeCount += 1
-    //   this.isActive = true;
-    //   tweets.likeCount +=1
-    //   tweets.isLiked = this.isActive;
-    //    tweets.likeCount += 1;
-    //   } catch (error) {
-    //     console.log("error");
-    //   }
-    // },
+    async addLikes(tweet) {
+      try {
+        const { data } = await postAPI.addLike(tweet);
+        // console.log("data2", data);
+        // console.log('data',data)
+        tweet.isLiked = !tweet.isLiked;
+        tweet.likeCount += 1;
+      } catch (error) {
+        console.log("error");
+      }
+    },
     // 下方推文回覆列表
-    async fetchReplies(tweetId) { 
+    async fetchReplies(tweetId) {
       try {
         const { data } = await postAPI.getTweetReplies(tweetId);
         // console.log('tweetid',tweetId);
-        // console.log('路由變化') 
+        // console.log('路由變化')
         const replies = data;
         this.replies = replies;
         // console.log("data", data);
-        if (data.status=== 'error') {
-          this.noReply=true
+        if (data.status === "error") {
+          this.noReply = true;
         }
       } catch (error) {
         console.log("error");
       }
     },
-    
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -259,7 +257,6 @@ button {
 }
 
 .post {
-
   height: 100%;
 
   // width: 570px;

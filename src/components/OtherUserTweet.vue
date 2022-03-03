@@ -8,12 +8,12 @@
     <div v-else class="tweet-list">
       <div class="tweet-item" v-for="tweet in tweets" :key="tweet.id">
         <div class="user-avatar">
-          <router-link :to="{path: `/users/${tweet.id}`}">
+          <router-link :to="{path: `/users/${tweet.userId}`}">
             <img class="avatar-img" :src="tweet.User.avatar"/>
           </router-link>
         </div>
         <div class="post-content">
-          <router-link to="/users/:id">
+          <router-link :to="{path: `/users/${tweet.userId}`}">
             <div class="user-info">
               <div class="user-name">{{ tweet.User.name }}</div>
               <div class="user-accountName">@{{ tweet.User.account }}</div>
@@ -24,14 +24,14 @@
             {{ tweet.description }}
           </span>
           <div class="icon-item">
-            <router-link class="reply" to="/users/:id">
+            <button class="reply">
               <img class="reply-icon" src="../assets/image/reply-icon.svg" />
               <span class="replay-count">{{ tweet.likeCount }}</span>
-            </router-link>
-            <router-link class="like" to="/users/:id">
+            </button>
+            <button class="like" >
               <img class="like-icon" src="../assets/image/like-icon.svg" />
               <span class="like-count">{{ tweet.replyCount }}</span>
-            </router-link>
+            </button>
           </div>
         </div>
       </div>
@@ -67,10 +67,10 @@ export default {
         const tweets = data;
         this.tweets = tweets
 
-        if ( data.status === 'error') {
-          this.noReply = true
-        } else if(id === id){
+        if (id === id) {
           this.noReply = false
+        } else if(data.status === 'error'){
+          this.noReply = true
         }
         // console.log('data',data);
       } catch (error) {
