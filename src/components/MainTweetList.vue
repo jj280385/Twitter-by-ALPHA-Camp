@@ -105,10 +105,8 @@ export default {
         const response = await tweetAPI.getTweets({
           id: queryId
         })
-
         const tweets = response.data
         this.tweets = tweets
-
         // console.log(tweets)
         // console.log('response',response.data)
         // console.log('id',tweets[0].id)

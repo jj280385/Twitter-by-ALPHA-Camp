@@ -90,7 +90,7 @@
       <div class="reply-item">
         <!-- 點擊照片會跳轉頁面到回覆者的個人資料 -->
         <div class="user-avatar">
-          <router-link :to="{ path: `/users/${reply.id}`}">
+          <router-link :to="{ path: `/users/${reply.User.id}`}">
             <img class="avatar-img" :src="reply.User.avatar"/>
           </router-link>
         </div>
@@ -128,7 +128,6 @@ export default {
   mixins: [fromNowFilter],
   data() {
     return {
-      isActive: false,
       tweets: {
         id: 1,
         User: {},
@@ -137,7 +136,6 @@ export default {
         replyCount: 0,
         isLiked: false,
       },
-      replies: [],
       noReply: false,
     };
   },
@@ -154,11 +152,12 @@ export default {
         const { data } = await getAPI.getOtherPost(tweetId);
         const tweets = data;
         this.tweets = tweets;
-
-        if ( data.isLiked = false) {
-        } else {
-        console.log('false')
-        }
+        console.log('tweets',tweets);
+        // if (id === id) {
+        //   this.noReply = false
+        // } else if(data.status === 'error'){
+        //   this.noReply = true
+        // }
       } catch (error) {
         console.log(error);
       }
@@ -188,9 +187,9 @@ export default {
     // 下方推文回覆列表
     async fetchReplies(tweetId) {
       try {
-        const { data } = await postAPI.getTweetReplies(tweetId);
-        // console.log('tweetid',tweetId);
-        // console.log('路由變化')
+        const { data } = await getAPI.getTweetReplies(tweetId);
+        console.log('tweetid',data);
+        console.log('路由變化')
         const replies = data;
         this.replies = replies;
         // console.log("data", data);
