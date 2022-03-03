@@ -37,33 +37,30 @@
             <div class="tweet d-flex">
               <div class="avatar">
                 <router-link to="/">
-                  <img :src="tweet.User.avatar | nullAvatar" alt="預設的頭像" />
+                  <img :src="avatar | nullAvatar" alt="預設的頭像" />
                 </router-link>
               </div>
 
               <div class="tweet-body">
                 <div class="d-flex">
                   <h3 class="name">
-                    <router-link :to="`users/${tweet.UserId}`">{{
-                      tweet.User.name
-                    }}</router-link>
+                    <router-link :to="`users/${id}`">{{ name }}</router-link>
                   </h3>
                   <span class="info">
-                    <router-link :to="`users/${tweet.UserId}`"
-                      >@{{ tweet.User.account }}</router-link
+                    <router-link :to="`users/${id}`">@{{ account }}</router-link
                     >．
-                    <router-link :to="`users/${tweet.UserId}`">{{
-                      tweet.createdAt | fromNow
+                    <router-link :to="`users/${id}`">{{
+                      createdAt | fromNow
                     }}</router-link>
                   </span>
                 </div>
 
                 <div class="tweet-content">
-                  {{ tweet.description }}
+                  {{ description }}
                 </div>
                 <span class="reply-to"
-                  >回覆給&thinsp;<router-link :to="`users/${tweet.UserId}`"
-                    >@{{ tweet.User.account }}</router-link
+                  >回覆給&thinsp;<router-link :to="`users/${id}`"
+                    >@{{ account }}</router-link
                   ></span
                 >
               </div>
@@ -72,7 +69,10 @@
             <div class="reply d-flex">
               <div class="avatar">
                 <router-link to="/">
-                  <img src="../assets/image/john-doe-50.svg" alt="預設的頭像" />
+                  <img
+                    :src="currentUser.avatar | nullAvatar"
+                    alt="預設的頭像"
+                  />
                 </router-link>
               </div>
 
@@ -80,6 +80,7 @@
                 v-model="reply"
                 class="reply-content"
                 placeholder="推你的回覆"
+                maxlength="140"
                 autofocus
               ></textarea>
             </div>
@@ -92,7 +93,9 @@
               <span v-if="replyHint" class="hint">字數不可超過140字</span>
               ></transition
             >
-            <button @click="submitReply" :disabled="isProcessing" type="button">推文</button>
+            <button @click="submitReply" :disabled="isProcessing" type="button">
+              推文
+            </button>
           </div>
         </div>
       </transition>
@@ -102,21 +105,32 @@
 
 <script>
 import { fromNowFilter, nullAvatarFilter } from '../utils/mixins'
-import replyAPI from "../apis/reply";
+import tweetAPI from '../apis/tweet'
+import replyAPI from '../apis/reply'
+import { mapState } from 'vuex'
 
 export default {
   mixins: [fromNowFilter, nullAvatarFilter],
   data() {
     return {
-      modal: true,
-      tweet: [],
+      modal: false,
+      tweetId: -1,
+      // 樓主
+      id: -1,
+      avatar: '',
+      name: '',
+      account: '',
+      createdAt: '',
+      description: '',
+      // 回覆者
       reply: '',
       replyHint: false,
-      isProcessing: false,
+      isProcessing: false
     }
   },
 
   computed: {
+    ...mapState(['currentUser']),
     replyCount() {
       if (this.reply) {
         this.reply.length >= 140 && (this.replyHint = true)
@@ -129,6 +143,24 @@ export default {
   },
 
   methods: {
+    async fetchTweet(tweetId) {
+      try {
+        const { data } = await tweetAPI.fetchTweet({ tweetId })
+        this.id = data.userId
+        this.avatar = data.User.avatar
+        this.name = data.User.name
+        this.account = data.User.account
+        this.createdAt = data.createdAt
+        this.description = data.description
+      } catch (error) {
+        console.log(error)
+        this.$bus.$emit('toast', {
+          icon: 'error',
+          title: `${error}`
+        })
+      }
+    },
+
     async submitReply() {
       try {
         if (!this.reply) {
@@ -137,7 +169,7 @@ export default {
           return
         }
 
-        if (this.tweet.length >= 140) {
+        if (this.reply && this.reply.length >= 140) {
           this.replyHint = true
           this.$bus.$emit('toast', {
             icon: 'error',
@@ -148,8 +180,11 @@ export default {
 
         this.isProcessing = true
 
-        const { data } = await replyAPI.subMitReply({ tweetId:this.tweet.id, comment: this.reply })
-        console.log('測試成功',data)
+        const { data } = await replyAPI.subMitReply({
+          tweetId: this.tweetId,
+          comment: this.reply
+        })
+        console.log('測試成功', data)
 
         if (data.status === 'success') {
           this.$bus.$emit('toast', {
@@ -174,9 +209,10 @@ export default {
   },
 
   mounted() {
-    this.$bus.$on('replyModal', (tweet) => {
+    this.$bus.$on('replyModal', (tweetId) => {
+      this.fetchTweet(tweetId)
+      this.tweetId = tweetId
       this.modal = true
-      this.tweet = tweet
     })
   }
 }

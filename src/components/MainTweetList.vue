@@ -2,20 +2,19 @@
   <div class="main-container">
     <!-- title -->
 
-
     <!-- 下方推文列表 -->
     <div class="tweet-list" v-for="tweet in tweets" :key="tweet.id">
       <div class="tweet-item">
         <!-- 點擊照片會跳轉頁面到其他使用者個人資料 -->
         <div class="user-avatar">
-          <router-link :to="{path: `/users/${tweet.id}`}">
+          <router-link :to="{ path: `/users/${tweet.id}` }">
             <img class="avatar-img" :src="tweet.User.avatar" alt="/" />
           </router-link>
         </div>
 
         <!-- 點擊名稱和帳號會跳轉頁面到其他使用者個人資料 -->
         <div class="post-content">
-          <router-link :to="{path: `/users/${tweet.id}`}">
+          <router-link :to="{ path: `/users/${tweet.id}` }">
             <div class="user-info">
               <div class="user-name">{{ tweet.User.name }}</div>
               <div class="user-accountName">{{ tweet.User.account }}</div>
@@ -23,8 +22,10 @@
             </div>
           </router-link>
           <!-- 點擊貼文內容會跳轉頁面到推文頁面 -->
-          <router-link :to="{path: `/tweets/${tweet.id}`}"
-          class="tweet-content">
+          <router-link
+            :to="{ path: `/tweets/${tweet.id}` }"
+            class="tweet-content"
+          >
             <span class="tweet-content">
               {{ tweet.description }}
             </span>
@@ -32,7 +33,7 @@
 
           <div class="icon-item">
             <button
-              @click="$bus.$emit('replyModal',tweet)"
+              @click="$bus.$emit('replyModal', tweet.id)"
               class="reply d-flex"
             >
               <!-- SVG -->
@@ -59,16 +60,24 @@
                 v-if="!tweet.isLiked"
                 @click.stop.prevent="addLikes(tweet)"
               >
-                <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
+                <img
+                  class="like-icon"
+                  src="../assets/image/like-icon.svg"
+                  alt="/"
+                />
                 <span>{{ tweet.likeCount }}</span>
               </button>
               <button
                 v-else
-                class="like" 
-                type="button" 
+                class="like"
+                type="button"
                 @click.stop.prevent="deleteLikes(tweet)"
               >
-                <img class="like-icon" src="../assets/image/liked-icon.svg" alt="">
+                <img
+                  class="like-icon"
+                  src="../assets/image/liked-icon.svg"
+                  alt=""
+                />
                 <span>{{ tweet.likeCount }}</span>
               </button>
             </div>
@@ -76,18 +85,14 @@
         </div>
       </div>
     </div>
-
-    <ReplyModal />
   </div>
 </template>
 
 <script>
 import tweetAPI from './../apis/mainTweet'
 import { fromNowFilter } from './../utils/mixins'
-import ReplyModal from '../components/ReplyModal.vue'
 
 export default {
-  components: { ReplyModal },
   mixins: [fromNowFilter],
   data() {
     return {
@@ -140,8 +145,8 @@ export default {
     }
   },
 
-  beforeMount(){
-    this.$bus.$on('fetch-MainTweetList', ()=>{
+  beforeMount() {
+    this.$bus.$on('fetch-MainTweetList', () => {
       this.fetchTweets()
     })
   }

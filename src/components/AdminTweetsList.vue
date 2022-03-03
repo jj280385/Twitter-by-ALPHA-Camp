@@ -24,8 +24,10 @@
 </template>
 
 <script>
+import { fromNowFilter } from "../utils/mixins";
 export default {
   name: 'AdminTweetsList',
+  mixins:[fromNowFilter],
 
   props: {
     Tweets: {
@@ -58,9 +60,7 @@ export default {
       return description
     },
 
-    fromNow(datetime) {
-      return datetime ? moment(datetime).fromNow() : '-'
-    },
+   
   },
 }
 </script>

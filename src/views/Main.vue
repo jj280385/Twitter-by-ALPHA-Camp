@@ -32,6 +32,7 @@
       <MainTweetList />
     </div>
     <RightColumn />
+    <ReplyModal/>
   </div>
 </template>
 
@@ -42,6 +43,8 @@ import MainTweetList from '../components/MainTweetList.vue'
 import { mapState } from 'vuex'
 import { nullAvatarFilter } from './../utils/mixins'
 import tweetAPI from '../apis/tweet'
+import ReplyModal from '../components/ReplyModal.vue'
+
 export default {
   mixins: [nullAvatarFilter],
   data() {
@@ -53,7 +56,7 @@ export default {
   components: {
     Sidebar,
     RightColumn,
-    MainTweetList
+    MainTweetList,ReplyModal
   },
   computed: {
     ...mapState(['currentUser'])

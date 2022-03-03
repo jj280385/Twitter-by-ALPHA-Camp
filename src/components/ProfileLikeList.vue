@@ -20,7 +20,7 @@
             {{ tweet.description }}
           </span>
           <div class="icon-item">
-            <button @click="$bus.$emit('replyModal', tweet)" class="reply-btn">
+            <button @click="$bus.$emit('replyModal', tweet.id)" class="reply-btn">
               <!-- SVG -->
               <svg
                 width="15"

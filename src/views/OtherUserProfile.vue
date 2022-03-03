@@ -19,6 +19,7 @@
       </div>
     </div>
     <RightColumn />
+    <ReplyModal />
   </div>
 </template>
 
@@ -28,6 +29,7 @@ import RightColumn from '../components/RightColumn.vue'
 import UsersNavTabs from '../components/UsersNavTabs.vue'
 import OtherUserTweet from '../components/OtherUserTweet.vue'
 import ProfileArea from '../components/ProfileArea.vue'
+import ReplyModal from '../components/ReplyModal.vue'
 
 export default {
   components: {
@@ -36,6 +38,7 @@ export default {
     ProfileArea,
     UsersNavTabs,
     OtherUserTweet,
+    ReplyModal
   },
   data() {
     return {

@@ -24,7 +24,7 @@
             {{ tweet.description }}
           </span>
           <div class="icon-item">
-            <button class="reply">
+            <button @click="$bus.$emit('replyModal',tweet.id)" class="reply">
               <img class="reply-icon" src="../assets/image/reply-icon.svg" />
               <span class="replay-count">{{ tweet.likeCount }}</span>
             </button>
