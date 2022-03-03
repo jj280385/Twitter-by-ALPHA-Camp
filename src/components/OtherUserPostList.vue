@@ -62,12 +62,16 @@
         <div class="like-item">
           <button
             class="likes"
+            v-if="!tweets.isLiked"
+            @click.stop.prevent="addLike(tweets.id)"
           >
             <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
           </button>
           <button
             class="likes" 
             type="button" 
+            v-else
+            @click.stop.prevent="deleteLike(tweets.id)"
           >
             <img class="like-icon" src="../assets/image/liked-icon.svg" alt="">
           </button>
@@ -116,7 +120,8 @@
 </template>
 
 <script>
-import postAPI from "./../apis/mainTweet";
+import tweet from '../apis/tweet';
+import getAPI from "./../apis/mainTweet";
 import { fromNowFilter } from "./../utils/mixins";
 
 export default {
@@ -146,21 +151,36 @@ export default {
     // 上方其他使用者推文
     async fetchTweet(tweetId) {
       try {
-        const { data } = await postAPI.getOtherPost(tweetId);
+        const { data } = await getAPI.getOtherPost(tweetId);
         const tweets = data;
         this.tweets = tweets;
-        console.log("tweets", tweets);
+
+        if ( data.isLiked = false) {
+        } else {
+        console.log('false')
+        }
       } catch (error) {
         console.log(error);
       }
     },
-    async addLikes(tweet) {
+    async addLike(tweetId) {
       try {
-        const { data } = await postAPI.addLike(tweet);
-        // console.log("data2", data);
-        // console.log('data',data)
-        tweet.isLiked = !tweet.isLiked;
-        tweet.likeCount += 1;
+        const { data } = await getAPI.getOtherPost(tweetId);
+        const tweets = data
+        // console.log("data1", tweets.isLiked);
+        this.tweets.isLiked = true ;
+        this.tweets.likeCount += 1;
+      } catch (error) {
+        console.log("error");
+      }
+    },
+    async deleteLike(tweetId) {
+      try {
+        const { data } = await getAPI.getOtherPost(tweetId);
+        const tweets = data;
+        // console.log("data2", tweets.isLiked);
+        this.tweets.isLiked = false; ;
+        this.tweets.likeCount -= 1;
       } catch (error) {
         console.log("error");
       }
