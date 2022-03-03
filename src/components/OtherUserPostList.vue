@@ -62,12 +62,16 @@
         <div class="like-item">
           <button
             class="likes"
+            v-if="!tweets.isLiked"
+            @click.stop.prevent="addLike(tweets.id)"
           >
             <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
           </button>
           <button
             class="likes" 
             type="button" 
+            v-else
+            @click.stop.prevent="deleteLike(tweets.id)"
           >
             <img class="like-icon" src="../assets/image/liked-icon.svg" alt="">
           </button>
@@ -86,7 +90,7 @@
       <div class="reply-item">
         <!-- 點擊照片會跳轉頁面到回覆者的個人資料 -->
         <div class="user-avatar">
-          <router-link :to="{ path: `/users/${reply.id}`}">
+          <router-link :to="{ path: `/users/${reply.User.id}`}">
             <img class="avatar-img" :src="reply.User.avatar"/>
           </router-link>
         </div>
@@ -116,14 +120,14 @@
 </template>
 
 <script>
-import postAPI from "./../apis/mainTweet";
+import tweet from '../apis/tweet';
+import getAPI from "./../apis/mainTweet";
 import { fromNowFilter } from "./../utils/mixins";
 
 export default {
   mixins: [fromNowFilter],
   data() {
     return {
-      isActive: false,
       tweets: {
         id: 1,
         User: {},
@@ -132,7 +136,6 @@ export default {
         replyCount: 0,
         isLiked: false,
       },
-      replies: [],
       noReply: false,
     };
   },
@@ -146,21 +149,37 @@ export default {
     // 上方其他使用者推文
     async fetchTweet(tweetId) {
       try {
-        const { data } = await postAPI.getOtherPost(tweetId);
+        const { data } = await getAPI.getOtherPost(tweetId);
         const tweets = data;
         this.tweets = tweets;
-        console.log("tweets", tweets);
+        console.log('tweets',tweets);
+        // if (id === id) {
+        //   this.noReply = false
+        // } else if(data.status === 'error'){
+        //   this.noReply = true
+        // }
       } catch (error) {
         console.log(error);
       }
     },
-    async addLikes(tweet) {
+    async addLike(tweetId) {
       try {
-        const { data } = await postAPI.addLike(tweet);
-        // console.log("data2", data);
-        // console.log('data',data)
-        tweet.isLiked = !tweet.isLiked;
-        tweet.likeCount += 1;
+        const { data } = await getAPI.getOtherPost(tweetId);
+        const tweets = data
+        // console.log("data1", tweets.isLiked);
+        this.tweets.isLiked = true ;
+        this.tweets.likeCount += 1;
+      } catch (error) {
+        console.log("error");
+      }
+    },
+    async deleteLike(tweetId) {
+      try {
+        const { data } = await getAPI.getOtherPost(tweetId);
+        const tweets = data;
+        // console.log("data2", tweets.isLiked);
+        this.tweets.isLiked = false; ;
+        this.tweets.likeCount -= 1;
       } catch (error) {
         console.log("error");
       }
@@ -168,9 +187,9 @@ export default {
     // 下方推文回覆列表
     async fetchReplies(tweetId) {
       try {
-        const { data } = await postAPI.getTweetReplies(tweetId);
-        // console.log('tweetid',tweetId);
-        // console.log('路由變化')
+        const { data } = await getAPI.getTweetReplies(tweetId);
+        console.log('tweetid',data);
+        console.log('路由變化')
         const replies = data;
         this.replies = replies;
         // console.log("data", data);

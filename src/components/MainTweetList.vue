@@ -7,14 +7,16 @@
       <div class="tweet-item">
         <!-- 點擊照片會跳轉頁面到其他使用者個人資料 -->
         <div class="user-avatar">
-          <router-link :to="{ path: `/users/${tweet.id}` }">
+
+          <router-link :to="{path: `/users/${tweet.userId}`}">
             <img class="avatar-img" :src="tweet.User.avatar" alt="/" />
           </router-link>
         </div>
 
         <!-- 點擊名稱和帳號會跳轉頁面到其他使用者個人資料 -->
         <div class="post-content">
-          <router-link :to="{ path: `/users/${tweet.id}` }">
+
+          <router-link :to="{path: `/users/${tweet.userId}`}">
             <div class="user-info">
               <div class="user-name">{{ tweet.User.name }}</div>
               <div class="user-accountName">{{ tweet.User.account }}</div>
@@ -110,10 +112,8 @@ export default {
         const response = await tweetAPI.getTweets({
           id: queryId
         })
-
         const tweets = response.data
         this.tweets = tweets
-
         // console.log(tweets)
         // console.log('response',response.data)
         // console.log('id',tweets[0].id)

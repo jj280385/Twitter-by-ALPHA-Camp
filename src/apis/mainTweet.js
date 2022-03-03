@@ -20,5 +20,9 @@ export default {
 
   deleteLike(userId) {
     return apiHelper.post(`/tweets/${userId}/unlike`)
+  },
+
+  addPostLike(tweetId){
+    return apiHelper.post(`/tweets/${tweetId}`)
   }
 }
