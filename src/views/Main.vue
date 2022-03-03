@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       tweet: '',
-      isProcessing:false
+      isProcessing: false
     }
   },
 
@@ -86,16 +86,16 @@ export default {
         console.log(data)
 
         if (data.status === 'success') {
+          this.tweet = ''
+          this.$bus.$emit('fetch-MainTweetList', true)
           this.$bus.$emit('toast', {
             icon: 'success',
             title: '推文發送成功'
           })
+          this.isProcessing = false
         } else {
           throw new Error(data.message)
         }
-        this.modal = false
-        this.isProcessing = false
-        this.tweet = ''
       } catch (error) {
         console.log(error)
         this.isProcessing = false

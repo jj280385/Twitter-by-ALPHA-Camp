@@ -170,6 +170,12 @@ export default {
         console.log('error2')
       }
     }
+  },
+
+  mounted(){
+    this.$bus.$on('fetch-MainTweetList', ()=>{
+      this.fetchTweets()
+    })
   }
 }
 </script>
