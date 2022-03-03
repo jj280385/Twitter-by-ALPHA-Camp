@@ -45,7 +45,7 @@
             <div class="like-item">
               <button
                 class="like"
-                v-if="!like.tweet.User.isLiked"
+                v-if="!like.tweet.isLiked"
                 @click.stop.prevent="addLikes(like)"
               >
                 <img
@@ -125,7 +125,7 @@ export default {
       try {
         const { data } = await tweetAPI.addLike(like.TweetId)
         // console.log('data',data)
-        like.tweet.User.isLiked = !like.tweet.User.isLiked
+        like.tweet.isLiked = !like.tweet.isLiked
         like.tweet.likeCount += 1
       } catch (error) {
         console.log('error')
@@ -137,7 +137,7 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        like.tweet.User.isLiked = !like.tweet.User.isLiked
+        like.tweet.isLiked = !like.tweet.isLiked
         like.tweet.likeCount -= 1
       } catch (error) {
         console.log('error2')

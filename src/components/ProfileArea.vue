@@ -250,7 +250,10 @@ export default {
   },
 
   created() {
-    this.fetchAccount()
+    this.fetchAccount(),
+    this.$bus.$on('submit-profile',()=>{
+      this.fetchAccount()
+    })
   },
   watch: {
     '$route.path'() {

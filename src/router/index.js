@@ -42,23 +42,25 @@ const routes = [
   {
     path: '/main',
     name: 'main',
-    component: () => import('../views/Main.vue')
+    component: () => import('../views/Main.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/regist',
     name: 'user-regist',
-    component: () => import('../views/UserRegist.vue')
+    component: () => import('../views/UserRegist.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/setting',
     name: 'user-setting',
-    component: () => import('../views/UserSetting.vue')
+    component: () => import('../views/UserSetting.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/admin',
     name: 'admin-login',
-    component: AdminLogin,
-    authorizeIsUser
+    component: AdminLogin
   },
   {
     path: '/admin/main',
@@ -75,6 +77,7 @@ const routes = [
   {
     path: '/profile',
     component: () => import('../views/Profile.vue'),
+    beforeEnter: authorizeIsUser,
     children: [
       {
         path: 'tweet',
@@ -97,6 +100,7 @@ const routes = [
   {
     path: '/users/:id',
     component: () => import('../views/OtherUserProfile.vue'),
+    beforeEnter: authorizeIsUser,
     children: [
       {
         path: 'tweet',
@@ -120,23 +124,27 @@ const routes = [
   {
     path: '/tweets/:tweetId',
     name: 'other-tweet',
-    component: OtherUserPost
+    component: OtherUserPost,
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/user/:id/follower',
     name: 'user-follower',
-    component: () => import('../views/ProfileFollower.vue')
+    component: () => import('../views/ProfileFollower.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     path: '/user/:id/following',
     name: 'user-following',
-    component: () => import('../views/ProfileFollowing.vue')
+    component: () => import('../views/ProfileFollowing.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     // 其他使用者
     path: '/user/:id',
     name: 'user',
-    component: () => import('../views/Profile.vue')
+    component: () => import('../views/Profile.vue'),
+    beforeEnter: authorizeIsUser
   },
   {
     path: '*',

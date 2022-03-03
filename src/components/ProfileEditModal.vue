@@ -349,6 +349,7 @@ export default {
             title: '已儲存成功！！'
           })
           this.isProcessing = false
+          this.$bus.$emit('submit-profile', true)
           this.$router.push({path:'/profile'})
           this.modal=false
         } else {
