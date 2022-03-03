@@ -31,7 +31,6 @@
           </router-link>
 
           <div class="icon-item">
-
             <button
               @click="$bus.$emit('replyModal',tweet)"
               class="reply d-flex"
