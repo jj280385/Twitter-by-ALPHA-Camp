@@ -5,7 +5,7 @@
       <div class="like-item" v-for="tweet in tweets" :key="tweet.id">
         <div class="user-avatar">
           <router-link to="/users/:id">
-            <img class="avatar-img" :src="tweet.avatar"/>
+            <img class="avatar-img" :src="tweet.User.avatar"/>
           </router-link>
         </div>
         <div class="post-content">
@@ -20,26 +20,19 @@
             {{ tweet.description }}
           </span>
           <div class="icon-item">
-            <button class="reply-btn">
-              <router-link class="reply" to="/profile/like">
+            <button class="reply">
                 <img class="reply-icon" src="../assets/image/reply-icon.svg" />
                 <span class="replay-count">{{ tweet.likeCount }}</span>
-              </router-link>
             </button>
             
             <button 
-            class="like-btn"
+            class="like"
             @click="isActive = !isActive"
             :class="{active:isActive}"
-            >
-            <router-link
-              class="like"
-              to="/profile/like"
             >
               <img class="like-icon" src="../assets/image/liked-icon.svg" v-if="isActive"/>
               <img class="like-icon" src="../assets/image/like-icon.svg" v-else />
               <span class="like-count" :class="{ active: isActive }">{{ tweet.replyCount }}</span>
-            </router-link>
             </button>
           </div>
         </div>
@@ -182,6 +175,9 @@ export default {
 .like {
   display: flex;
   align-items: center;
+  &.active {
+  color: var(--like-icon);
+  }
 }
 
 .reply-icon {
@@ -200,12 +196,6 @@ export default {
   font-size: 13px;
   font-weight: 500;
   line-height: 13px;
-}
-
-.like-btn, .like-count {
-  &.active {
-  color: var(--like-icon);
-  }
 }
 
 </style>

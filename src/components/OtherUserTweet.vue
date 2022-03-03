@@ -9,7 +9,7 @@
       <div class="tweet-item" v-for="tweet in tweets" :key="tweet.id">
         <div class="user-avatar">
           <router-link :to="{path: `/users/${tweet.id}`}">
-            <img class="avatar-img" :src="tweet.avatar"/>
+            <img class="avatar-img" :src="tweet.User.avatar"/>
           </router-link>
         </div>
         <div class="post-content">

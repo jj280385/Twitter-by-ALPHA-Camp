@@ -12,5 +12,13 @@ export default {
   },
   getTweetReplies(id){
     return apiHelper.get(`/tweets/${id}/replies`)
+  },
+
+  addLike(userId){
+    return apiHelper.post(`/tweets/${userId}/like`,null)
+  },
+
+  deleteLike(userId) {
+    return apiHelper.post(`/tweets/${userId}/unlike`)
   }
 }
