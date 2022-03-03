@@ -3,17 +3,17 @@
   <div class="reply-container">
     <!-- Profile頁面下方的回覆列表 -->
     <div v-if="noReply" class="noReply">
-      <span> 目前沒有任何推文 </span>
+      <span> 目前沒有任何回覆 </span>
     </div>
     <div v-else class="reply-list">
       <div class="reply-item" v-for="reply in replies" :key="reply.id">
         <div class="user-avatar">
-          <router-link to="/users/:id">
-            <img class="avatar-img" />
+          <router-link :to="{path: `/users/${tweet.id}`}">
+            <img class="avatar-img" :src="reply.User.avatar"/>
           </router-link>
         </div>
         <div class="post-content">
-          <router-link to="//users/:id">
+          <router-link :to="{path: `/users/${tweet.id}`}">
             <div class="user-info">
               <div class="user-name">{{ reply.User.name }}</div>
               <div class="user-accountName">@{{ reply.account }}</div>
@@ -22,7 +22,7 @@
           </router-link>
           <div class="reply">
             <span class="text">回覆</span>
-            <router-link to="/users/:id" class="reply-to">@Daniel</router-link>
+            <router-link :to="{path: `/users/${tweet.id}`}" class="reply-to">@Daniel</router-link>
           </div>
           <span class="tweet-content">
             {{ reply.comment }}
