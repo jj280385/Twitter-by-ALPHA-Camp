@@ -1,26 +1,29 @@
 <template>
   <div class="like-container">
     <!-- Profile頁面下方的喜歡的列表 -->
-    <div class="like-list">
-      <div class="like-item" v-for="tweet in tweets" :key="tweet.id">
+    <div v-if="noReply" class="noReply">
+      <span> 目前沒有任何喜歡的內容 </span>
+    </div>
+    <div v-else class="like-list">
+      <div class="like-item" v-for="like in likes" :key="like.id">
         <div class="user-avatar">
-          <router-link to="/profile">
-            <img class="avatar-img" :src="tweet.User.avatar" />
+          <router-link to="{ path: `/profile/like` }">
+            <img class="avatar-img" :src="like.tweet.User.avatar" />
           </router-link>
         </div>
         <div class="post-content">
-          <router-link to="/profile">
+          <router-link to="{ path: `/profile/like` }">
             <div class="user-info">
-              <div class="user-name">{{ tweet.User.name }}</div>
-              <div class="user-accountName">@{{ tweet.User.account }}</div>
-              <div class="post-time">‧{{ tweet.createdAt | fromNow }}</div>
+              <div class="user-name">{{ like.tweet.User.name }}</div>
+              <div class="user-accountName">@{{ like.tweet.User.account }}</div>
+              <div class="post-time">‧{{ like.tweet.createdAt | fromNow }}</div>
             </div>
           </router-link>
           <span class="tweet-content">
-            {{ tweet.description }}
+            {{ like.tweet.description }}
           </span>
           <div class="icon-item">
-            <button @click="$bus.$emit('replyModal', tweet.id)" class="reply-btn">
+            <button @click="$bus.$emit('replyModal', like.TweetId)" class="reply-btn">
               <!-- SVG -->
               <svg
                 width="15"
@@ -35,9 +38,8 @@
                 />
               </svg>
               <!-- SVG -->
-              <span class="replay-count">{{ tweet.likeCount }}</span>
+              <span class="replay-count">{{ like.tweet.likeCount }}</span>
             </button>
-
             <button
               class="like-btn"
               @click="isActive = !isActive"
@@ -54,9 +56,7 @@
                   src="../assets/image/like-icon.svg"
                   v-else
                 />
-                <span class="like-count" :class="{ active: isActive }">{{
-                  tweet.replyCount
-                }}</span>
+                <span class="like-count" :class="{ active: isActive }">{{ like.tweet.replyCount }}</span>
               </router-link>
             </button>
           </div>
@@ -65,40 +65,49 @@
     </div>
   </div>
 </template>
-
 <script>
 import userAPI from '../apis/user'
 import { fromNowFilter } from '../utils/mixins'
 import { mapState } from 'vuex'
-
 export default {
   mixins: [fromNowFilter],
   data() {
     return {
-      tweets: [],
+      likes: [],
       noReply: true,
-      isActive: true
+      isActive: false
     }
   },
   created() {
     const id = this.currentUser.id
-    this.fetchTweets(id)
+    this.fetchLikes(id)
   },
   computed: {
     ...mapState(['currentUser'])
   },
   beforeRouteUpdate(to, from, next) {
     const id = this.currentUser.id
-    this.fetchTweets(id)
+    this.fetchLikes(id)
     next()
   },
   methods: {
-    async fetchTweets(id) {
+    toggle() {
+      if (!this.isActive) {
+        this.isActive = true
+      } else {
+        this.isActive = false
+      }
+    },
+    async fetchLikes(id) {
       try {
-        const { data } = await userAPI.getUserTweetList(id)
-        const tweets = data
-        this.tweets = tweets
-        // console.log('data',tweets)
+        const { data } = await userAPI.getUserLikeList(id)
+        const likes = data
+        this.likes = likes
+        if (id === id) {
+          this.noReply = false
+        } else if (data.status === 'error') {
+          this.noReply = true
+        }
       } catch (error) {
         console.log('error')
       }
@@ -106,20 +115,22 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
 .like-container {
   @include size(100%, 100%);
   margin-top: 10px;
 }
-
+.noReply {
+  font-size: 18px;
+  margin: 20px;
+  color: var(--info);
+}
 .like-list {
   position: relative;
   @include size(100%, 100%);
   display: flex;
   flex-direction: column;
 }
-
 .like-item {
   padding-top: 10px;
   @include size(100%, 100%);
@@ -130,12 +141,10 @@ export default {
   border-bottom: 1px solid var(--theme-line);
   padding: 10px;
 }
-
 .user-avatar {
   @include size(50px, 50px);
   margin: 0 10px auto 15px;
 }
-
 .avatar-img {
   background-color: var(--avatar-img-background);
   border-radius: 50%;
@@ -143,18 +152,15 @@ export default {
     background-color: darkgray;
   }
 }
-
 .post-content {
   @include size(510px, 100%);
   display: flex;
   flex-wrap: wrap;
   margin-right: 15px;
 }
-
 .user-info {
   display: flex;
 }
-
 .user-name {
   color: var(--main-text);
   margin-right: 5px;
@@ -162,7 +168,6 @@ export default {
     text-decoration: underline;
   }
 }
-
 .user-accountName {
   color: var(--info);
   font-size: 15px;
@@ -171,7 +176,6 @@ export default {
     text-decoration: underline;
   }
 }
-
 .post-time {
   color: var(--info);
   font-size: 15px;
@@ -180,7 +184,6 @@ export default {
     text-decoration: none;
   }
 }
-
 .tweet-content {
   @include size(100%, 100%);
   font-size: 15px;
@@ -189,38 +192,31 @@ export default {
   margin: 10px 0;
   word-break: break-all;
 }
-
 .icon-item {
   @include size(130px, 21px);
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   button {
     justify-content: space-between;
     align-items: center;
-
     span {
       margin-left: 10px;
     }
-
     &:hover {
       span {
         color: var(--hover-color);
       }
-
       path {
         fill: var(--hover-color);
       }
     }
   }
 }
-
 .like-icon {
   @include size(20.1px, 18.91px);
   margin-right: 10px;
 }
-
 .replay-count,
 .like-count {
   color: var(--info);
@@ -228,7 +224,6 @@ export default {
   font-weight: 500;
   line-height: 13px;
 }
-
 .like-btn,
 .like-count {
   &.active {
