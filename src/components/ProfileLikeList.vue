@@ -4,7 +4,7 @@
     <div class="like-list">
       <div class="like-item" v-for="tweet in tweets" :key="tweet.id">
         <div class="user-avatar">
-          <router-link to="/users/:id">
+          <router-link to="/profile">
             <img class="avatar-img" :src="tweet.User.avatar"/>
           </router-link>
         </div>
@@ -34,7 +34,7 @@
             >
             <router-link
               class="like"
-              to="/profile/like"
+              to="/profile"
             >
               <img class="like-icon" src="../assets/image/liked-icon.svg" v-if="isActive"/>
               <img class="like-icon" src="../assets/image/like-icon.svg" v-else />

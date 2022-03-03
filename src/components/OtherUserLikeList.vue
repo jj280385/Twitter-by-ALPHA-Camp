@@ -8,12 +8,12 @@
     <div v-else class="like-list">
       <div class="like-item" v-for="like in likes" :key="like.id">
         <div class="user-avatar">
-          <router-link to="/users/:id">
+          <router-link :to="{path: `/users/${like.tweet.User.id}`}">
             <img class="avatar-img" :src="like.tweet.User.avatar"/>
           </router-link>
         </div>
         <div class="post-content">
-          <router-link to="/users/:id">
+          <router-link :to="{path: `/users/${like.tweet.User.id}`}">
             <div class="user-info">
               <div class="user-name">{{ like.tweet.User.name }}</div>
               <div class="user-accountName">@{{ like.tweet.User.account }}</div>
@@ -25,7 +25,7 @@
           </span>
           <div class="icon-item">
             <button class="reply-btn">
-              <router-link class="reply" to="/users/:id/like">
+              <router-link class="reply" :to="{path: `/users/${$route.params.id}`}">
                 <img class="reply-icon" src="../assets/image/reply-icon.svg" />
                 <span class="replay-count">{{ like.tweet.likeCount }}</span>
               </router-link>
@@ -91,12 +91,12 @@ export default {
         const likes = data;
         this.likes = likes
 
-        if ( data.status === 'error') {
-          this.noReply = true
-        } else if(id === id){
+        if (id === id) {
           this.noReply = false
+        } else if(data.status === 'error'){
+          this.noReply = true
         }
-        // console.log('data3',data)
+        console.log('data3',data)
       } catch (error) {
         console.log(error);
       }

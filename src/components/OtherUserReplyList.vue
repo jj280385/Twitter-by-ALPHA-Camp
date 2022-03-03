@@ -8,21 +8,21 @@
     <div v-else class="reply-list">
       <div class="reply-item" v-for="reply in replies" :key="reply.id">
         <div class="user-avatar">
-          <router-link :to="{path: `/users/${tweet.id}`}">
+          <router-link :to="{path: `/users/${reply.UserId}`}">
             <img class="avatar-img" :src="reply.User.avatar"/>
           </router-link>
         </div>
         <div class="post-content">
-          <router-link :to="{path: `/users/${tweet.id}`}">
+          <router-link :to="{path: `/users/${reply.userId}`}">
             <div class="user-info">
               <div class="user-name">{{ reply.User.name }}</div>
-              <div class="user-accountName">@{{ reply.account }}</div>
+              <div class="user-accountName">@{{ reply.User.account }}</div>
               <div class="post-time">‧{{ reply.createdAt | fromNow }}</div>
             </div>
           </router-link>
           <div class="reply">
             <span class="text">回覆</span>
-            <router-link :to="{path: `/users/${tweet.id}`}" class="reply-to">@Daniel</router-link>
+            <router-link :to="{path: `/users/${reply.userId}`}" class="reply-to">@Daniel</router-link>
           </div>
           <span class="tweet-content">
             {{ reply.comment }}
@@ -61,12 +61,12 @@ export default {
         const replies = data;
         this.replies = replies
 
-        if ( data.status === 'error') {
-          this.noReply = true
-        } else if(id === id){
+        if (id === id) {
           this.noReply = false
+        } else if(data.status === 'error'){
+          this.noReply = true
         }
-        // console.log('data2',data);
+        console.log('data2',data);
       } catch (error) {
         console.log(error);
       }
