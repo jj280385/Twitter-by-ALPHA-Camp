@@ -138,8 +138,12 @@ import userAPI from '../apis/user'
 import followAPI from '../apis/follow'
 import { nullAvatarFilter, nullCoverFilter } from '../utils/mixins'
 import { mapState } from 'vuex'
+import Toast from '../components/Toast.vue'
 
 export default {
+  components:{
+    Toast
+  },
   data() {
     return {
       id: -1,
@@ -215,16 +219,19 @@ export default {
       try {
         if (!this.isFollowed) {
           // 加入跟隨
-          const { data } = await followAPI.addFollow({ id: this.id })
+          const { data } = await followAPI.addFollow(this.id)
+          
           if (data.status === 'success') {
             this.isFollowed = true
             this.followerCount++
+            this.$bus.$emit('toast', { icon: 'success', title:"追隨成功" })
           }
         } else {
-          const { data } = await followAPI.deleteFollow({ userId: this.id })
+          const { data } = await followAPI.deleteFollow(this.id)
           if (data.status === 'success') {
             this.isFollowed = false
             this.followerCount--
+            this.$bus.$emit('toast', { icon: 'success', title:"取消追隨成功" })
           }
         }
 

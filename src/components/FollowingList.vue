@@ -2,13 +2,11 @@
   <div class="following-container">
     <!-- title -->
     <div class="following-header">
-      <button type="button" class="back-to">
-        <router-link to="/profile">
-          <img class="back-icon" src="../assets/image/back-icon.svg" />
-        </router-link>
+      <button type="button" class="back-to" @click="$router.go(-1)">
+        <img class="back-icon" src="../assets/image/back-icon.svg" />
       </button>
       <div class="title">
-        <router-link to="/profile" class="name">
+        <router-link :to="{path: `/users/${id}`}" class="name">
           <span class="name">{{ name }}</span>
         </router-link>
         <p>{{ tweetCount }} 推文</p>
@@ -21,7 +19,7 @@
         type="button"
       >
         <router-link 
-        :to="{ name: 'user-follower', params: { id }}"
+        :to="{ name: 'user-follower', params: id}"
         class="nav-link"
         > 跟隨者 </router-link>
       </button>
@@ -32,7 +30,7 @@
         :class="{active: isActive}"
       >
         <router-link 
-        to="/profile/following" 
+        :to="{ name: 'user-following', params:id }"
         class="nav-link"
         :class="{active: isActive}"
         > 正在跟隨 </router-link>
@@ -42,35 +40,35 @@
     <!-- 追隨者列表 -->
     <div class="follower-list">
       <div class="list-item"
-        v-for="following in followings"
-        :key="following.id">
+        v-for="user in users"
+        :key="user.id">
         <div class="user-info">
           <div class="user-avatar">
-            <router-link to="/user/" class="avatar-img">
-              <img class="avatar-img" :src=" following.Followers.avatar " />
+            <router-link :to="{path: `/users/${user.Followings.id}`}" class="avatar-img">
+              <img class="avatar-img" :src=" user.Followings.avatar " />
             </router-link>
           </div>
           <div class="content">
-            <router-link to="/profile">
-              <div class="user-name">{{ following.Followers.name }}</div>
-              <div class="user-accountName">@{{ following.Followers.account }}</div>
+            <router-link :to="{path: `/users/${user.Followings.id}`}">
+              <div class="user-name">{{ user.Followings.name }}</div>
+              <div class="user-accountName">@{{ user.Followings.account }}</div>
             </router-link>
             <span class="introduce">
-            {{ following.Followers.introduction }}
+            {{ user.Followings.introduction }}
             </span>
           </div>
         </div>
-        <div class="toggleBtn" v-if="following.isFollowed">
+        <div class="toggleBtn" v-if="user.Followings.isFollowed">
           <button 
-          class="unfollowed-btn" 
-          @click.stop.prevent="addFollow(following.Followers.id)" 
-          >追隨</button>
+          class="following-btn"
+          @click.stop.prevent="deleteFollow(user.Followings.id)" 
+          >正在追隨</button>
         </div>
         <div class="toggleBtn" v-else>
           <button 
-          class="following-btn"
-          @click.stop.prevent="removeFollow(following.Followers.id)" 
-          >正在追隨</button>
+          class="unfollowed-btn" 
+          @click.stop.prevent="addFollow(user.Followings.id)" 
+          >追隨</button>
         </div>
       </div>
     </div>
@@ -91,13 +89,21 @@ export default {
   },
   data() {
     return {
-      id:'',
-      name:'',
-      tweetCount:'',
+      id: '',
+      name: '',
+      tweetCount: '',
       isActive: true,
+      users: this.followings,
     };
   },
-  created () {
+  watch: {
+    followings(newValue) {
+      this.users=[...newValue]
+    }
+  },
+  created() {   
+    console.log(this.followings)
+    
     const { id } = this.$route.params
     this.fetchUser(id)
   },
@@ -105,18 +111,49 @@ export default {
     ...mapState(['currentUser'])
   },
   methods: {
-    async fetchUser (userId) {
+    async fetchUser(userId) {
       try {
         const { data } = await userAPI.getProfile({ userId })
-        this.id = data.id
+        this.id = await data.id
         this.name = data.name
         this.tweetCount = data.tweetCount
       } catch (error) {
         console.log(error)
       }
     },
+    async addFollow(id) {
+      try {
+        if (this.currentUser.id === id) {
+          this.$bus.$emit('toast', { icon: 'error', title:"不能追隨自己喔" })
+          return
+        }
+        const { data } = await followAPI.addFollow(id)
+        this.users.filter((user) => {
+          if (user.Followings.id === id) {
+            user.Followings.isFollowed = true
+          }
+        })
+        this.$bus.$emit('toast', { icon: 'success', title:"追隨成功" })
+      } catch (error) {
+        console.log(error)
+      } 
+    },
+    async deleteFollow(id) {
+      try {
+        const { data } = await followAPI.deleteFollow(id)
+        this.users.filter((user) => {
+          if (user.Followings.id === id) {
+            user.Followings.isFollowed = false
+          }
+        })
+        this.$bus.$emit('toast', { icon: 'success', title:"取消追隨成功" })
+        
+      } catch (error) {
+        console.log(error)
+      } 
+    },
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
