@@ -8,12 +8,11 @@
       </div>
       <!-- 推文區域 -->
       <div v-modal="tweet" class="tweet-area">
-        <div class="avatar">
-          <router-link to="/">
-            <img :src="currentUser.avatar | nullAvatar" alt="預設的頭像" />
+        <div class="user-avatar">
+          <router-link to="/profile" >
+            <img class="avatar" :src="currentUser.avatar | nullAvatar" alt="預設的頭像" />
           </router-link>
         </div>
-
         <!-- 推文輸入框 -->
         <input
           v-model="tweet"
@@ -43,7 +42,6 @@ import MainTweetList from '../components/MainTweetList.vue'
 import { mapState } from 'vuex'
 import { nullAvatarFilter } from './../utils/mixins'
 import tweetAPI from '../apis/tweet'
-
 export default {
   mixins: [nullAvatarFilter],
   data() {
@@ -52,7 +50,6 @@ export default {
       isProcessing: false
     }
   },
-
   components: {
     Sidebar,
     RightColumn,
@@ -61,7 +58,6 @@ export default {
   computed: {
     ...mapState(['currentUser'])
   },
-
   methods: {
     async submitTweet() {
       try {
@@ -70,7 +66,6 @@ export default {
           this.$bus.$emit('toast', { icon: 'error', title: '內容不可空白' })
           return
         }
-
         if (this.tweet.length > 140) {
           this.tweetHint = 'empty'
           this.$bus.$emit('toast', {
@@ -79,12 +74,9 @@ export default {
           })
           return
         }
-
         this.isProcessing = true
-
         const { data } = await tweetAPI.submitTweet({ description: this.tweet })
         console.log(data)
-
         if (data.status === 'success') {
           this.tweet = ''
           this.$bus.$emit('fetch-MainTweetList', true)
@@ -145,8 +137,14 @@ export default {
   padding: 10px 15px 10px 15px;
 }
 
+.user-avatar {
+  @include size(50px, 50px);
+  margin: 0 10px auto 15px;
+}
+
 .avatar {
   @include size(50px, 50px);
+  border-radius: 50%;
 }
 
 .text-area {

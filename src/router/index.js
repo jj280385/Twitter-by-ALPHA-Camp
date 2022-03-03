@@ -74,7 +74,7 @@ const routes = [
   },
   {
     path: '/profile',
-    name: 'profile',
+    // name: 'profile',
     component: () => import('../views/Profile.vue'),
     children: [
       {
