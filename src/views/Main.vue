@@ -13,7 +13,6 @@
             <img class="avatar" :src="currentUser.avatar | nullAvatar" alt="預設的頭像" />
           </router-link>
         </div>
-
         <!-- 推文輸入框 -->
         <input
           v-model="tweet"
