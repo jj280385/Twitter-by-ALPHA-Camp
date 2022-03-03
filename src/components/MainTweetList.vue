@@ -105,7 +105,7 @@ export default {
           id: queryId
         })
         const tweets = response.data
-        console.log('response',response)
+        // console.log('response',response)
         this.tweets = tweets
       } catch (e) {
         console.log('error')
@@ -114,7 +114,6 @@ export default {
     async addLikes(tweet) {
       try {
         const { data } = await tweetAPI.addLike(tweet.id)
-        
         // console.log('data',data)
         tweet.isLiked = !tweet.isLiked
         tweet.likeCount += 1

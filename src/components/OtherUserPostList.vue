@@ -61,9 +61,8 @@
         <!-- TODO:喜歡次數要能加減 -->
         <button
           class="like-btn"
-          @click="isActive = !isActive"
-          :class="{ active: isActive }"
-        >
+          >
+          <!-- @click.stop.prevent="addLike(tweet)" -->
           <img
             class="like-icon"
             src="../assets/image/liked-icon.svg"
@@ -148,12 +147,25 @@ export default {
         const { data } = await postAPI.getOtherPost(tweetId);
         const tweets = data;
         this.tweets = tweets;
-        // console.log('tweets',tweets);
+        console.log('tweets',tweets);
       } catch (error) {
         console.log(error);
       }
     },
-
+    // async addLike(tweet){
+    //   try {
+    //   const { data } = await postAPI.addLike(tweet);
+    //   console.log("data2", data);
+    //   tweet.isLiked = !tweet.isLiked
+    //   tweet.likeCount += 1
+    //   this.isActive = true;
+    //   tweets.likeCount +=1
+    //   tweets.isLiked = this.isActive;
+    //    tweets.likeCount += 1;
+    //   } catch (error) {
+    //     console.log("error");
+    //   }
+    // },
     // 下方推文回覆列表
     async fetchReplies(tweetId) { 
       try {
@@ -170,8 +182,9 @@ export default {
         console.log("error");
       }
     },
-  },
-};
+    
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -231,6 +244,7 @@ button {
   font-size: 23px;
   font-weight: 500;
   line-height: 34px;
+  word-break: break-all;
 }
 
 .user-name {
