@@ -24,10 +24,12 @@
       ```text
       git clone https://github.com/jj280385/Twitter-by-ALPHA-Camp.git
       ```
+      
+      
 
 ## 3.啟動伺服器
 
-### 開啟『終端機 Terminal.app』，或在 Windows 開啟『命令提示字元 cmd』執行以下指令
+### 開啟『終端機 Terminal.app』，或在 Windows 開啟『命令提示字元 cmd』進入專案資料夾執行以下指令
 
 1. 安裝本專案使用的套件
 
@@ -55,11 +57,12 @@ App running at:
 
 ## 開發工具版本
 
-前端框架
+- Node.js v14.16.0 (較新版本有執行上的風險)
 
+前端框架
 - Vue: 2.6.11
-  - Vue Router: 3.2.0
-  - Vuex: 3.6.2
+- Vue Router: 3.2.0
+- Vuex: 3.6.2
 
 Sass 套件
 
@@ -68,3 +71,6 @@ Sass 套件
 
 - Axios: 0.26.0
 - moment 2.29.1
+
+## 專案開發人員
+[Davis](https://github.com/Pudding1989) ● [Ronny Chiang](https://github.com/RonnyChiang) ● [ReoNaBear](https://github.com/ReoNaBear) ● [ZORA CHEN](https://github.com/jj280385) 
