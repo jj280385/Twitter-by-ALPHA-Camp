@@ -25,7 +25,7 @@
       <div class="poster-info">
         <!-- 點擊照片會跳轉頁面到推文者的個人資料 -->
         <div class="poster-avatar">
-          <router-link :to="{ path: `/users/${tweets.id}` }">
+          <router-link :to="{ path: `/users/${tweets.UserId}` }">
             <img class="avatar-img" :src="tweets.User.avatar" />
           </router-link>
         </div>

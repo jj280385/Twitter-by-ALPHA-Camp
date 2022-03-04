@@ -17,7 +17,7 @@
             <div class="user-info">
               <div class="user-name">{{ like.tweet.User.name }}</div>
               <div class="user-accountName">@{{ like.tweet.User.account }}</div>
-              <div class="post-time">‧{{ like.tweet.createdAt | fromNow }}</div>
+              <div class="post-time">‧{{ like.createdAt | fromNow }}</div>
             </div>
           </router-link>
           <span class="tweet-content">

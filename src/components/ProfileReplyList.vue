@@ -7,7 +7,7 @@
     <div v-else class="reply-list">
       <div class="reply-item" v-for="reply in replies" :key="reply.id">
         <div class="user-avatar">
-          <router-link to="{path: `/profile/reply`}">
+          <router-link :to="{path: `/user/${reply.UserId}`}">
             <img class="avatar-img" :src="reply.User.avatar"/>
           </router-link>
         </div>
