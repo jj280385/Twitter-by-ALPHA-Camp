@@ -49,7 +49,6 @@ const routes = [
     path: '/regist',
     name: 'user-regist',
     component: () => import('../views/UserRegist.vue'),
-    beforeEnter: authorizeIsUser
   },
   {
     path: '/setting',
