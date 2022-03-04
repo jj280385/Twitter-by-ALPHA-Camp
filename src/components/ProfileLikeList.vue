@@ -7,7 +7,7 @@
     <div v-else class="like-list">
       <div class="like-item" v-for="like in likes" :key="like.id">
         <div class="user-avatar">
-          <router-link to="{ path: `/profile/like` }">
+          <router-link :to="{ path: `/user/${like.tweet.User.id}` }">
             <img class="avatar-img" :src="like.tweet.User.avatar" />
           </router-link>
         </div>
@@ -16,7 +16,7 @@
             <div class="user-info">
               <div class="user-name">{{ like.tweet.User.name }}</div>
               <div class="user-accountName">@{{ like.tweet.User.account }}</div>
-              <div class="post-time">‧{{ like.tweet.createdAt | fromNow }}</div>
+              <div class="post-time">‧{{ like.createdAt | fromNow }}</div>
             </div>
           </router-link>
           <span class="tweet-content">
