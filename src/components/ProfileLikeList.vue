@@ -7,7 +7,7 @@
     <div v-else class="like-list">
       <div class="like-item" v-for="like in likes" :key="like.id">
         <div class="user-avatar">
-          <router-link :to="{ path: `/users/${like.tweet.User.id}/tweet`}">
+          <router-link :to="{ path: `/users/${like.tweet.User.id}/tweet` }">
             <img class="avatar-img" :src="like.tweet.User.avatar" />
           </router-link>
         </div>
