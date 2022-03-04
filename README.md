@@ -3,7 +3,7 @@
 安裝 Vue CLI
 
 ```text
-      npm install -g @vue/cli
+npm install -g @vue/cli
 ```
 
 ## 2.安裝專案資料
