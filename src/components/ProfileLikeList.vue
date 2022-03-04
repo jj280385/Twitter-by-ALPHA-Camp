@@ -41,16 +41,16 @@
               <span class="replay-count">{{ like.tweet.replyCount }}</span>
             </button>
             <div>
-              <button 
+              <button
               class="likes"
-              v-if="!like.tweet.User.isLiked"
+              v-if="!like.tweet.isLiked"
               @click.stop.prevent="addLikes(like)"
               >
                 <img class="like-icon" src="../assets/image/like-icon.svg" alt="/">
               </button>
-              <button 
+              <button
               v-else
-              class="likes" 
+              class="likes"
               type="button"
               @click.stop.prevent="deleteLikes(like)"
               >
@@ -69,7 +69,6 @@ import userAPI from '../apis/user'
 import { fromNowFilter } from '../utils/mixins'
 import { mapState } from 'vuex'
 import tweetAPI from './../apis/mainTweet'
-
 export default {
   mixins: [fromNowFilter],
   data() {
@@ -117,7 +116,7 @@ export default {
       try {
         const { data } = await tweetAPI.addLike(like.TweetId)
         // console.log('data',data)
-        like.tweet.User.isLiked = !like.tweet.User.isLiked
+        like.tweet.isLiked = !like.tweet.isLiked
         like.tweet.likeCount += 1
       } catch (error) {
         console.log('error')
@@ -129,7 +128,7 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        like.tweet.User.isLiked = !like.tweet.User.isLiked
+        like.tweet.isLiked = !like.tweet.isLiked
         like.tweet.likeCount -= 1
       } catch (error) {
         console.log('error2')
@@ -241,7 +240,6 @@ export default {
   margin-right: 10px;
   display: flex;
 }
-
 .replay-count,
 .like-count {
   color: var(--info);
@@ -249,7 +247,6 @@ export default {
   font-weight: 500;
   line-height: 13px;
 }
-
 .like-btn,
 .like-count {
   &.active {
