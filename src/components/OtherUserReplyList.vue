@@ -158,7 +158,7 @@ export default {
 }
 
 .reply {
-  @include size(94px, 22px);
+  @include size(100%, 22px);
   font-size: 15px;
   font-weight: 500;
   line-height: 21.72px;

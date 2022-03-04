@@ -266,7 +266,7 @@ a {
 }
 
 .logout-item {
-  position: absolute;
+  position: fixed;
   bottom: 17px;
   @include size(80px, 26px);
   margin-left: 8px;
