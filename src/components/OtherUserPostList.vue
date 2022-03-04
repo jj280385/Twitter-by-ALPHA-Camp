@@ -168,10 +168,10 @@ export default {
     },
     async addLike(tweetId) {
       try {
-        const { data } = await getAPI.getOtherPost(tweetId)
+        const { data } = await getAPI.addLike(tweetId)
         const tweets = data
         // console.log("data1", tweets.isLiked);
-        this.tweets.isLiked = true
+        this.tweets.isLiked = !this.tweets.isLiked
         this.tweets.likeCount += 1
       } catch (error) {
         console.log('error')
@@ -179,10 +179,10 @@ export default {
     },
     async deleteLike(tweetId) {
       try {
-        const { data } = await getAPI.getOtherPost(tweetId)
+        const { data } = await getAPI.deleteLike(tweetId)
         const tweets = data
         // console.log("data2", tweets.isLiked);
-        this.tweets.isLiked = false
+        this.tweets.isLiked = !this.tweets.isLiked
         this.tweets.likeCount -= 1
       } catch (error) {
         console.log('error')
