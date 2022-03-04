@@ -12,14 +12,13 @@ npm install -g @vue/cli
 - 點選右上方綠色『Code』按鈕，選擇『Download ZIP』下載 ZIP 檔，並解壓縮至專案資料夾中。
 - 開啟『終端機 Terminal.app』，或在Ｗ indows 開啟『命令提示字元 cmd』
 
-輸入指令，移動到該專案資料夾位置
+2. 輸入指令，移動到該專案資料夾位置
 
 ```text
 cd 「專案資料夾路徑」 (資料夾名稱間的空格要用「 / 」隔開)
 ```
 
-
-輸入指令將專案 clone 至專案資料夾
+3. 輸入指令將專案 clone 至專案資料夾
 ```text
 git clone https://github.com/jj280385/Twitter-by-ALPHA-Camp.git
 ```            
